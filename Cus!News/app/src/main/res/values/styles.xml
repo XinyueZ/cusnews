@@ -1,8 +1,37 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="Text">
+        <item name="android:textColor">@color/common_black</item>
     </style>
+
+
+    <style name="Text.Normal">
+        <item name="font">cn</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <style name="Text.Normal.Small">
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+
+    <style name="Text.Normal.Large">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+    </style>
+
+
+    <style name="Text.Bold">
+        <item name="font">boldCn</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+    </style>
+
+    <style name="Text.Bold.Small">
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+    </style>
+
+    <style name="Text.Bold.Large">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+    </style>
+
+
 
 </resources>

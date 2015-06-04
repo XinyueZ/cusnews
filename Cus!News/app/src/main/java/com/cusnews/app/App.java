@@ -31,7 +31,13 @@
 //                  别人笑我忒疯癫，我笑自己命太贱。
 package com.cusnews.app;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import android.app.Application;
+
+import com.cusnews.api.Api;
 
 /**
  * Application object.
@@ -40,10 +46,47 @@ import android.app.Application;
  */
 public final class App extends Application {
 	public  static App Instance;
+    /**
+     * Api-key.
+     */
+    private String mApiKey;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Instance = this;
+
+        Properties prop = new Properties();
+        InputStream input = null;
+        String value = null;
+        try {
+			/*From "resources".*/
+            input = getClassLoader().getResourceAsStream("key.properties");
+            if (input != null) {
+                // load a properties file
+                prop.load(input);
+                mApiKey = prop.getProperty("appkey");
+            }
+        } catch (IOException ex) {
+            mApiKey = null;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Api.initialize(this, "http://www.faroo.com/");
 	}
+
+    /**
+     * Get the Api-key.
+     * @return Api-key.
+     */
+    public String getApiKey() {
+        return mApiKey;
+    }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="indigo_300">#7986CB</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="indigo_700">#303F9F</color>
+
+    <color name="common_transparent">@android:color/transparent</color>
+    <color name="primary_color">@color/indigo_500</color>
+    <color name="primary_dark_color">@color/indigo_700</color>
+    <color name="primary_accent">@color/indigo_500</color>
+
+    <color name="common_black">#000000</color>
+    <color name="common_white">#FFFFFF</color>
+</resources>

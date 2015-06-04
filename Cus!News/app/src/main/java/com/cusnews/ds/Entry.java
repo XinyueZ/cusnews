@@ -3,18 +3,73 @@ package com.cusnews.ds;
 
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 public final class Entry {
-	//"title": "Formartti Gold iPhone Case Looks Fit For Royalty",
-	//		"kwic": "If there’s one complaint many people have had with regards to the iPhone is that it’s too expensive, at least compared to the competition out ...",
-	// "content": "",
-		//	"url": "http://www.ubergizmo.com/2015/06/formartti-gold-iphone-case/",
-		//	"iurl": "http://cdn2.ubergizmo.com/wp-content/uploads/2015/06/formartti-640x422.jpg",
-		//	"domain": "www.ubergizmo.com",
-		//	"author": "Tyler Lee",
-		//	"news": true,
-		//	"votes": "20",
-		//	"date": 1433418207000,
+	@SerializedName("title")
+	private String mTitle;
+	@SerializedName("kwic")
+	private String mKwic;
+	@SerializedName("content")
+	private String mContent;
+	@SerializedName("url")
+	private String mUrl;
+	@SerializedName("iurl")
+	private String mImageUrl;
+	@SerializedName("domain")
+	private String mDomain;
+	@SerializedName("author")
+	private String mAuthor;
+	@SerializedName("news")
+	private boolean mNews;
+	@SerializedName("votes")
+	private String mVotes;
+	@SerializedName("date")
+	private long mDate;
+	@SerializedName("related")
 	private List<Entry> mRelated;
 
+	public String getTitle() {
+		return mTitle;
+	}
 
+	public String getKwic() {
+		return mKwic;
+	}
+
+	public String getContent() {
+		return mContent;
+	}
+
+	public String getUrl() {
+		return mUrl;
+	}
+
+	public String getImageUrl() {
+		return mImageUrl;
+	}
+
+	public String getDomain() {
+		return mDomain;
+	}
+
+	public String getAuthor() {
+		return mAuthor;
+	}
+
+	public boolean isNews() {
+		return mNews;
+	}
+
+	public String getVotes() {
+		return mVotes;
+	}
+
+	public long getDate() {
+		return mDate;
+	}
+
+	public List<Entry> getRelated() {
+		return mRelated;
+	}
 }

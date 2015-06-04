@@ -1,21 +1,46 @@
+def buildNumber = 'bld' + (System.env.BUILD_NUMBER ?: 'SNAPSHOT')
 apply plugin: 'com.android.application'
+apply plugin: 'com.android.databinding'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
-
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
     defaultConfig {
-        applicationId "com.cusnews"
-        minSdkVersion 9
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        applicationId project.APP_APPLICATIONID
+        minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionCode Integer.parseInt(project.APP_VERSIONCODE)
+        versionName project.APP_VERSIONNAME
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        debug {
+            versionNameSuffix buildNumber
         }
+        release {
+
+        }
+    }
+
+    productFlavors {
+        dev {
+            applicationId project.APP_STAGE_APPLICATIONID
+            minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
+            targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+            versionCode Integer.parseInt(project.APP_VERSIONCODE)
+            versionName project.APP_VERSIONNAME
+        }
+        live {
+            applicationId project.APP_APPLICATIONID
+            minSdkVersion Integer.parseInt(project.ANDROID_BUILD_MIN_SDK_VERSION)
+            targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+            versionCode Integer.parseInt(project.APP_VERSIONCODE)
+            versionName project.APP_VERSIONNAME
+        }
+    }
+
+    lintOptions {
+        htmlReport false
+        abortOnError false
     }
 }
 
@@ -23,4 +48,22 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.github.shell-software:fab:1.1.1'
+    compile 'com.github.johnpersano:supertoasts:1.3.4@aar'
+    //Should be removed late:
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'de.greenrobot:eventbus:2.2.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+}
+
+// Rename final apks
+android.applicationVariants.all {  variant ->
+    variant.outputs.each  { output ->
+        output.outputFile = new File(
+                output.outputFile.parent, output.outputFile.name.replace("_Android", "")
+                .replace(".apk", "-${android.defaultConfig.versionName}${buildNumber}.apk"))
+    }
 }
