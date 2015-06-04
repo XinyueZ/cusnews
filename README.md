@@ -1,9 +1,16 @@
-# cusnews
-Cus!News is a free news client powered by Faroo.
+# Cus!News
+Cus!News is a free news client powered by (Faroo)[http://www.faroo.com/].
+
+[![https://play.google.com/store/apps/details?id=com.cusnews](https://dl.dropbox.com/s/phrg0387osr3riz/images.jpeg)](https://play.google.com/store/apps/details?id=com.cusnews)
 
 
+# About
+Use (Faroo API)[http://www.faroo.com/hp/api/api.html#description] to fetch news feeds..
+Also to demostrate new Google's (design-library)[http://developer.android.com/intl/zh-cn/tools/support-library/features.html#design]. But I discard its own (FAB)[http://developer.android.com/intl/zh-cn/reference/android/support/design/widget/FloatingActionButton.html] instead by (fab project)[https://github.com/shell-software/fab]
 
-
+# API
+Enter API-Key in key.properties under resources directory.
+Don't publish API-Key to public when fork the project to avoid abuse indeed. 
 
 ```java
 			The MIT License (MIT)
