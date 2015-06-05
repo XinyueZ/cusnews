@@ -9,13 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.cusnews.R;
 import com.cusnews.api.Api;
 import com.cusnews.app.App;
 import com.cusnews.app.adapters.EntriesAdapter;
+import com.cusnews.bus.ChangeViewTypeEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
 import com.github.johnpersano.supertoasts.SuperToast.OnClickListener;
@@ -70,12 +70,27 @@ public class MainActivity extends CusNewsActivity {
 	private int mTotalItemCount;
 	private boolean mLoading = true;
 
+	//------------------------------------------------
+	//Subscribes, event-handlers
+	//------------------------------------------------
+
+	/**
+	 * Handler for {@link com.cusnews.bus.ChangeViewTypeEvent}.
+	 * @param e Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
+	 */
+	public void onEvent(ChangeViewTypeEvent e) {
+		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType().getLayoutResId(), mBinding.getEntriesAdapter().getData());
+		mBinding.setEntriesAdapter(newAdp);
+	}
+
+	//------------------------------------------------
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		calcActionBarHeight();
 		mBinding = DataBindingUtil.setContentView(MainActivity.this, LAYOUT);
-		mBinding.setEntriesAdapter(new EntriesAdapter());
+		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
 		mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
 
 		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -124,7 +139,7 @@ public class MainActivity extends CusNewsActivity {
 			Api.getEntries("", mCurrentPage, "en", App.Instance.getApiKey(), new Callback<Entries>() {
 				@Override
 				public void success(Entries entries, Response response) {
-					showInfoToast("Success");
+
 					mBinding.getEntriesAdapter().getData().addAll(entries.getList());
 					mBinding.getEntriesAdapter().notifyDataSetChanged();
 					//Finish loading
@@ -156,21 +171,6 @@ public class MainActivity extends CusNewsActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**

@@ -5,13 +5,13 @@ import java.util.List;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
+import android.databinding.ViewDataBinding;
+import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.cusnews.BR;
-import com.cusnews.R;
-import com.cusnews.databinding.EntryBinding;
 import com.cusnews.ds.Entry;
 
 /**
@@ -21,9 +21,9 @@ import com.cusnews.ds.Entry;
  */
 public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.ViewHolder> {
 	/**
-	 * Main layout for this component.
+	 * The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 */
-	private static final int ITEM_LAYOUT = R.layout.item_entry;
+	private int mLayoutResId;
 	/**
 	 * Data-source.
 	 */
@@ -31,9 +31,26 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 
 	/**
 	 * Constructor of {@link EntriesAdapter}
+	 *
+	 * @param layoutResId
+	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 */
-	public EntriesAdapter() {
+	public EntriesAdapter(@LayoutRes int layoutResId) {
 		setData(new ObservableArrayList<Entry>());
+		mLayoutResId = layoutResId;
+	}
+
+	/**
+	 * Constructor of {@link EntriesAdapter}
+	 *
+	 * @param layoutResId
+	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
+	 * @param entries
+	 * 		Data-source.
+	 */
+	public EntriesAdapter(@LayoutRes int layoutResId, List<Entry> entries) {
+		setData(entries);
+		mLayoutResId = layoutResId;
 	}
 
 	/**
@@ -58,7 +75,7 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 		Context cxt = parent.getContext();
 		//		boolean landscape = cxt.getResources().getBoolean(R.bool.landscape);
 		LayoutInflater inflater = LayoutInflater.from(cxt);
-		EntryBinding binding = DataBindingUtil.inflate(inflater, ITEM_LAYOUT, parent, false);
+		ViewDataBinding binding = DataBindingUtil.inflate(inflater, mLayoutResId, parent, false);
 		return new EntriesAdapter.ViewHolder(binding);
 	}
 
@@ -76,9 +93,9 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-		private EntryBinding mBinding;
+		private ViewDataBinding mBinding;
 
-		public ViewHolder(EntryBinding binding) {
+		public ViewHolder(ViewDataBinding binding) {
 			super(binding.getRoot());
 			mBinding = binding;
 		}

@@ -3,5 +3,9 @@
     <string name="lbl_retry">再试</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
+
+    <string name="action_view_type">视图</string>
+    <string name="action_view_type_horizontal">水平</string>
+    <string name="action_view_type_vertical">垂直</string>
 </resources>

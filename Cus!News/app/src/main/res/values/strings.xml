@@ -3,5 +3,9 @@
     <string name="lbl_retry">Retry</string>
 
     <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
+    <string name="action_view_type">View type</string>
+    <string name="action_view_type_horizontal">Horizontal</string>
+    <string name="action_view_type_vertical">Vertical</string>
 </resources>

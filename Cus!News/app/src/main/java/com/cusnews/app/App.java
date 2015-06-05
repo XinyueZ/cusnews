@@ -38,6 +38,7 @@ import java.util.Properties;
 import android.app.Application;
 
 import com.cusnews.api.Api;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 /**
  * Application object.
@@ -51,7 +52,24 @@ public final class App extends Application {
      */
     private String mApiKey;
 
-	@Override
+    ///-----
+    /**
+     * TODO
+     * Temp place to save view-types before {@link android.content.SharedPreferences} will be imported.
+     */
+    private ViewType mViewType = ViewType.VERTICAL;
+
+
+    public ViewType getViewType() {
+        return mViewType;
+    }
+
+    public void setViewType(ViewType viewType) {
+        mViewType = viewType;
+    }
+    ///-----
+
+    @Override
 	public void onCreate() {
 		super.onCreate();
 		Instance = this;

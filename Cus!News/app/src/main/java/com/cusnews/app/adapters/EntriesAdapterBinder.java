@@ -1,11 +1,9 @@
 package com.cusnews.app.adapters;
 
 import android.databinding.BindingAdapter;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
-import com.cusnews.R;
 import com.cusnews.utils.Utils;
 import com.squareup.picasso.Picasso;
 
@@ -19,16 +17,17 @@ public final class EntriesAdapterBinder {
 	}
 
 
-	@BindingAdapter({ "bind:imageUrl", "bind:error" })
-	public static void loadImage(ImageView view, String url, Drawable error) {
-		Picasso.with(view.getContext()).load(url).error(error).into(view);
+	//@BindingAdapter({ "bind:imageUrl", "bind:error" })
+	//public static void loadImage(ImageView view, String url, Drawable error) {
+	@BindingAdapter({ "bind:imageUrl" })
+	public static void loadImage(ImageView view, String url) {
+		Picasso.with(view.getContext()).load(url).into(view);
 
 		try {
 			Picasso picasso = Picasso.with(view.getContext());
-			picasso.load(Utils.uriStr2URI(url).toASCIIString()).placeholder(R.drawable.ic_placeholder_thumb).tag(
-					view.getContext()).error(error).into(view);
+			picasso.load(Utils.uriStr2URI(url).toASCIIString()).tag(
+					view.getContext()).into(view);
 		} catch (NullPointerException e) {
-			view.setImageResource(R.drawable.ic_placeholder_thumb);
 		}
 	}
 }
