@@ -106,6 +106,10 @@ public class MainActivity extends CusNewsActivity {
 		});
 		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
 
+		setSupportActionBar(mBinding.toolbar);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		getData();
 	}
 
