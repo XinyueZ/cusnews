@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <data class="EntryBinding">
+
+        <import type="com.cusnews.ds.Entry" />
+        <variable
+            name="entry"
+            type="Entry" />
+    </data>
+
+    <android.support.v7.widget.CardView style="@style/ItemCardView">
+
+        <com.cusnews.widgets.MaterialRippleLayout
+            android:id="@+id/content_v"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_transparent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="@color/primary_dark_color"
+            app:mrl_rippleDelayClick="true"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
+
+                    <com.cusnews.widgets.FontTextView
+                        android:id="@+id/headline_tv"
+                        style="@style/Text.Normal.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:ellipsize="end"
+                        android:lines="3"
+                        android:maxLines="3"
+                        android:minLines="3"
+                        android:text="@{entry.title}" />
+
+                </LinearLayout>
+
+                <com.cusnews.widgets.AdjustViewBoundsImageView
+                    android:id="@+id/thumb_iv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/common_padding"
+                    android:layout_marginLeft="@dimen/common_padding"
+                    android:layout_marginTop="@dimen/common_padding"
+                    android:layout_weight="2"
+                    android:background="?android:attr/windowBackground"
+                    app:imageUrl="@{entry.imageUrl}"
+                    app:error="@{@drawable/ic_placeholder_thumb}"/>
+            </LinearLayout>
+        </com.cusnews.widgets.MaterialRippleLayout>
+    </android.support.v7.widget.CardView>
+</layout>

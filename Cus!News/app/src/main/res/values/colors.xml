@@ -3,6 +3,7 @@
     <color name="indigo_300">#7986CB</color>
     <color name="indigo_500">#3F51B5</color>
     <color name="indigo_700">#303F9F</color>
+    <color name="grey_500">#9E9E9E</color>
 
     <color name="common_transparent">@android:color/transparent</color>
     <color name="primary_color">@color/indigo_500</color>
@@ -11,4 +12,9 @@
 
     <color name="common_black">#000000</color>
     <color name="common_white">#FFFFFF</color>
+
+    <color name="green_1">#F44336</color>
+    <color name="green_2">#F44336</color>
+    <color name="green_3">#3D5AFE</color>
+    <color name="green_4">#3D5AFE</color>
 </resources>

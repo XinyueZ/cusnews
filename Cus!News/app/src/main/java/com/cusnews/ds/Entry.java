@@ -1,33 +1,51 @@
 package com.cusnews.ds;
 
 
-import java.util.List;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.ObservableArrayList;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Entry {
+public final class Entry extends BaseObservable {
 	@SerializedName("title")
-	private String mTitle;
+	private final String mTitle;
 	@SerializedName("kwic")
-	private String mKwic;
+	private final String mKwic;
 	@SerializedName("content")
-	private String mContent;
+	private final String mContent;
 	@SerializedName("url")
-	private String mUrl;
+	private final String mUrl;
 	@SerializedName("iurl")
-	private String mImageUrl;
+	private final String mImageUrl;
 	@SerializedName("domain")
-	private String mDomain;
+	private final String mDomain;
 	@SerializedName("author")
-	private String mAuthor;
+	private final String mAuthor;
 	@SerializedName("news")
-	private boolean mNews;
+	private final boolean mNews;
 	@SerializedName("votes")
-	private String mVotes;
+	private final String mVotes;
 	@SerializedName("date")
-	private long mDate;
+	private final long mDate;
 	@SerializedName("related")
-	private List<Entry> mRelated;
+	@Bindable
+	private final ObservableArrayList<Entry> mRelated;
+
+	public Entry(String title, String kwic, String content, String url, String imageUrl, String domain, String author,
+			boolean news, String votes, long date, ObservableArrayList<Entry> related) {
+		mTitle = title;
+		mKwic = kwic;
+		mContent = content;
+		mUrl = url;
+		mImageUrl = imageUrl;
+		mDomain = domain;
+		mAuthor = author;
+		mNews = news;
+		mVotes = votes;
+		mDate = date;
+		mRelated = related;
+	}
 
 	public String getTitle() {
 		return mTitle;
@@ -69,7 +87,8 @@ public final class Entry {
 		return mDate;
 	}
 
-	public List<Entry> getRelated() {
+	public ObservableArrayList<Entry> getRelated() {
 		return mRelated;
 	}
+
 }
