@@ -46,7 +46,7 @@
                         style="@style/Text.Normal.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_gravity="top|start"
                         android:ellipsize="end"
                         android:lines="3"
                         android:maxLines="3"
