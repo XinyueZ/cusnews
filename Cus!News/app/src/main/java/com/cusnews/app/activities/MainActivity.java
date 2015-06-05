@@ -106,6 +106,7 @@ public class MainActivity extends CusNewsActivity {
 		});
 		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
 
+
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -170,5 +171,12 @@ public class MainActivity extends CusNewsActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Add new label.
+	 * @param view No usage.
+	 */
+	public void onActionButtonClick(View view) {
 	}
 }

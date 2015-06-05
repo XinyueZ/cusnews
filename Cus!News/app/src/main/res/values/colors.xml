@@ -5,13 +5,15 @@
     <color name="indigo_700">#303F9F</color>
     <color name="grey_500">#9E9E9E</color>
 
-    <color name="common_transparent">@android:color/transparent</color>
+
+
     <color name="primary_color">@color/indigo_500</color>
     <color name="primary_dark_color">@color/indigo_700</color>
     <color name="primary_accent">@color/indigo_500</color>
 
     <color name="common_black">#000000</color>
     <color name="common_white">#FFFFFF</color>
+    <color name="common_transparent">@android:color/transparent</color>
 
     <color name="green_1">#F44336</color>
     <color name="green_2">#F44336</color>

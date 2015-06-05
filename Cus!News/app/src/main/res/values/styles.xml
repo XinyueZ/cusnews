@@ -33,6 +33,15 @@
     </style>
 
 
+    <style name="FAB"  >
+        <item name="android:layout_gravity">end|bottom</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/fab_margin</item>
+        <item name="android:layout_marginBottom">@dimen/fab_margin</item>
+    </style>
 
     <style name="ItemCardView">
         <item name="android:layout_width">match_parent</item>
