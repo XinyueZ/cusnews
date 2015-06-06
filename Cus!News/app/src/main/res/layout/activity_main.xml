@@ -16,65 +16,64 @@
         android:background="?android:attr/windowBackground"
         android:orientation="vertical">
 
-        <FrameLayout
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.design.widget.CoordinatorLayout
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/app_bar_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <LinearLayout
+                        android:id="@+id/card_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="?attr/actionBarSize"
+                        android:background="@color/common_transparent"
+                        android:orientation="vertical" />
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        style="@style/ActionBar_ToolBar" />
+                </FrameLayout>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/content_srl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.v4.widget.SwipeRefreshLayout
-                    android:id="@+id/content_srl"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/entries_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:scrollbars="none"
+                    app:entriesAdapter="@{entriesAdapter}"
+                    app:layout_anchor="@id/app_bar_content" />
+            </android.support.v4.widget.SwipeRefreshLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/entries_rv"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/common_transparent"
-                        android:scrollbars="none"
-                        app:entriesAdapter="@{entriesAdapter}" />
-                </android.support.v4.widget.SwipeRefreshLayout>
-
-                <android.support.design.widget.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_scrollFlags="scroll|enterAlways">
-
-                        <LinearLayout
-                            android:id="@+id/card_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="?attr/actionBarSize"
-                            android:background="@color/common_transparent"
-                            android:orientation="vertical" />
-
-                        <android.support.v7.widget.Toolbar
-                            android:id="@+id/toolbar"
-                            style="@style/ActionBar_ToolBar" />
-                    </FrameLayout>
-                </android.support.design.widget.AppBarLayout>
-
-
-                <com.software.shell.fab.ActionButton
-                    android:id="@+id/fab"
-                    style="@style/FAB"
-                    android:onClick="onActionButtonClick"
-                    app:type="DEFAULT"
-                    app:button_color="@color/fab_material_red_500"
-                    app:button_colorPressed="@color/fab_material_red_900"
-                    app:rippleEffect_enabled="true"
-                    app:image="@drawable/fab_plus_icon"
-                    app:shadow_radius="10dp"
-                    app:shadowResponsiveEffect_enabled="true"/>
-            </android.support.design.widget.CoordinatorLayout>
-        </FrameLayout>
+            <com.software.shell.fab.ActionButton
+                android:id="@+id/fab"
+                style="@style/FAB"
+                android:onClick="onActionButtonClick"
+                app:button_color="@color/fab_material_red_500"
+                app:button_colorPressed="@color/fab_material_red_900"
+                app:image="@drawable/fab_plus_icon"
+                app:rippleEffect_enabled="true"
+                app:shadowResponsiveEffect_enabled="true"
+                app:shadow_radius="10dp"
+                app:type="DEFAULT"
+                app:show_animation="@anim/fab_jump_from_down"
+                app:hide_animation="@anim/fab_jump_to_down"/>
+        </android.support.design.widget.CoordinatorLayout>
 
 
     </FrameLayout>

@@ -5,9 +5,11 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,6 +78,8 @@ public class MainActivity extends CusNewsActivity {
 	private int mTotalItemCount;
 	private boolean mLoading = true;
 
+
+
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
@@ -107,6 +111,19 @@ public class MainActivity extends CusNewsActivity {
 		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				float y = ViewCompat.getY(recyclerView);
+				if (y < dy ) {
+					Log.d("asdf", "y < dy ");
+					if(!mBinding.fab.isHidden()) {
+						mBinding.fab.hide();
+					}
+				} else {
+					Log.d("asdf", "y>=dy ");
+					if(mBinding.fab.isHidden()) {
+						mBinding.fab.show();
+					}
+				}
+
 
 				mVisibleItemCount = mLayoutManager.getChildCount();
 				mTotalItemCount = mLayoutManager.getItemCount();
@@ -121,7 +138,9 @@ public class MainActivity extends CusNewsActivity {
 						}
 					}
 				}
+
 			}
+
 		});
 
 
