@@ -71,8 +71,8 @@ public class FontTextView extends TextView {
 	public final static class Fonts {
 		private static final ConcurrentHashMap<String, Typeface> sTypefaces = new ConcurrentHashMap<String, Typeface>();
 
-		public static final String FONT_CN = "FrutigerLTStd-Cn.otf";
-		public static final String FONT_BOLD_CN = "FrutigerLTStd-BoldCn.otf";
+		public static final String FONT_CN = "NotoSerif-Regular.ttf";
+		public static final String FONT_BOLD_CN = "NotoSerif-Bold.ttf";
 
 		public static Typeface getFont(Context context, String assetPath) {
 			Typeface font = sTypefaces.get(assetPath);
