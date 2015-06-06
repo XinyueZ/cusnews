@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <data  >
+    <data>
 
         <import type="com.cusnews.ds.Entry" />
+
+        <import type="android.text.format.DateUtils" />
+        <!--DateUtils.formatDateTime(cxt, timestamps, FORMAT_SHOW_YEAR | FORMAT_SHOW_DATE | FORMAT_ABBREV_MONTH)-->
 
         <variable
             name="entry"
@@ -15,7 +18,7 @@
     <android.support.v7.widget.CardView
         style="@style/ItemCardView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/line_vertical_height">
+        android:layout_height="wrap_content">
 
         <com.cusnews.widgets.MaterialRippleLayout
             android:id="@+id/content_v"
@@ -32,25 +35,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="5">
+                android:orientation="vertical">
 
                 <com.cusnews.widgets.AdjustViewBoundsImageView
                     android:id="@+id/thumb_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="@dimen/common_padding"
-                    android:layout_weight="2"
                     android:background="?android:attr/windowBackground"
                     app:imageUrl="@{entry.imageUrl}" />
 
                 <LinearLayout
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
 
                     <com.cusnews.widgets.FontTextView
                         android:id="@+id/headline_tv"
@@ -60,6 +61,85 @@
                         android:layout_gravity="top|start"
                         android:text="@{entry.title}" />
 
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/common_padding">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:orientation="horizontal">
+
+
+                                <com.cusnews.widgets.FontTextView
+                                    android:id="@+id/author_tv"
+                                    style="@style/Text.Normal.Small"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="@{entry.author}" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/common_transparent"
+                                    android:src="@drawable/ic_author" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:orientation="horizontal">
+
+
+                                <com.cusnews.widgets.FontTextView
+                                    android:id="@+id/rate_tv"
+                                    style="@style/Text.Normal.Small"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="@{entry.votes}" />
+
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/common_transparent"
+                                    android:src="@drawable/ic_rate" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:orientation="horizontal">
+
+
+                                <com.cusnews.widgets.FontTextView
+                                    android:id="@+id/time_tv"
+                                    style="@style/Text.Normal.Small"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="@{DateUtils.getRelativeTimeSpanString(entry.date, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS)}" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/common_transparent"
+                                    android:src="@drawable/ic_time" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
 
             </LinearLayout>

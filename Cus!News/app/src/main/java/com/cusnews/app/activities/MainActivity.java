@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.cusnews.R;
@@ -51,6 +52,11 @@ public class MainActivity extends CusNewsActivity {
 	 */
 	private boolean mInProgress = false;
 	/**
+	 * {@code true} if the feeds arrive bottom.
+	 */
+	private boolean mIsBottom;
+
+	/**
 	 * Calculate height of actionbar.
 	 */
 	protected void calcActionBarHeight() {
@@ -76,10 +82,13 @@ public class MainActivity extends CusNewsActivity {
 
 	/**
 	 * Handler for {@link com.cusnews.bus.ChangeViewTypeEvent}.
-	 * @param e Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
 	 */
 	public void onEvent(ChangeViewTypeEvent e) {
-		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType().getLayoutResId(), mBinding.getEntriesAdapter().getData());
+		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType().getLayoutResId(),
+				mBinding.getEntriesAdapter().getData());
 		mBinding.setEntriesAdapter(newAdp);
 	}
 
@@ -89,6 +98,8 @@ public class MainActivity extends CusNewsActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		calcActionBarHeight();
+
+
 		mBinding = DataBindingUtil.setContentView(MainActivity.this, LAYOUT);
 		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
 		mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
@@ -101,11 +112,13 @@ public class MainActivity extends CusNewsActivity {
 				mTotalItemCount = mLayoutManager.getItemCount();
 				mPastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
 
-				if (mLoading) {
-					if ((mVisibleItemCount + mPastVisibleItems) >= mTotalItemCount) {
-						mLoading = false;
-						mCurrentPage++;
-						getData();
+				if (!mIsBottom) {
+					if (mLoading) {
+						if ((mVisibleItemCount + mPastVisibleItems) >= mTotalItemCount) {
+							mLoading = false;
+							mCurrentPage += 10;
+							getData();
+						}
 					}
 				}
 			}
@@ -120,7 +133,8 @@ public class MainActivity extends CusNewsActivity {
 			}
 		});
 		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
-
+		mBinding.contentSrl.setProgressViewOffset(false, 0, mActionBarHeight * 2);
+		mBinding.contentSrl.setRefreshing(true);
 
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -133,7 +147,7 @@ public class MainActivity extends CusNewsActivity {
 	 * Get data from server.
 	 */
 	private void getData() {
-		if(!mInProgress) {
+		if (!mInProgress) {
 			mBinding.contentSrl.setRefreshing(true);
 			mInProgress = true;
 			Api.getEntries("", mCurrentPage, "en", App.Instance.getApiKey(), new Callback<Entries>() {
@@ -146,14 +160,22 @@ public class MainActivity extends CusNewsActivity {
 					mBinding.contentSrl.setRefreshing(false);
 					mInProgress = false;
 					mLoading = true;
+
+					//Arrive bottom?
+					if (entries.getStart() > entries.getCount()) {
+						mIsBottom = true;
+					}
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
+					if (mCurrentPage > 10) {
+						mCurrentPage -= 10;
+					}
 					showErrorToast("RetrofitError", new OnClickListener() {
 						@Override
 						public void onClick(View view, Parcelable parcelable) {
-
+							getData();
 						}
 					});
 
@@ -173,9 +195,24 @@ public class MainActivity extends CusNewsActivity {
 		return true;
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_to_top:
+			if (mBinding.getEntriesAdapter() != null && mBinding.getEntriesAdapter().getItemCount() > 0) {
+				mLayoutManager.scrollToPositionWithOffset(0, 0);
+			}
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+
 	/**
 	 * Add new label.
-	 * @param view No usage.
+	 *
+	 * @param view
+	 * 		No usage.
 	 */
 	public void onActionButtonClick(View view) {
 	}

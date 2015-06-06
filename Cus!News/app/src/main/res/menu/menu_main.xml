@@ -6,4 +6,10 @@
         app:actionProviderClass="com.cusnews.widgets.ViewTypeActionProvider"
         android:icon="@drawable/ic_view_change"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_to_top"
+        android:title="@string/action_top"
+        android:icon="@drawable/ic_top"
+        app:showAsAction="always" />
 </menu>

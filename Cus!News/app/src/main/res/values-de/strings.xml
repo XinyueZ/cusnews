@@ -8,4 +8,5 @@
     <string name="action_view_type">Ansicht</string>
     <string name="action_view_type_horizontal">Horizontal</string>
     <string name="action_view_type_vertical">Vertikal</string>
+    <string name="action_top">Nach oben</string>
 </resources>
