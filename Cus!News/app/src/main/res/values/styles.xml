@@ -7,7 +7,7 @@
     </style>
 
     <style name="ActionBar_ToolBar">
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:theme">@style/AppTheme</item>

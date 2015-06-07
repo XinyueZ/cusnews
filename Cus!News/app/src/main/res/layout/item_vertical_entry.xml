@@ -55,11 +55,28 @@
 
                     <com.cusnews.widgets.FontTextView
                         android:id="@+id/headline_tv"
+                        style="@style/Text.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|start"
+                        android:layout_marginBottom="22sp"
+                        android:ellipsize="end"
+                        android:lines="3"
+                        android:maxLines="3"
+                        android:minLines="3"
+                        android:text="@{entry.title}" />
+
+                    <com.cusnews.widgets.FontTextView
+                        android:id="@+id/headline_tv"
                         style="@style/Text.Normal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|start"
-                        android:text="@{entry.title}" />
+                        android:ellipsize="end"
+                        android:lines="3"
+                        android:maxLines="3"
+                        android:minLines="3"
+                        android:text="@{entry.kwic}" />
 
 
                     <FrameLayout
@@ -72,27 +89,6 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:orientation="horizontal">
-
-
-                                <com.cusnews.widgets.FontTextView
-                                    android:id="@+id/author_tv"
-                                    style="@style/Text.Normal.Small"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:text="@{entry.author}" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/common_transparent"
-                                    android:src="@drawable/ic_author" />
-                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -117,6 +113,7 @@
                                     android:src="@drawable/ic_rate" />
                             </LinearLayout>
 
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -138,6 +135,29 @@
                                     android:background="@color/common_transparent"
                                     android:src="@drawable/ic_time" />
                             </LinearLayout>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|bottom"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/common_transparent"
+                                android:src="@drawable/ic_author" />
+
+                            <com.cusnews.widgets.FontTextView
+                                android:id="@+id/author_tv"
+                                style="@style/Text.Normal.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@{entry.author}" />
                         </LinearLayout>
                     </FrameLayout>
                 </LinearLayout>

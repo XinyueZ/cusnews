@@ -94,8 +94,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/common_padding"
                     android:layout_weight="2"
-                    android:background="@drawable/ic_alert"
-                    android:src="@drawable/ic_alert"
+                    android:background="?android:attr/windowBackground"
                     app:imageUrl="@{entry.imageUrl}" />
             </LinearLayout>
         </com.cusnews.widgets.MaterialRippleLayout>

@@ -1,34 +1,43 @@
 package com.cusnews.app.activities;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.provider.SearchRecentSuggestions;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.SearchView;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 
 import com.cusnews.R;
 import com.cusnews.api.Api;
 import com.cusnews.app.App;
+import com.cusnews.app.SearchSuggestionProvider;
 import com.cusnews.app.adapters.EntriesAdapter;
 import com.cusnews.bus.ChangeViewTypeEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
-import com.github.johnpersano.supertoasts.SuperToast.OnClickListener;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends CusNewsActivity {
+public class MainActivity extends CusNewsActivity implements  SearchView.OnQueryTextListener{
 	/**
 	 * Main layout for this component.
 	 */
@@ -48,7 +57,7 @@ public class MainActivity extends CusNewsActivity {
 	/**
 	 * Page-pointer.
 	 */
-	private int mCurrentPage = 1;
+	private int mStart = 1;
 	/**
 	 * {@code true} if user loading data.
 	 */
@@ -57,6 +66,18 @@ public class MainActivity extends CusNewsActivity {
 	 * {@code true} if the feeds arrive bottom.
 	 */
 	private boolean mIsBottom;
+	/**
+	 * Keyword that will be searched.
+	 */
+	private String mKeyword ="";
+	/**
+	 * Suggestion list while tipping.
+	 */
+	protected SearchRecentSuggestions mSuggestions;
+	/**
+	 * The search.
+	 */
+	private SearchView mSearchView;
 
 	/**
 	 * Calculate height of actionbar.
@@ -103,6 +124,12 @@ public class MainActivity extends CusNewsActivity {
 		super.onCreate(savedInstanceState);
 		calcActionBarHeight();
 
+		mKeyword = App.Instance.getLastTimeSearched();
+
+		//For search and suggestions.
+		mSuggestions = new SearchRecentSuggestions(this, getString(R.string.suggestion_auth),
+				SearchSuggestionProvider.MODE);
+
 
 		mBinding = DataBindingUtil.setContentView(MainActivity.this, LAYOUT);
 		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
@@ -113,12 +140,10 @@ public class MainActivity extends CusNewsActivity {
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				float y = ViewCompat.getY(recyclerView);
 				if (y < dy ) {
-					Log.d("asdf", "y < dy ");
 					if(!mBinding.fab.isHidden()) {
 						mBinding.fab.hide();
 					}
 				} else {
-					Log.d("asdf", "y>=dy ");
 					if(mBinding.fab.isHidden()) {
 						mBinding.fab.show();
 					}
@@ -133,7 +158,7 @@ public class MainActivity extends CusNewsActivity {
 					if (mLoading) {
 						if ((mVisibleItemCount + mPastVisibleItems) >= mTotalItemCount) {
 							mLoading = false;
-							mCurrentPage += 10;
+							mStart += 10;
 							getData();
 						}
 					}
@@ -154,6 +179,12 @@ public class MainActivity extends CusNewsActivity {
 		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
 		mBinding.contentSrl.setProgressViewOffset(false, 0, mActionBarHeight * 2);
 		mBinding.contentSrl.setRefreshing(true);
+		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				getData();
+			}
+		});
 
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -169,7 +200,7 @@ public class MainActivity extends CusNewsActivity {
 		if (!mInProgress) {
 			mBinding.contentSrl.setRefreshing(true);
 			mInProgress = true;
-			Api.getEntries("", mCurrentPage, "en", App.Instance.getApiKey(), new Callback<Entries>() {
+			Api.getEntries(mKeyword, mStart, "en", App.Instance.getApiKey(), new Callback<Entries>() {
 				@Override
 				public void success(Entries entries, Response response) {
 
@@ -183,20 +214,28 @@ public class MainActivity extends CusNewsActivity {
 					//Arrive bottom?
 					if (entries.getStart() > entries.getCount()) {
 						mIsBottom = true;
+						Snackbar
+								.make(mBinding.snackbarPosition, R.string.lbl_no_data, Snackbar.LENGTH_LONG)
+								.show();
 					}
+
+					App.Instance.setLastTimeSearched(mKeyword);
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
-					if (mCurrentPage > 10) {
-						mCurrentPage -= 10;
+					if (mStart > 10) {
+						mStart -= 10;
 					}
-					showErrorToast("RetrofitError", new OnClickListener() {
-						@Override
-						public void onClick(View view, Parcelable parcelable) {
-							getData();
-						}
-					});
+					Snackbar
+							.make(mBinding.snackbarPosition, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
+							.setAction(R.string.lbl_retry, new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									getData();
+								}
+							})
+							.show();
 
 					//Finish loading
 					mBinding.contentSrl.setRefreshing(false);
@@ -211,7 +250,40 @@ public class MainActivity extends CusNewsActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
+
+		//Search
+		final MenuItem searchMenu = menu.findItem(R.id.action_search);
+		MenuItemCompat.setOnActionExpandListener(searchMenu, new MenuItemCompat.OnActionExpandListener() {
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem item) {
+				return true;
+			}
+
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem item) {
+				mKeyword="";
+				doSearch();
+				return true;
+			}
+		});
+		mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenu);
+		mSearchView.setOnQueryTextListener(this);
+		mSearchView.setIconifiedByDefault(true);
+		SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+		if (searchManager != null) {
+			SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+			mSearchView.setSearchableInfo(info);
+		}
 		return true;
+	}
+
+	/**
+	 * Start searching.
+	 */
+	private void doSearch() {
+		mStart = 1;
+		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
+		getData();
 	}
 
 	@Override
@@ -234,5 +306,60 @@ public class MainActivity extends CusNewsActivity {
 	 * 		No usage.
 	 */
 	public void onActionButtonClick(View view) {
+	}
+
+
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		handleIntent(intent);
+	}
+
+	/**
+	 * Getting intent var.
+	 *
+	 * @param intent
+	 */
+	protected void handleIntent(Intent intent) {
+		mKeyword = intent.getStringExtra(SearchManager.QUERY);
+		mKeyword = mKeyword.trim();
+		if (!TextUtils.isEmpty(mKeyword)) {
+			mSearchView.setQueryHint(Html.fromHtml("<font color = #ffffff>" + mKeyword + "</font>"));
+
+			mKeyword = intent.getStringExtra(SearchManager.QUERY);
+			mKeyword = mKeyword.trim();
+			resetSearchView();
+
+			mSuggestions.saveRecentQuery(mKeyword, null);
+
+			//Do search
+			doSearch();
+		}
+	}
+
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String s) {
+		InputMethodManager mgr = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		mgr.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+		resetSearchView();
+		return false;
+	}
+
+
+	/**
+	 * Reset the UI status of searchview.
+	 */
+	protected void resetSearchView() {
+		if (mSearchView != null) {
+			mSearchView.clearFocus();
+		}
 	}
 }

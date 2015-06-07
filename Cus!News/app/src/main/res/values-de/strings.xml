@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">Cus!News</string>
+    <string name="application_name">Cus!News</string>
     <string name="lbl_retry">Wiederholen</string>
+    <string name="lbl_loading_error">Fehler bei der Ladung!</string>
+    <string name="lbl_no_data">Keine mehr Daten!</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Einstellungen</string>
-
     <string name="action_view_type">Ansicht</string>
     <string name="action_view_type_horizontal">Horizontal</string>
     <string name="action_view_type_vertical">Vertikal</string>
     <string name="action_top">Nach oben</string>
+    <string name="action_search">Suche</string>
 </resources>

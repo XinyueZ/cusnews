@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">Cus!News</string>
+    <string name="application_name">Cus!News</string>
     <string name="lbl_retry">再试</string>
+    <string name="lbl_loading_error">提取数据出错!</string>
+    <string name="lbl_no_data">无更多的数据！</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
-
     <string name="action_view_type">视图</string>
     <string name="action_view_type_horizontal">水平</string>
     <string name="action_view_type_vertical">垂直</string>
     <string name="action_top">回顶端</string>
+    <string name="action_search">搜一搜</string>
 </resources>
