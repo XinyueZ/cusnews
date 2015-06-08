@@ -5,4 +5,5 @@
     <dimen name="line_horizontal_height">100dp</dimen>
     <dimen name="line_vertical_image_height">150dp</dimen>
     <dimen name="common_padding">5dp</dimen>
+    <dimen name="common_elevation">5dp</dimen>
 </resources>

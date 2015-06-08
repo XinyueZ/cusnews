@@ -74,4 +74,13 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="cardCornerRadius">0dp</item>
     </style>
+
+    <style name="MaterialRippleLayout">
+
+        <item name="mrl_rippleAlpha">0.2</item>
+        <item name="mrl_rippleColor">@color/primary_dark_color</item>
+        <item name="mrl_rippleDelayClick">true</item>
+        <item name="mrl_rippleHover">true</item>
+        <item name="mrl_rippleOverlay">true</item>
+    </style>
 </resources>

@@ -25,11 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/common_transparent"
-            app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="@color/primary_dark_color"
-            app:mrl_rippleDelayClick="true"
-            app:mrl_rippleHover="true"
-            app:mrl_rippleOverlay="true" >
+            style="@style/MaterialRippleLayout"  >
 
 
             <LinearLayout

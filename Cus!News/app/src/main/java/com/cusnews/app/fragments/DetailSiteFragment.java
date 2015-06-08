@@ -7,9 +7,11 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -19,6 +21,8 @@ import com.cusnews.BR;
 import com.cusnews.R;
 import com.cusnews.app.App;
 import com.cusnews.databinding.DetailSiteBinding;
+import com.cusnews.widgets.WebViewEx.OnWebViewExScrolledListener;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 /**
  * Show basic information of a news.
@@ -39,10 +43,6 @@ public final class DetailSiteFragment extends CusNewsFragment {
 	 * Height of action-bar general.
 	 */
 	private int mActionBarHeight;
-	/**
-	 * The {@link WebView}.
-	 */
-	private WebView mWebView;
 	/**
 	 * Initialize an {@link  DetailSiteFragment}.
 	 *
@@ -75,13 +75,12 @@ public final class DetailSiteFragment extends CusNewsFragment {
 		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				mWebView.reload();
+				mBinding.detailWv.reload();
 			}
 		});
 
 		//Init webview
-		mWebView = (WebView) view.findViewById(R.id.detail_wv);
-		WebSettings settings = mWebView.getSettings();
+		WebSettings settings = mBinding.detailWv.getSettings();
 		settings.setLoadWithOverviewMode(true);
 		settings.setJavaScriptEnabled(true);
 		settings.setLoadsImagesAutomatically(true);
@@ -89,7 +88,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 		settings.setSupportZoom(true);
 		settings.setBuiltInZoomControls(false);
 		settings.setDomStorageEnabled(true);
-		mWebView.setWebViewClient(new WebViewClient() {
+		mBinding.detailWv.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
 				mBinding.contentSrl.setRefreshing(true);
@@ -106,6 +105,46 @@ public final class DetailSiteFragment extends CusNewsFragment {
 				return true;
 			}
 		});
+
+
+
+		//Init web-nav.
+		mBinding.backwardBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(mBinding.detailWv.canGoBack()) {
+					mBinding.detailWv.goBack();
+				}
+			}
+		});
+		mBinding.forwardBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(mBinding.detailWv.canGoForward()) {
+					mBinding.detailWv.goForward();
+				}
+			}
+		});
+		ViewCompat.setElevation(mBinding.forwardBtn, getResources().getDimensionPixelSize(R.dimen.common_elevation));
+		ViewCompat.setElevation(mBinding.backwardBtn, getResources().getDimensionPixelSize(R.dimen.common_elevation));
+		mBinding.detailWv.setOnWebViewExScrolledListener(new OnWebViewExScrolledListener() {
+			@Override
+			public void onScrollChanged(boolean isUp) {
+				if (!isUp) {
+					ViewPropertyAnimator.animate(mBinding.forwardBtn).scaleX(1).scaleY(1).setDuration(200).start();
+					ViewPropertyAnimator.animate(mBinding.backwardBtn).scaleX(1).scaleY(1).setDuration(200).start();
+				} else  {
+					ViewPropertyAnimator.animate(mBinding.forwardBtn).scaleX(0).scaleY(0).setDuration(200).start();
+					ViewPropertyAnimator.animate(mBinding.backwardBtn).scaleX(0).scaleY(0).setDuration(200).start();
+				}
+			}
+
+			@Override
+			public void onScrolledTop() {
+
+			}
+		});
+
 	}
 
 	/**
