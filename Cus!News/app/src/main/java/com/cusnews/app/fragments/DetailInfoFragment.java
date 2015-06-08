@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.cusnews.BR;
 import com.cusnews.R;
-import com.cusnews.app.App;
+import com.cusnews.ds.Entry;
 
 /**
  * Show basic information of a news.
@@ -19,6 +19,7 @@ import com.cusnews.app.App;
  * @author Xinyue Zhao
  */
 public final class DetailInfoFragment extends CusNewsFragment {
+	private static final String EXTRAS_ENTRY = DetailInfoFragment.class.getName() + ".EXTRAS.entry";
 	/**
 	 * Main layout for this component.
 	 */
@@ -29,16 +30,21 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	 */
 	private ViewDataBinding mBinding;
 
+
 	/**
 	 * Initialize an {@link  DetailInfoFragment}.
 	 *
 	 * @param context
 	 * 		A {@link Context} object.
+	 * @param entry
+	 * 		A news {@link Entry}.
 	 *
 	 * @return An instance of {@link DetailInfoFragment}.
 	 */
-	public static DetailInfoFragment newInstance(Context context) {
-		return (DetailInfoFragment) Fragment.instantiate(context, DetailInfoFragment.class.getName());
+	public static DetailInfoFragment newInstance(Context context, Entry entry) {
+		Bundle args = new Bundle();
+		args.putSerializable(EXTRAS_ENTRY, entry);
+		return (DetailInfoFragment) Fragment.instantiate(context, DetailInfoFragment.class.getName(), args);
 	}
 
 	@Override
@@ -50,6 +56,6 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mBinding = DataBindingUtil.bind(view);
-		mBinding.setVariable(BR.entry, App.Instance.getOpenedEntry());
+		mBinding.setVariable(BR.entry, getArguments().getSerializable(EXTRAS_ENTRY));
 	}
 }

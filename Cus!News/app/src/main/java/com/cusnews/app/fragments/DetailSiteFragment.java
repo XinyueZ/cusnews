@@ -19,8 +19,8 @@ import android.webkit.WebViewClient;
 
 import com.cusnews.BR;
 import com.cusnews.R;
-import com.cusnews.app.App;
 import com.cusnews.databinding.DetailSiteBinding;
+import com.cusnews.ds.Entry;
 import com.cusnews.widgets.WebViewEx.OnWebViewExScrolledListener;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -30,6 +30,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
  * @author Xinyue Zhao
  */
 public final class DetailSiteFragment extends CusNewsFragment {
+	private static final String EXTRAS_ENTRY = DetailInfoFragment.class.getName() + ".EXTRAS.entry";
 	/**
 	 * Main layout for this component.
 	 */
@@ -43,16 +44,21 @@ public final class DetailSiteFragment extends CusNewsFragment {
 	 * Height of action-bar general.
 	 */
 	private int mActionBarHeight;
+
 	/**
 	 * Initialize an {@link  DetailSiteFragment}.
 	 *
 	 * @param context
 	 * 		A {@link Context} object.
+	 * @param entry
+	 * 		A news {@link Entry}.
 	 *
-	 * @return An instance of {@link DetailSiteFragment}.
+	 * @return An instance of {@link DetailInfoFragment}.
 	 */
-	public static DetailSiteFragment newInstance(Context context) {
-		return (DetailSiteFragment) Fragment.instantiate(context, DetailSiteFragment.class.getName());
+	public static DetailSiteFragment newInstance(Context context, Entry entry) {
+		Bundle args = new Bundle();
+		args.putSerializable(EXTRAS_ENTRY, entry);
+		return (DetailSiteFragment) Fragment.instantiate(context, DetailSiteFragment.class.getName(), args);
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mBinding = DataBindingUtil.bind(view);
-		mBinding.setVariable(BR.entry, App.Instance.getOpenedEntry());
+		mBinding.setVariable(BR.entry, getArguments().getSerializable(EXTRAS_ENTRY));
 
 		//Init pull2load
 		mBinding.contentSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
@@ -107,12 +113,11 @@ public final class DetailSiteFragment extends CusNewsFragment {
 		});
 
 
-
 		//Init web-nav.
 		mBinding.backwardBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(mBinding.detailWv.canGoBack()) {
+				if (mBinding.detailWv.canGoBack()) {
 					mBinding.detailWv.goBack();
 				}
 			}
@@ -120,7 +125,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 		mBinding.forwardBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(mBinding.detailWv.canGoForward()) {
+				if (mBinding.detailWv.canGoForward()) {
 					mBinding.detailWv.goForward();
 				}
 			}
@@ -133,7 +138,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 				if (!isUp) {
 					ViewPropertyAnimator.animate(mBinding.forwardBtn).scaleX(1).scaleY(1).setDuration(200).start();
 					ViewPropertyAnimator.animate(mBinding.backwardBtn).scaleX(1).scaleY(1).setDuration(200).start();
-				} else  {
+				} else {
 					ViewPropertyAnimator.animate(mBinding.forwardBtn).scaleX(0).scaleY(0).setDuration(200).start();
 					ViewPropertyAnimator.animate(mBinding.backwardBtn).scaleX(0).scaleY(0).setDuration(200).start();
 				}

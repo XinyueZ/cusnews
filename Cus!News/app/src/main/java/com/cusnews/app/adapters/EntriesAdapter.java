@@ -1,10 +1,10 @@
 package com.cusnews.app.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableArrayList;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +42,7 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 */
 	public EntriesAdapter(@LayoutRes int layoutResId) {
-		setData(new ObservableArrayList<Entry>());
+		setData(new ArrayList<Entry>());
 		mLayoutResId = layoutResId;
 	}
 

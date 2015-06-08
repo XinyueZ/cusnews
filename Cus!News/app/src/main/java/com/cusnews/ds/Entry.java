@@ -1,13 +1,12 @@
 package com.cusnews.ds;
 
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
+import java.io.Serializable;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Entry extends BaseObservable  {
+public final class Entry   implements Serializable {
 	@SerializedName("title")
 	private final String mTitle;
 	@SerializedName("kwic")
@@ -29,11 +28,10 @@ public final class Entry extends BaseObservable  {
 	@SerializedName("date")
 	private final long mDate;
 	@SerializedName("related")
-	@Bindable
-	private final ObservableArrayList<Entry> mRelated;
+	private final List<Entry> mRelated;
 
 	public Entry(String title, String kwic, String content, String url, String imageUrl, String domain, String author,
-			boolean news, String votes, long date, ObservableArrayList<Entry> related) {
+			boolean news, String votes, long date, List<Entry> related) {
 		mTitle = title;
 		mKwic = kwic;
 		mContent = content;
@@ -87,7 +85,7 @@ public final class Entry extends BaseObservable  {
 		return mDate;
 	}
 
-	public ObservableArrayList<Entry> getRelated() {
+	public List<Entry> getRelated() {
 		return mRelated;
 	}
 

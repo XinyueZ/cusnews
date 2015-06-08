@@ -125,8 +125,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
 	 */
 	public void onEvent(OpenEntryEvent e) {
-		App.Instance.setOpenedEntry(e.getEntry());
-		DetailActivity.showInstance(this );
+		DetailActivity.showInstance(this, e.getEntry() );
 	}
 	//------------------------------------------------
 

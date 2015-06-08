@@ -3,13 +3,9 @@ package com.cusnews.ds;
 
 import java.util.List;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
-
 import com.google.gson.annotations.SerializedName;
 
-public final class Entries  extends BaseObservable {
+public final class Entries   {
 	@SerializedName("query")
 	private final String mQuery;
 	@SerializedName("suggestions")
@@ -23,11 +19,10 @@ public final class Entries  extends BaseObservable {
 	@SerializedName("time")
 	private final String mTime;
 	@SerializedName("results")
-	@Bindable
-	private final ObservableArrayList<Entry> mList;
+	private final List<Entry> mList;
 
 	public Entries(String query, List<String> suggestions, int count, int start, int length, String time,
-			ObservableArrayList<Entry> list) {
+			List<Entry> list) {
 		mQuery = query;
 		mSuggestions = suggestions;
 		mCount = count;
@@ -61,7 +56,7 @@ public final class Entries  extends BaseObservable {
 		return mTime;
 	}
 
-	public ObservableArrayList<Entry> getList() {
+	public List<Entry> getList() {
 		return mList;
 	}
 }
