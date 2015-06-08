@@ -8,9 +8,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,6 +83,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	private SearchView mSearchView;
 
+	private DrawerLayout mDrawerLayout;
 	/**
 	 * Calculate height of actionbar.
 	 */
@@ -195,11 +199,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init actionbar.
 		setSupportActionBar(mBinding.toolbar);
-		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		//		((CoordinatorLayout.LayoutParams)mBinding.fab.getLayoutParams()).setBehavior(new FloatingActionButton.Behavior());
-
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		if (navigationView != null) {
+			setupDrawerContent(navigationView);
+		}
 		getData();
 	}
 
@@ -295,6 +301,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			mDrawerLayout.openDrawer(GravityCompat.START);
+			return true;
 		case R.id.action_to_top:
 			if (mBinding.getEntriesAdapter() != null && mBinding.getEntriesAdapter().getItemCount() > 0) {
 				mLayoutManager.scrollToPositionWithOffset(0, 0);
@@ -366,5 +375,18 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (mSearchView != null) {
 			mSearchView.clearFocus();
 		}
+	}
+
+
+	private void setupDrawerContent(NavigationView navigationView) {
+		navigationView.setNavigationItemSelectedListener(
+				new NavigationView.OnNavigationItemSelectedListener() {
+					@Override
+					public boolean onNavigationItemSelected(MenuItem menuItem) {
+						menuItem.setChecked(true);
+						mDrawerLayout.closeDrawers();
+						return true;
+					}
+				});
 	}
 }

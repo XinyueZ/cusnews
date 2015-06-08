@@ -2,7 +2,6 @@ package com.cusnews.app.fragments;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.cusnews.BR;
 import com.cusnews.R;
+import com.cusnews.databinding.DetailInfoBinding;
 import com.cusnews.ds.Entry;
 
 /**
@@ -28,7 +28,7 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	/**
 	 * Data-binding.
 	 */
-	private ViewDataBinding mBinding;
+	private DetailInfoBinding mBinding;
 
 
 	/**

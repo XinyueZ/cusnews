@@ -10,11 +10,11 @@
             type="com.cusnews.app.adapters.EntriesAdapter" />
     </data>
 
-    <FrameLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/windowBackground"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_cl"
@@ -24,13 +24,18 @@
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
-                    style="@style/ActionBar_ToolBar"
-                    app:layout_scrollFlags="scroll|enterAlways" />
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    android:elevation="@dimen/common_elevation"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
             </android.support.design.widget.AppBarLayout>
@@ -38,15 +43,15 @@
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/content_srl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/entries_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbars="none"
-                    app:entriesAdapter="@{entriesAdapter}"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    app:entriesAdapter="@{entriesAdapter}" />
             </android.support.v4.widget.SwipeRefreshLayout>
 
             <com.software.shell.fab.ActionButton
@@ -65,5 +70,12 @@
         </android.support.design.widget.CoordinatorLayout>
 
 
-    </FrameLayout>
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/drawer_view" />
+    </android.support.v4.widget.DrawerLayout>
 </layout>
