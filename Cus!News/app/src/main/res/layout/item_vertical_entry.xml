@@ -56,11 +56,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|start"
-                        android:layout_marginBottom="22sp"
                         android:ellipsize="end"
-                        android:lines="3"
-                        android:maxLines="3"
-                        android:minLines="3"
+                        android:lines="2"
+                        android:maxLines="2"
+                        android:minLines="2"
                         android:text="@{entry.title}" />
 
                     <com.cusnews.widgets.FontTextView
@@ -70,9 +69,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="top|start"
                         android:ellipsize="end"
-                        android:lines="3"
-                        android:maxLines="3"
-                        android:minLines="3"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:minLines="1"
                         android:text="@{entry.kwic}" />
 
 
