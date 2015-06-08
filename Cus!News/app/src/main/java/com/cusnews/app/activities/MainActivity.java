@@ -132,9 +132,12 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 
 
 		mBinding = DataBindingUtil.setContentView(MainActivity.this, LAYOUT);
-		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
-		mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
 
+		//Init adapter
+		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
+
+		//Init recycleview.
+		mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
 		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -168,7 +171,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 
 		});
 
-
+		//Init pull2load
 		mBinding.contentSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
 		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -186,9 +189,12 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 			}
 		});
 
+		//Init actionbar.
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//		((CoordinatorLayout.LayoutParams)mBinding.fab.getLayoutParams()).setBehavior(new FloatingActionButton.Behavior());
 
 		getData();
 	}
@@ -215,7 +221,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 					if (entries.getStart() > entries.getCount()) {
 						mIsBottom = true;
 						Snackbar
-								.make(mBinding.snackbarPosition, R.string.lbl_no_data, Snackbar.LENGTH_LONG)
+								.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG)
 								.show();
 					}
 
@@ -228,7 +234,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 						mStart -= 10;
 					}
 					Snackbar
-							.make(mBinding.snackbarPosition, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
+							.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
 							.setAction(R.string.lbl_retry, new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -282,7 +288,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 	 */
 	private void doSearch() {
 		mStart = 1;
-		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
+		mBinding.getEntriesAdapter().getData().clear();
 		getData();
 	}
 
