@@ -7,7 +7,7 @@ import android.databinding.ObservableArrayList;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Entry extends BaseObservable {
+public final class Entry extends BaseObservable  {
 	@SerializedName("title")
 	private final String mTitle;
 	@SerializedName("kwic")
@@ -90,5 +90,6 @@ public final class Entry extends BaseObservable {
 	public ObservableArrayList<Entry> getRelated() {
 		return mRelated;
 	}
+
 
 }

@@ -38,6 +38,7 @@ import java.util.Properties;
 import android.app.Application;
 
 import com.cusnews.api.Api;
+import com.cusnews.ds.Entry;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 /**
@@ -86,6 +87,10 @@ public final class App extends Application {
     }
 
     ///-----
+    /**
+     * The {@link Entry} that will be opened to user for detail.
+     */
+    private Entry mOpenedEntry;
 
     @Override
 	public void onCreate() {
@@ -124,5 +129,21 @@ public final class App extends Application {
      */
     public String getApiKey() {
         return mApiKey;
+    }
+
+    /**
+     *
+     * @return  The {@link Entry} that will be opened to user for detail.
+     */
+    public Entry getOpenedEntry() {
+        return mOpenedEntry;
+    }
+
+    /**
+     * Set  the {@link Entry} that will be opened to user for detail.
+     * @param openedEntry {@link Entry}
+     */
+    public void setOpenedEntry(Entry openedEntry) {
+        mOpenedEntry = openedEntry;
     }
 }

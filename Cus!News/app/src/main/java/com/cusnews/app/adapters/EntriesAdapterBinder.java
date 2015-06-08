@@ -11,16 +11,19 @@ import com.squareup.picasso.Picasso;
 public final class EntriesAdapterBinder {
 
 
+
+
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("entriesAdapter")
-	public static void setEntriesBinder(RecyclerView recyclerView, EntriesAdapter adp) {
+	public static void setEntriesBinder(RecyclerView recyclerView, RecyclerView.Adapter adp) {
 		recyclerView.setAdapter(adp);
 	}
 
 
+
 	//@BindingAdapter({ "bind:imageUrl", "bind:error" })
 	//public static void loadImage(ImageView view, String url, Drawable error) {
-	@BindingAdapter({ "bind:imageUrl" })
+	@BindingAdapter({ "imageUrl" })
 	public static void loadImage(ImageView view, String url) {
 		if (TextUtils.isEmpty(url)) {
 			url = "http://www.faroo.com/hp/api/faroo_attribution.png";

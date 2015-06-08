@@ -6,13 +6,13 @@
     <data>
 
         <import type="com.cusnews.ds.Entry" />
-
         <import type="android.text.format.DateUtils" />
         <!--DateUtils.formatDateTime(cxt, timestamps, FORMAT_SHOW_YEAR | FORMAT_SHOW_DATE | FORMAT_ABBREV_MONTH)-->
 
         <variable
             name="entry"
             type="Entry" />
+
     </data>
 
     <android.support.v7.widget.CardView

@@ -29,6 +29,7 @@ import com.cusnews.app.App;
 import com.cusnews.app.SearchSuggestionProvider;
 import com.cusnews.app.adapters.EntriesAdapter;
 import com.cusnews.bus.ChangeViewTypeEvent;
+import com.cusnews.bus.OpenEntryEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
 
@@ -37,7 +38,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends CusNewsActivity implements  SearchView.OnQueryTextListener{
+public class MainActivity extends CusNewsActivity implements SearchView.OnQueryTextListener {
 	/**
 	 * Main layout for this component.
 	 */
@@ -69,7 +70,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 	/**
 	 * Keyword that will be searched.
 	 */
-	private String mKeyword ="";
+	private String mKeyword = "";
 	/**
 	 * Suggestion list while tipping.
 	 */
@@ -100,7 +101,6 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 	private boolean mLoading = true;
 
 
-
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
@@ -117,6 +117,17 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 		mBinding.setEntriesAdapter(newAdp);
 	}
 
+
+	/**
+	 * Handler for {@link com.cusnews.bus.OpenEntryEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
+	 */
+	public void onEvent(OpenEntryEvent e) {
+		App.Instance.setOpenedEntry(e.getEntry());
+		DetailActivity.showInstance(this );
+	}
 	//------------------------------------------------
 
 	@Override
@@ -131,7 +142,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 				SearchSuggestionProvider.MODE);
 
 
-		mBinding = DataBindingUtil.setContentView(MainActivity.this, LAYOUT);
+		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 
 		//Init adapter
 		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
@@ -142,12 +153,12 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				float y = ViewCompat.getY(recyclerView);
-				if (y < dy ) {
-					if(!mBinding.fab.isHidden()) {
+				if (y < dy) {
+					if (!mBinding.fab.isHidden()) {
 						mBinding.fab.hide();
 					}
 				} else {
-					if(mBinding.fab.isHidden()) {
+					if (mBinding.fab.isHidden()) {
 						mBinding.fab.show();
 					}
 				}
@@ -173,12 +184,6 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 
 		//Init pull2load
 		mBinding.contentSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
-		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh() {
-				getData();
-			}
-		});
 		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
 		mBinding.contentSrl.setProgressViewOffset(false, 0, mActionBarHeight * 2);
 		mBinding.contentSrl.setRefreshing(true);
@@ -194,7 +199,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//		((CoordinatorLayout.LayoutParams)mBinding.fab.getLayoutParams()).setBehavior(new FloatingActionButton.Behavior());
+		//		((CoordinatorLayout.LayoutParams)mBinding.fab.getLayoutParams()).setBehavior(new FloatingActionButton.Behavior());
 
 		getData();
 	}
@@ -220,9 +225,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 					//Arrive bottom?
 					if (entries.getStart() > entries.getCount()) {
 						mIsBottom = true;
-						Snackbar
-								.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG)
-								.show();
+						Snackbar.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG).show();
 					}
 
 					App.Instance.setLastTimeSearched(mKeyword);
@@ -233,15 +236,13 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 					if (mStart > 10) {
 						mStart -= 10;
 					}
-					Snackbar
-							.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
-							.setAction(R.string.lbl_retry, new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									getData();
-								}
-							})
-							.show();
+					Snackbar.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
+							R.string.lbl_retry, new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							getData();
+						}
+					}).show();
 
 					//Finish loading
 					mBinding.contentSrl.setRefreshing(false);
@@ -267,7 +268,7 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
-				mKeyword="";
+				mKeyword = "";
 				doSearch();
 				return true;
 			}
@@ -313,7 +314,6 @@ public class MainActivity extends CusNewsActivity implements  SearchView.OnQuery
 	 */
 	public void onActionButtonClick(View view) {
 	}
-
 
 
 	@Override
