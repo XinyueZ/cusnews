@@ -51,7 +51,6 @@
                     android:paddingRight="@dimen/activity_horizontal_margin">
 
                     <com.cusnews.widgets.FontTextView
-                        android:id="@+id/headline_tv"
                         style="@style/Text.Bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -63,7 +62,6 @@
                         android:text="@{entry.title}" />
 
                     <com.cusnews.widgets.FontTextView
-                        android:id="@+id/headline_tv"
                         style="@style/Text.Normal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
