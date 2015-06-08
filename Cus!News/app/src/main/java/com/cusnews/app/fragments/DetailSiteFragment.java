@@ -1,5 +1,6 @@
 package com.cusnews.app.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
@@ -60,6 +61,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 		return inflater.inflate(LAYOUT, container, false);
 	}
 
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
