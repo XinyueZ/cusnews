@@ -82,8 +82,15 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * The search.
 	 */
 	private SearchView mSearchView;
-
+	/**
+	 * Drawer
+	 */
 	private DrawerLayout mDrawerLayout;
+	/**
+	 * Different type: News: news, Search: web, Topics: topics.
+	 */
+	private String mSrc = "news";
+
 	/**
 	 * Calculate height of actionbar.
 	 */
@@ -129,7 +136,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
 	 */
 	public void onEvent(OpenEntryEvent e) {
-		DetailActivity.showInstance(this, e.getEntry() );
+		DetailActivity.showInstance(this, e.getEntry());
 	}
 	//------------------------------------------------
 
@@ -216,7 +223,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (!mInProgress) {
 			mBinding.contentSrl.setRefreshing(true);
 			mInProgress = true;
-			Api.getEntries(mKeyword, mStart, "en", App.Instance.getApiKey(), new Callback<Entries>() {
+			Api.getEntries(mKeyword, mStart, "en", mSrc, App.Instance.getApiKey(), new Callback<Entries>() {
 				@Override
 				public void success(Entries entries, Response response) {
 
@@ -229,8 +236,18 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 					//Arrive bottom?
 					if (entries.getStart() > entries.getCount()) {
-						mIsBottom = true;
-						Snackbar.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG).show();
+						if(TextUtils.equals(mSrc, "web")) {
+							mIsBottom = true;
+							Snackbar.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG).show();
+							//For next
+							mSrc = "news";
+						} else {
+							mIsBottom = false;
+							mSrc = "web";
+							Snackbar.make(mBinding.mainCl, R.string.lbl_search_more, Snackbar.LENGTH_LONG).show();
+							mStart = 1;
+							getData();
+						}
 					}
 
 					App.Instance.setLastTimeSearched(mKeyword);
@@ -243,11 +260,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					}
 					Snackbar.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
 							R.string.lbl_retry, new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							getData();
-						}
-					}).show();
+								@Override
+								public void onClick(View v) {
+									getData();
+								}
+							}).show();
 
 					//Finish loading
 					mBinding.contentSrl.setRefreshing(false);
@@ -293,8 +310,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Start searching.
 	 */
 	private void doSearch() {
+		mIsBottom = false;
 		mStart = 1;
 		mBinding.getEntriesAdapter().getData().clear();
+		mSrc = "news";
 		getData();
 	}
 
@@ -379,14 +398,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 
 	private void setupDrawerContent(NavigationView navigationView) {
-		navigationView.setNavigationItemSelectedListener(
-				new NavigationView.OnNavigationItemSelectedListener() {
-					@Override
-					public boolean onNavigationItemSelected(MenuItem menuItem) {
-						menuItem.setChecked(true);
-						mDrawerLayout.closeDrawers();
-						return true;
-					}
-				});
+		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(MenuItem menuItem) {
+				menuItem.setChecked(true);
+				mDrawerLayout.closeDrawers();
+				return true;
+			}
+		});
 	}
 }

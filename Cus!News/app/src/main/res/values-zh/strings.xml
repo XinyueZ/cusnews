@@ -4,6 +4,7 @@
     <string name="lbl_retry">再试</string>
     <string name="lbl_loading_error">提取数据出错!</string>
     <string name="lbl_no_data">无更多的数据！</string>
+    <string name="lbl_search_more">更多搜索！</string>
 
     <string name="action_settings">设置</string>
     <string name="action_view_type">视图</string>

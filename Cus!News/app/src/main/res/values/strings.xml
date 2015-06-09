@@ -4,6 +4,7 @@
     <string name="lbl_retry">Retry</string>
     <string name="lbl_loading_error">Loading error!</string>
     <string name="lbl_no_data">No more data!</string>
+    <string name="lbl_search_more">Search more on web!</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 

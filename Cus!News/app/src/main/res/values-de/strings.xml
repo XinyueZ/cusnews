@@ -4,6 +4,7 @@
     <string name="lbl_retry">Wiederholen</string>
     <string name="lbl_loading_error">Fehler bei der Ladung!</string>
     <string name="lbl_no_data">Keine mehr Daten!</string>
+    <string name="lbl_search_more">Suche mehr auf Internet!</string>
 
     <string name="action_settings">Einstellungen</string>
     <string name="action_view_type">Ansicht</string>

@@ -128,34 +128,54 @@ public final class Api {
 	static private interface S {
 		/**
 		 * API method to get all news-entries.
-		 * @param query The keyword to query.
-		 * @param start Page.
-		 * @param lang Language.
-		 * @param key The API-key.
-		 * @param callback The callback after getting feeds.
+		 *
+		 * @param query
+		 * 		The keyword to query.
+		 * @param start
+		 * 		Page.
+		 * @param lang
+		 * 		Language.
+		 * @param src
+		 * 		Different type: News: news, Search: web, Topics: topics
+		 * @param key
+		 * 		The API-key.
+		 * @param callback
+		 * 		The callback after getting feeds.
 		 */
-		@GET("/api?length=10&src=news&f=json&c=true")
+		@GET("/api?length=10&f=json&c=true")
 		void getEntries(
 				@Query("q") String  query,
 				@Query("start") int  start,
 				@Query("l") String  lang,
+				@Query("src") String  src,
 				@Query(value = "key" , encodeName = false, encodeValue=false) String  key,
 				Callback<Entries> callback);
+
+
 
 	}
 
 	/**
 	 * API method to get all news-entries.
-	 * @param query The keyword to query.
-	 * @param start Page.
-	 * @param lang Language: en(English), de(German), zh(Chinese), the default is en.
-	 * @param key The API-key.
-	 * @param callback The callback after getting feeds.
+	 *
+	 * @param query
+	 * 		The keyword to query.
+	 * @param start
+	 * 		Page.
+	 * @param lang
+	 * 		Language: en(English), de(German), zh(Chinese), the default is en.
+	 * @param src
+	 * 		Different type: News: news, Search: web, Topics: topics
+	 * @param key
+	 * 		The API-key.
+	 * @param callback
+	 * 		The callback after getting feeds.
 	 */
 	public static final void getEntries(
 		  String  query,
 	      int  start,
 		  String  lang,
+			String  src,
 		  String  key,
 		  Callback<Entries> callback){
 		assertCall();
@@ -171,9 +191,12 @@ public final class Api {
 				  query,
 				  start,
 				  lang,
+				  src,
 				  key,
 				  callback);
 	}
+
+
 
 	/**
 	 * Assert before calling api.
