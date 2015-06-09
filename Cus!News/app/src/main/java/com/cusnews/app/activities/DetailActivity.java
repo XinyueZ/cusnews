@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v4.view.ViewCompat;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cusnews.R;
+import com.cusnews.app.App;
 import com.cusnews.app.adapters.DetailPagerAdapter;
 import com.cusnews.databinding.ActivityDetailBinding;
 import com.cusnews.ds.Entry;
@@ -60,11 +63,13 @@ public final class DetailActivity extends CusNewsActivity   {
 		//Init actionbar
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 		mBinding.collapsingToolbar.setTitle(entry.getDomain());
 
 		//Init ImageView
 		ViewCompat.setElevation(mBinding.thumbIv, getResources().getDimensionPixelSize(R.dimen.common_elevation));
+		DisplayMetrics metrics = new DisplayMetrics();
+		DisplayManagerCompat.getInstance(App.Instance).getDisplay(0).getMetrics(metrics);
+		mBinding.thumbIv.getLayoutParams().height = metrics.heightPixels / 2;
 
 	}
 

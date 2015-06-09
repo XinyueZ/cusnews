@@ -71,7 +71,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mBinding = DataBindingUtil.bind(view);
+		mBinding = DataBindingUtil.bind(view.findViewById(R.id.site_fl));
 		mBinding.setVariable(BR.entry, getArguments().getSerializable(EXTRAS_ENTRY));
 
 		//Init pull2load
@@ -130,8 +130,8 @@ public final class DetailSiteFragment extends CusNewsFragment {
 				}
 			}
 		});
-		ViewCompat.setElevation(mBinding.forwardBtn, getResources().getDimensionPixelSize(R.dimen.common_elevation));
-		ViewCompat.setElevation(mBinding.backwardBtn, getResources().getDimensionPixelSize(R.dimen.common_elevation));
+		ViewCompat.setElevation(mBinding.forwardBtn, getResources().getDimensionPixelSize(R.dimen.common_high_elevation));
+		ViewCompat.setElevation(mBinding.backwardBtn, getResources().getDimensionPixelSize(R.dimen.common_high_elevation));
 		mBinding.detailWv.setOnWebViewExScrolledListener(new OnWebViewExScrolledListener() {
 			@Override
 			public void onScrollChanged(boolean isUp) {

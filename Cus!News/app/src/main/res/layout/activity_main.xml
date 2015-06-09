@@ -19,24 +19,18 @@
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_cl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
+                android:layout_height="wrap_content" >
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/colorPrimary"
-                    android:elevation="@dimen/common_elevation"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
+                    style="@style/ActionBar_ToolBar"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
 
             </android.support.design.widget.AppBarLayout>
 
@@ -64,7 +58,7 @@
                 app:image="@drawable/fab_plus_icon"
                 app:rippleEffect_enabled="true"
                 app:shadowResponsiveEffect_enabled="true"
-                app:shadow_radius="10dp"
+                app:shadow_radius="@dimen/common_high_elevation"
                 app:show_animation="@anim/fab_jump_from_down"
                 app:type="DEFAULT" />
         </android.support.design.widget.CoordinatorLayout>

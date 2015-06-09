@@ -2,6 +2,7 @@ package com.cusnews.app.fragments;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,10 +26,6 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	 */
 	private static final int LAYOUT = R.layout.fragment_detail_info;
 
-	/**
-	 * Data-binding.
-	 */
-	private DetailInfoBinding mBinding;
 
 
 	/**
@@ -55,7 +52,7 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mBinding = DataBindingUtil.bind(view);
-		mBinding.setVariable(BR.entry, getArguments().getSerializable(EXTRAS_ENTRY));
+		ViewDataBinding binding = DataBindingUtil.bind(view.findViewById(R.id.inf_nsv));
+		binding.setVariable(BR.entry, getArguments().getSerializable(EXTRAS_ENTRY));
 	}
 }
