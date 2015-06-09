@@ -333,14 +333,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 
-	/**
-	 * Add new label.
-	 *
-	 * @param view
-	 * 		No usage.
-	 */
-	public void onActionButtonClick(View view) {
-	}
 
 
 	@Override

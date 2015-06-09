@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -28,9 +30,13 @@ public final class DetailPagerAdapterBinder {
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("entryContent")
 	public static void setDetailSiteUrl(TextView tv,  Entry entry) {
-		Context cxt = tv.getContext();
-		Spanned htmlSpan = Html.fromHtml(entry.getContent(), new URLImageParser(cxt, tv),
-				null);
-		tv.setText(htmlSpan);
+		if(!TextUtils.isEmpty(entry.getContent())) {
+			tv.setVisibility(View.VISIBLE);
+			Context cxt = tv.getContext();
+			Spanned htmlSpan = Html.fromHtml(entry.getContent(), new URLImageParser(cxt, tv), null);
+			tv.setText(htmlSpan);
+		} else {
+			tv.setVisibility(View.GONE);
+		}
 	}
 }
