@@ -7,4 +7,5 @@
     <dimen name="common_padding">5dp</dimen>
     <dimen name="common_elevation">5dp</dimen>
     <dimen name="common_high_elevation">10dp</dimen>
+    <dimen name="msg_net_icon_size">100dp</dimen>
 </resources>

@@ -134,7 +134,7 @@ public final class Api {
 		 * @param key The API-key.
 		 * @param callback The callback after getting feeds.
 		 */
-		@GET("/api?length=10&src=news&f=json")
+		@GET("/api?length=10&src=news&f=json&c=true")
 		void getEntries(
 				@Query("q") String  query,
 				@Query("start") int  start,
