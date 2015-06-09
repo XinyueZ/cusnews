@@ -31,6 +31,10 @@
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
 
+    <style name="Text.Normal.Link">
+        <item name="android:textColor">?colorPrimaryDark</item>
+    </style>
+
     <style name="Text.Normal.Large">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
@@ -68,6 +72,15 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="cardCornerRadius">0dp</item>
     </style>
+
+    <style name="BoxCardView">
+        <item name="contentPadding">0dp</item>
+        <item name="cardElevation">5dp</item>
+        <item name="cardMaxElevation">8dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardCornerRadius">0dp</item>
+    </style>
+
 
     <style name="MaterialRippleLayout">
 

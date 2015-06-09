@@ -136,7 +136,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
 	 */
 	public void onEvent(OpenEntryEvent e) {
-		DetailActivity.showInstance(this, e.getEntry());
+		DetailActivity.showInstance(this, e.getEntry(), mKeyword);
 	}
 	//------------------------------------------------
 
@@ -223,7 +223,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (!mInProgress) {
 			mBinding.contentSrl.setRefreshing(true);
 			mInProgress = true;
-			Api.getEntries(mKeyword, mStart, "en", mSrc, App.Instance.getApiKey(), new Callback<Entries>() {
+			Api.getEntries(mKeyword, mStart, App.Instance.getLanguage(), mSrc, App.Instance.getApiKey(), new Callback<Entries>() {
 				@Override
 				public void success(Entries entries, Response response) {
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v4.view.ViewCompat;
@@ -25,6 +26,7 @@ import com.cusnews.ds.Entry;
  * @author Xinyue Zhao
  */
 public final class DetailActivity extends CusNewsActivity   {
+	private static final String EXTRAS_QUERY = DetailActivity.class.getName() + ".EXTRAS.query";
 	private static final String EXTRAS_ENTRY = DetailActivity.class.getName() + ".EXTRAS.entry";
 	/**
 	 * Main layout for this component.
@@ -42,11 +44,14 @@ public final class DetailActivity extends CusNewsActivity   {
 	 * 		{@link Context}.
 	 * @param entry
 	 * 		A news {@link Entry}.
+	 * 	@param query
+	 * 	The query to the {@code entry}.
 	 */
-	public static void showInstance(Context cxt, Entry entry) {
+	public static void showInstance(Context cxt, Entry entry, @Nullable String query) {
 		Intent intent = new Intent(cxt, DetailActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(EXTRAS_ENTRY, (Serializable) entry);
+		intent.putExtra(EXTRAS_QUERY, query == null ? "" :query);
 		cxt.startActivity(intent);
 	}
 
@@ -55,10 +60,11 @@ public final class DetailActivity extends CusNewsActivity   {
 		super.onCreate(savedInstanceState);
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		Entry entry = (Entry) getIntent().getSerializableExtra(EXTRAS_ENTRY);
+		String query = getIntent().getStringExtra(EXTRAS_QUERY);
 
 		//Init adapter
 		mBinding.setEntry(entry);
-		mBinding.setDetailPagerAdapter(new DetailPagerAdapter(this, getSupportFragmentManager(), entry));
+		mBinding.setDetailPagerAdapter(new DetailPagerAdapter(this, getSupportFragmentManager(), entry, query));
 
 		//Init actionbar
 		setSupportActionBar(mBinding.toolbar);

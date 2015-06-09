@@ -42,7 +42,6 @@
                     android:orientation="vertical">
 
                     <com.cusnews.widgets.FontTextView
-                        android:id="@+id/headline_tv"
                         style="@style/Text.Normal.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -66,7 +65,6 @@
 
 
                             <com.cusnews.widgets.FontTextView
-                                android:id="@+id/time_tv"
                                 style="@style/Text.Normal.Small"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

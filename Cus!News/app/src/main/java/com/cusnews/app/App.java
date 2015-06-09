@@ -1,4 +1,3 @@
-
 /*
                    _ooOoo_
                   o8888888o
@@ -46,85 +45,100 @@ import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
  * @author Xinyue Zhao
  */
 public final class App extends Application {
-	public  static App Instance;
-    /**
-     * Api-key.
-     */
-    private String mApiKey;
+	public static App Instance;
+	/**
+	 * Api-key.
+	 */
+	private String mApiKey;
 
-    ///-----
-    /**
-     * TODO
-     * Temp place to save view-types before {@link android.content.SharedPreferences} will be imported.
-     */
-    private ViewType mViewType = ViewType.VERTICAL;
-
-
-    public ViewType getViewType() {
-        return mViewType;
-    }
-
-    public void setViewType(ViewType viewType) {
-        mViewType = viewType;
-    }
-    ///-----
+	///-----
+	/**
+	 * TODO Temp place to save view-types before {@link android.content.SharedPreferences} will be imported.
+	 */
+	private ViewType mViewType = ViewType.VERTICAL;
 
 
-    ///-----
-    /**
-     * TODO
-     * The search-keyword last time.
-     */
-    private String mLastTimeSearched;
+	public ViewType getViewType() {
+		return mViewType;
+	}
 
-    public String getLastTimeSearched() {
-        return mLastTimeSearched;
-    }
-
-    public void setLastTimeSearched(String lastTimeSearched) {
-        mLastTimeSearched = lastTimeSearched;
-    }
-
-    ///-----
+	public void setViewType(ViewType viewType) {
+		mViewType = viewType;
+	}
+	///-----
 
 
-    @Override
+	///-----
+	/**
+	 * TODO The search-keyword last time.
+	 */
+	private String mLastTimeSearched;
+
+	public String getLastTimeSearched() {
+		return mLastTimeSearched;
+	}
+
+	public void setLastTimeSearched(String lastTimeSearched) {
+		mLastTimeSearched = lastTimeSearched;
+	}
+
+	///-----
+
+
+	///-----
+	/**
+	 * TODO The search language, default and first release is always English: en, late will be Chinese: zh and German:
+	 * de .
+	 */
+	private String mLanguage = "en";
+
+	public String getLanguage() {
+		return mLanguage;
+	}
+
+	public void setLanguage(String language) {
+		mLanguage = language;
+	}
+
+	///-----
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		Instance = this;
 
-        Properties prop = new Properties();
-        InputStream input = null;
-        String value = null;
-        try {
+		Properties prop = new Properties();
+		InputStream input = null;
+		String value = null;
+		try {
 			/*From "resources".*/
-            input = getClassLoader().getResourceAsStream("key.properties");
-            if (input != null) {
-                // load a properties file
-                prop.load(input);
-                mApiKey = prop.getProperty("appkey");
-            }
-        } catch (IOException ex) {
-            mApiKey = null;
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+			input = getClassLoader().getResourceAsStream("key.properties");
+			if (input != null) {
+				// load a properties file
+				prop.load(input);
+				mApiKey = prop.getProperty("appkey");
+			}
+		} catch (IOException ex) {
+			mApiKey = null;
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
-        Api.initialize(this, "http://www.faroo.com/");
+		Api.initialize(this, "http://www.faroo.com/");
 	}
 
-    /**
-     * Get the Api-key.
-     * @return Api-key.
-     */
-    public String getApiKey() {
-        return mApiKey;
-    }
+	/**
+	 * Get the Api-key.
+	 *
+	 * @return Api-key.
+	 */
+	public String getApiKey() {
+		return mApiKey;
+	}
 
 }

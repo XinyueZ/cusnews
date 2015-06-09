@@ -23,6 +23,10 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 	 * News {@link Entry}.
 	 */
 	private Entry mEntry;
+	/**
+	 * The query to the {@link #mEntry}.
+	 */
+	private String mQuery;
 
 	/**
 	 * Constructor of {@link DetailPagerAdapter}
@@ -33,11 +37,14 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 	 * 		{@link FragmentManager}.
 	 * @param entry
 	 * 		News {@link Entry}.
+	 * @param query
+	 * 		The query to the {@code entry}.
 	 */
-	public DetailPagerAdapter(Context cxt, FragmentManager fm, Entry entry) {
+	public DetailPagerAdapter(Context cxt, FragmentManager fm, Entry entry, String query) {
 		super(fm);
 		mContext = cxt;
 		mEntry = entry;
+		mQuery = query;
 	}
 
 
@@ -45,7 +52,7 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int position) {
 		switch (position) {
 		case 0:
-			return DetailInfoFragment.newInstance(mContext, mEntry);
+			return DetailInfoFragment.newInstance(mContext, mEntry, mQuery);
 		case 1:
 			return DetailSiteFragment.newInstance(mContext, mEntry);
 		}
