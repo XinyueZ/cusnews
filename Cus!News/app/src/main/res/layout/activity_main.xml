@@ -32,6 +32,10 @@
                     style="@style/ActionBar_ToolBar"
                     app:layout_scrollFlags="scroll|enterAlways"/>
 
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </android.support.design.widget.AppBarLayout>
 
             <android.support.v4.widget.SwipeRefreshLayout

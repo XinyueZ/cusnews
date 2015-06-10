@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.OnTabSelectedListener;
+import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
@@ -219,6 +222,36 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			setupDrawerContent(navigationView);
 		}
 		getData();
+
+		//Init tabs
+		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Home"));
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("China"));
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("USA"));
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Japan"));
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Germany"));
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Porn"));
+		mBinding.tabs.setOnTabSelectedListener(new OnTabSelectedListener() {
+			@Override
+			public void onTabSelected(Tab tab) {
+				mKeyword = tab.getText().toString();
+				if(TextUtils.equals("Home", mKeyword)) {
+					mKeyword = "";
+				}
+				clear();
+				getData();
+			}
+
+			@Override
+			public void onTabUnselected(Tab tab) {
+
+			}
+
+			@Override
+			public void onTabReselected(Tab tab) {
+
+			}
+		});
 	}
 
 	/**
@@ -338,11 +371,18 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Start searching.
 	 */
 	private void doSearch() {
+		clear();
+		getData();
+	}
+
+	/**
+	 * Reset page to init.
+	 */
+	private void clear() {
 		mIsBottom = false;
 		mStart = 1;
 		mBinding.getEntriesAdapter().getData().clear();
 		mSrc = "news";
-		getData();
 	}
 
 	@Override
