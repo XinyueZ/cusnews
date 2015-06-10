@@ -2,6 +2,8 @@ package com.cusnews.app.activities;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.cusnews.bus.ShareEvent;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -10,6 +12,9 @@ import de.greenrobot.event.EventBus;
  * @author Xinyue Zhao
  */
 public class CusNewsActivity extends AppCompatActivity {
+	//------------------------------------------------
+	//Subscribes, event-handlers
+	//------------------------------------------------
 
 	/**
 	 * Handler for {@link}.
@@ -20,6 +25,19 @@ public class CusNewsActivity extends AppCompatActivity {
 	public void onEvent(Object e) {
 
 	}
+
+	/**
+	 * Handler for {@link com.cusnews.bus.ShareEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.ShareEvent}.
+	 */
+	public void onEvent(final ShareEvent e) {
+		startActivity(e.getIntent());
+	}
+	//------------------------------------------------
+
+
 	@Override
 	protected void onResume() {
 		super.onResume();

@@ -6,6 +6,10 @@
     <string name="lbl_no_data">Keine mehr Daten!</string>
     <string name="lbl_search_more">Suche mehr auf Internet!</string>
     <string name="lbl_related">Ähnlich</string>
+    <string name="lbl_share_entry_title">%1$s:%2$s</string>
+    <string name="lbl_share_entry_content">%1$s\n\nDas Thema weiter zu lesen\n%2$s\n\n%3$s</string>
+    <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
+
 
     <string name="action_settings">Einstellungen</string>
     <string name="action_view_type">Ansicht</string>
@@ -13,4 +17,11 @@
     <string name="action_view_type_vertical">Vertikal</string>
     <string name="action_top">Nach oben</string>
     <string name="action_search">Suche</string>
+    <string name="action_share">Teile</string>
+
+
+    <!--For DynamicShareActionProvider-->
+    <string name="no_app_to_share">Keine App %s gefunden!</string>
+    <string name="no_share_type">Tye nicht gefunden!</string>
+    <string name="error_occurred">Fehler!</string>
 </resources>

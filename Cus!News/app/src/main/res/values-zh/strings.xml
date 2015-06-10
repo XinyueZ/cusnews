@@ -6,6 +6,9 @@
     <string name="lbl_no_data">无更多的数据！</string>
     <string name="lbl_search_more">更多搜索！</string>
     <string name="lbl_related">相关</string>
+    <string name="lbl_share_entry_title">%1$s:%2$s</string>
+    <string name="lbl_share_entry_content">%1$s\n\n看看吧\n%2$s\n\n%3$s</string>
+    <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
 
     <string name="action_settings">设置</string>
     <string name="action_view_type">视图</string>
@@ -13,4 +16,10 @@
     <string name="action_view_type_vertical">垂直</string>
     <string name="action_top">回顶端</string>
     <string name="action_search">搜一搜</string>
+    <string name="action_share">分享</string>
+
+    <!--For DynamicShareActionProvider-->
+    <string name="no_app_to_share">没找到分享 %s 的应用!</string>
+    <string name="no_share_type">没有确定分享类别！</string>
+    <string name="error_occurred">报错！</string>
 </resources>

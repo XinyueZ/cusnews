@@ -6,6 +6,10 @@
     <string name="lbl_no_data">No more data!</string>
     <string name="lbl_search_more">Search more on web!</string>
     <string name="lbl_related">Related</string>
+    <string name="lbl_share_entry_title">%1$s:%2$s</string>
+    <string name="lbl_share_entry_content">%1$s\n\nSee more on it\n%2$s\n\n%3$s</string>
+    <string name="lbl_share_download_app">Download %1$s\n%2$s</string>
+    <string name="lbl_store_url">https://play.google.com/store/apps/details?id=%1$s</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
@@ -16,6 +20,14 @@
     <string name="action_view_type_vertical">Vertical</string>
     <string name="action_top">To top</string>
     <string name="action_search">Search</string>
+    <string name="action_share">Share</string>
+
+    <!--For DynamicShareActionProvider-->
+
+    <string name="no_app_to_share">No app installed to share data of type %s!</string>
+    <string name="no_share_type">No share type specified!</string>
+    <string name="error_occurred">Sorry, an error occurred.</string>
+
 
 
 </resources>

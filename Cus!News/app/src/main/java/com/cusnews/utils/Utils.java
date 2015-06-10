@@ -3,6 +3,7 @@ package com.cusnews.utils;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import android.content.Intent;
 import android.net.Uri;
 
 /**
@@ -31,5 +32,22 @@ public final class Utils {
 			e.printStackTrace();
 		}
 		return ui;
+	}
+
+
+	/**
+	 * Standard sharing app for sharing on actionbar.
+	 */
+	public static Intent getDefaultShareIntent(android.support.v7.widget.ShareActionProvider provider, String subject,
+			String body) {
+		if (provider != null) {
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("text/plain");
+			i.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+			i.putExtra(android.content.Intent.EXTRA_TEXT, body);
+			provider.setShareIntent(i);
+			return i;
+		}
+		return null;
 	}
 }

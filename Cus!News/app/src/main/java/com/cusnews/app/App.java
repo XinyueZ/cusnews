@@ -35,9 +35,15 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import android.app.Application;
+import android.text.TextUtils;
 
+import com.cusnews.R;
 import com.cusnews.api.Api;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
+import com.tinyurl4j.data.Response;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 /**
  * Application object.
@@ -101,6 +107,28 @@ public final class App extends Application {
 	}
 
 	///-----
+
+	///-----
+
+	/**
+	 * TODO App-tinyurl , download url etc.
+	 *
+	 *
+	 */
+	private String mAppDownloadInfo;
+
+	public String getAppDownloadInfo() {
+		return mAppDownloadInfo;
+	}
+
+	public void setAppDownloadInfo(String appDownloadInfo) {
+		mAppDownloadInfo = appDownloadInfo;
+	}
+
+
+	///-----
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -130,6 +158,23 @@ public final class App extends Application {
 		}
 
 		Api.initialize(this, "http://www.faroo.com/");
+
+
+		String url = getAppDownloadInfo();
+		if (TextUtils.isEmpty(url) || !url.contains("tinyurl")) {
+			com.tinyurl4j.Api.getTinyUrl(getString(R.string.lbl_store_url, getPackageName()), new Callback<Response>() {
+				@Override
+				public void success(Response response, retrofit.client.Response response2) {
+					setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(R.string.application_name), response.getResult()));
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(R.string.application_name), getString(R.string.lbl_store_url,
+							getPackageName())));
+				}
+			});
+		}
 	}
 
 	/**
