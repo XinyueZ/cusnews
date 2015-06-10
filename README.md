@@ -1,6 +1,7 @@
 # Cus!News
 Cus!News is a free news client powered by [Faroo](http://www.faroo.com/).
 
+####Going to release at end of June.
 [![https://play.google.com/store/apps/details?id=com.cusnews](https://dl.dropbox.com/s/phrg0387osr3riz/images.jpeg)](https://play.google.com/store/apps/details?id=com.cusnews)
 
 
