@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -55,7 +56,7 @@ public final class DetailSiteFragment extends CusNewsFragment {
 	 *
 	 * @return An instance of {@link DetailInfoFragment}.
 	 */
-	public static DetailSiteFragment newInstance(Context context, Entry entry) {
+	public static DetailSiteFragment newInstance(Context context, @Nullable Entry entry) {
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRAS_ENTRY, entry);
 		return (DetailSiteFragment) Fragment.instantiate(context, DetailSiteFragment.class.getName(), args);
@@ -71,8 +72,9 @@ public final class DetailSiteFragment extends CusNewsFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		Entry entry = (Entry) getArguments().getSerializable(EXTRAS_ENTRY);
 		mBinding = DataBindingUtil.bind(view.findViewById(R.id.site_fl));
-		mBinding.setVariable(BR.entry, getArguments().getSerializable(EXTRAS_ENTRY));
+		mBinding.setVariable(BR.entry, entry);
 
 		//Init pull2load
 		mBinding.contentSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
@@ -130,8 +132,10 @@ public final class DetailSiteFragment extends CusNewsFragment {
 				}
 			}
 		});
-		ViewCompat.setElevation(mBinding.forwardBtn, getResources().getDimensionPixelSize(R.dimen.common_high_elevation));
-		ViewCompat.setElevation(mBinding.backwardBtn, getResources().getDimensionPixelSize(R.dimen.common_high_elevation));
+		ViewCompat.setElevation(mBinding.forwardBtn, getResources().getDimensionPixelSize(
+				R.dimen.common_high_elevation));
+		ViewCompat.setElevation(mBinding.backwardBtn, getResources().getDimensionPixelSize(
+				R.dimen.common_high_elevation));
 		mBinding.detailWv.setOnWebViewExScrolledListener(new OnWebViewExScrolledListener() {
 			@Override
 			public void onScrollChanged(boolean isUp) {

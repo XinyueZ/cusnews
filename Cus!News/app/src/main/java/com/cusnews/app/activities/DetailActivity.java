@@ -7,15 +7,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.hardware.display.DisplayManagerCompat;
-import android.support.v4.view.ViewCompat;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.cusnews.R;
-import com.cusnews.app.App;
 import com.cusnews.app.adapters.DetailPagerAdapter;
 import com.cusnews.databinding.ActivityDetailBinding;
 import com.cusnews.ds.Entry;
@@ -32,10 +25,7 @@ public final class DetailActivity extends CusNewsActivity   {
 	 * Main layout for this component.
 	 */
 	private static final int LAYOUT = R.layout.activity_detail;
-	/**
-	 * Data-binding.
-	 */
-	private ActivityDetailBinding mBinding;
+
 
 	/**
 	 * Show single instance of {@link DetailActivity}
@@ -58,43 +48,11 @@ public final class DetailActivity extends CusNewsActivity   {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
+		ActivityDetailBinding binding = DataBindingUtil.setContentView(this, LAYOUT);
 		Entry entry = (Entry) getIntent().getSerializableExtra(EXTRAS_ENTRY);
 		String query = getIntent().getStringExtra(EXTRAS_QUERY);
 
 		//Init adapter
-		mBinding.setEntry(entry);
-		mBinding.setDetailPagerAdapter(new DetailPagerAdapter(this, getSupportFragmentManager(), entry, query));
-
-		//Init actionbar
-		setSupportActionBar(mBinding.toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		mBinding.collapsingToolbar.setTitle(entry.getDomain());
-
-		//Init ImageView
-		ViewCompat.setElevation(mBinding.thumbIv, getResources().getDimensionPixelSize(R.dimen.common_elevation));
-		DisplayMetrics metrics = new DisplayMetrics();
-		DisplayManagerCompat.getInstance(App.Instance).getDisplay(0).getMetrics(metrics);
-		mBinding.thumbIv.getLayoutParams().height = metrics.heightPixels / 2;
-
+		binding.setDetailPagerAdapter(new DetailPagerAdapter(this, getSupportFragmentManager(), entry, query));
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_detail, menu);
-		return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			ActivityCompat.finishAfterTransition(this);
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-
-
-
 }
