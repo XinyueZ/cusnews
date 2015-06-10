@@ -30,6 +30,6 @@
     <string name="no_share_type">No share type specified!</string>
     <string name="error_occurred">Sorry, an error occurred.</string>
 
-
+    <string name="interstitial_ad_unit_id">ca-app-pub-9133982521997162/1943700138</string>
 
 </resources>

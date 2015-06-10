@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.cusnews.R;
+import com.cusnews.app.App;
 import com.cusnews.app.adapters.DetailPagerAdapter;
 import com.cusnews.bus.OpenRelatedEvent;
 import com.cusnews.databinding.ActivityDetailBinding;
 import com.cusnews.ds.Entry;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 /**
  * Detail news. Contains a general detail view and a {@link android.webkit.WebView}.
@@ -31,6 +35,10 @@ public final class DetailActivity extends CusNewsActivity {
 	 */
 	private String mSharedEntryUrl;
 
+	/**
+	 * The interstitial ad.
+	 */
+	private InterstitialAd mInterstitialAd;
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
@@ -75,6 +83,37 @@ public final class DetailActivity extends CusNewsActivity {
 		super.onCreate(savedInstanceState);
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		setData();
+
+
+		int curTime = App.Instance.getAdsShownTimes();
+		int adsTimes = 6;
+		if (curTime % adsTimes == 0) {
+			// Create an ad.
+			mInterstitialAd = new InterstitialAd(this);
+			mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+			// Create ad request.
+			AdRequest adRequest = new AdRequest.Builder().build();
+			// Begin loading your interstitial.
+			mInterstitialAd.setAdListener(new AdListener() {
+				@Override
+				public void onAdLoaded() {
+					super.onAdLoaded();
+					displayInterstitial();
+				}
+			});
+			mInterstitialAd.loadAd(adRequest);
+		}
+		curTime++;
+		App.Instance.setAdsShownTimes(curTime);
+	}
+
+	/**
+	 * Invoke displayInterstitial() when you are ready to display an interstitial.
+	 */
+	public void displayInterstitial() {
+		if (mInterstitialAd.isLoaded()) {
+			mInterstitialAd.show();
+		}
 	}
 
 	/**
@@ -93,7 +132,4 @@ public final class DetailActivity extends CusNewsActivity {
 		setIntent(intent);
 		setData();
 	}
-
-
-
 }

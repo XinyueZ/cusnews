@@ -128,6 +128,10 @@ public final class App extends Application {
 
 	///-----
 
+	/**
+	 * Times that the AdMob shown before, it under App-process domain. When process killed, it recounts
+	 */
+	private int mAdsShownTimes;
 
 	@Override
 	public void onCreate() {
@@ -186,4 +190,19 @@ public final class App extends Application {
 		return mApiKey;
 	}
 
+	/**
+	 *
+	 * @return How much times that the AdMob has shown before, it under App-process domain. When process killed, it recounts.
+	 */
+	public int getAdsShownTimes() {
+		return mAdsShownTimes;
+	}
+
+	/**
+	 * Set how much times that the AdMob has shown before, it under App-process domain.
+	 * @param adsShownTimes Times that AdMob has shown.
+	 */
+	public void setAdsShownTimes(int adsShownTimes) {
+		mAdsShownTimes = adsShownTimes;
+	}
 }
