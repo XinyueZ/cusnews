@@ -97,6 +97,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Different type: News: news, Search: web, Topics: topics.
 	 */
 	private String mSrc = "news";
+	/**
+	 * Search menu.
+	 */
+	private MenuItem mSearchMenu;
 
 	/**
 	 * Calculate height of actionbar.
@@ -154,7 +158,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		super.onCreate(savedInstanceState);
 		calcActionBarHeight();
 
-		mKeyword = App.Instance.getLastTimeSearched();
+		mKeyword = "";//App.Instance.getLastTimeSearched();
 
 		//For search and suggestions.
 		mSuggestions = new SearchRecentSuggestions(this, getString(R.string.suggestion_auth),
@@ -226,34 +230,43 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init tabs
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.addTab(addTab("Home"));
+		mBinding.tabs.addTab(addTab(App.FALLBACK));
 		mBinding.tabs.addTab(addTab("China"));
 		mBinding.tabs.addTab(addTab("USA"));
 		mBinding.tabs.addTab(addTab("Japan"));
 		mBinding.tabs.addTab(addTab("Germany"));
 		mBinding.tabs.addTab(addTab("Porn"));
-		mBinding.tabs.setOnTabSelectedListener(new OnTabSelectedListener() {
-			@Override
-			public void onTabSelected(Tab tab) {
-				mKeyword = tab.getText().toString();
-				if (TextUtils.equals("Home", mKeyword)) {
-					mKeyword = "";
-				}
-				clear();
-				getData();
-			}
-
-			@Override
-			public void onTabUnselected(Tab tab) {
-
-			}
-
-			@Override
-			public void onTabReselected(Tab tab) {
-
-			}
-		});
+		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener );
 	}
+
+	private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
+		@Override
+		public void onTabSelected(Tab tab) {
+			handleSelectionTab(tab);
+		}
+
+		private void handleSelectionTab(Tab tab) {
+			if (TextUtils.equals(App.FALLBACK, tab.getText())) {
+				mKeyword = tab.getTag() == null ||
+						(mSearchMenu != null && !MenuItemCompat.isActionViewExpanded(mSearchMenu)) ?
+						"" : tab.getTag().toString();
+			} else {
+				mKeyword = tab.getText().toString();
+			}
+			clear();
+			getData();
+		}
+
+		@Override
+		public void onTabUnselected(Tab tab) {
+
+		}
+
+		@Override
+		public void onTabReselected(Tab tab) {
+			handleSelectionTab(tab);
+		}
+	};
 
 	/**
 	 * Add customized  {@link Tab}.
@@ -347,8 +360,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 
 		//Search
-		final MenuItem searchMenu = menu.findItem(R.id.action_search);
-		MenuItemCompat.setOnActionExpandListener(searchMenu, new MenuItemCompat.OnActionExpandListener() {
+		mSearchMenu = menu.findItem(R.id.action_search);
+		MenuItemCompat.setOnActionExpandListener(mSearchMenu, new MenuItemCompat.OnActionExpandListener() {
 			@Override
 			public boolean onMenuItemActionExpand(MenuItem item) {
 				return true;
@@ -356,12 +369,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
-				mKeyword = "";
-				doSearch();
 				return true;
 			}
 		});
-		mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenu);
+		mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenu);
 		mSearchView.setOnQueryTextListener(this);
 		mSearchView.setIconifiedByDefault(true);
 		SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
@@ -398,8 +409,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Start searching.
 	 */
 	private void doSearch() {
-		clear();
-		getData();
+		Tab tab = mBinding.tabs.getTabAt(0);
+		tab.setTag(mKeyword);
+		tab.select();
 	}
 
 	/**

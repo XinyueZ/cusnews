@@ -51,6 +51,11 @@ import retrofit.RetrofitError;
  * @author Xinyue Zhao
  */
 public final class App extends Application {
+	/**
+	 * The word that will not be allowed :).
+	 */
+	public  static final String FALLBACK = "Searched";
+
 	public static App Instance;
 	/**
 	 * Api-key.
