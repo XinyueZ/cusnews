@@ -8,6 +8,8 @@
     <string name="lbl_related">Ähnlich</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\nDas Thema weiter zu lesen\n%2$s\n\n%3$s</string>
+    <string name="lbl_share_app_title">Hallo, ich bin hier</string>
+    <string name="lbl_share_app_content">Guten Tag,\n\nmein Name ist %1$s, ich bin ein neuer, sauber, frei unabhängiger Nachrichtendienst.\n\n%2$s</string>
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
 
 

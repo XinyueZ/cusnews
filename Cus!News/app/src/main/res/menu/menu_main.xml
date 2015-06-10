@@ -7,12 +7,6 @@
         android:icon="@drawable/ic_view_change"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_to_top"
-        android:title="@string/action_top"
-        android:icon="@drawable/ic_top"
-        app:showAsAction="always" />
-
 
 
     <item
@@ -21,4 +15,19 @@
         android:title="@string/action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+
+
+
+    <item
+        android:id="@+id/action_to_top"
+        android:title="@string/action_top"
+        android:icon="@drawable/ic_top"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/action_share"
+        android:icon="@drawable/ic_action_social_share"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="com.cusnews.widgets.DynamicShareActionProvider"/>
 </menu>

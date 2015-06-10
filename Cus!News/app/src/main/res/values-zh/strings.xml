@@ -8,6 +8,8 @@
     <string name="lbl_related">相关</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\n看看吧\n%2$s\n\n%3$s</string>
+    <string name="lbl_share_app_title">你好，关照下</string>
+    <string name="lbl_share_app_content">你好啊！\n\n我是%1$s，是一个新的，自由的，独立的，清爽型新闻应用。\n\n%2$s</string>
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
 
     <string name="action_settings">设置</string>

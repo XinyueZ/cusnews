@@ -33,9 +33,12 @@ import com.cusnews.app.SearchSuggestionProvider;
 import com.cusnews.app.adapters.EntriesAdapter;
 import com.cusnews.bus.ChangeViewTypeEvent;
 import com.cusnews.bus.OpenEntryEvent;
+import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
+import com.cusnews.widgets.DynamicShareActionProvider;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -306,6 +309,29 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			mSearchView.setSearchableInfo(info);
 		}
 		return true;
+	}
+
+
+
+	@Override
+	public boolean onPrepareOptionsMenu(final Menu menu) {
+		//Share application.
+		MenuItem  menuAppShare = menu.findItem(R.id.action_share);
+		DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat
+				.getActionProvider(menuAppShare);
+		shareLaterProvider.setShareDataType("text/plain");
+		shareLaterProvider.setOnShareLaterListener(new DynamicShareActionProvider.OnShareLaterListener() {
+			@Override
+			public void onShareClick(final Intent shareIntent) {
+				String subject = getString(R.string.lbl_share_app_title );
+				String text = getString(R.string.lbl_share_app_content, getString(R.string.application_name),
+						App.Instance.getAppDownloadInfo());
+				shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+				shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+				EventBus.getDefault().post(new ShareEvent(shareIntent));
+			}
+		});
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	/**

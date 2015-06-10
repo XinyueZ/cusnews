@@ -9,6 +9,8 @@
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\nSee more on it\n%2$s\n\n%3$s</string>
     <string name="lbl_share_download_app">Download %1$s\n%2$s</string>
+    <string name="lbl_share_app_title">Hey, there</string>
+    <string name="lbl_share_app_content">Hello!\n\nMy name is %1$s and I am a new free light-weight independent news App.\n\n%2$s</string>
     <string name="lbl_store_url">https://play.google.com/store/apps/details?id=%1$s</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
