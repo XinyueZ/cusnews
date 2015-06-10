@@ -116,15 +116,11 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start|bottom"
+                            android:layout_gravity="end"
                             android:orientation="horizontal"
-                            android:visibility="@{!android.text.TextUtils.isEmpty(entry.author) ? View.GONE : View.VISIBLE}">
+                            android:visibility="@{android.text.TextUtils.isEmpty(entry.author) ? View.GONE : View.VISIBLE}">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@color/common_transparent"
-                                android:src="@drawable/ic_author" />
+
 
                             <com.cusnews.widgets.FontTextView
                                 style="@style/Text.Normal.Small"
@@ -132,6 +128,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:text="@{entry.author}" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@color/common_transparent"
+                                android:src="@drawable/ic_author" />
                         </LinearLayout>
 
                         <LinearLayout
