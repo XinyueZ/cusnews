@@ -12,6 +12,8 @@ Also to demostrate new Google's [design-library](http://developer.android.com/in
 
 New [data-binding](https://developer.android.com/intl/zh-cn/tools/data-binding/guide.html) infrastruct will also be included.
 
+New GCM features like group, topics will be built to subcribe different daily news update.
+
 # API
 Enter API-Key in key.properties under resources directory.
 Don't publish API-Key to public when fork the project to avoid abuse indeed. 
