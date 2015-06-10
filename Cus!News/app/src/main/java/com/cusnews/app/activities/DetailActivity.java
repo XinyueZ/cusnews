@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 
 import com.cusnews.R;
 import com.cusnews.app.adapters.DetailPagerAdapter;
+import com.cusnews.bus.OpenRelatedEvent;
 import com.cusnews.databinding.ActivityDetailBinding;
 import com.cusnews.ds.Entry;
 
@@ -18,7 +19,7 @@ import com.cusnews.ds.Entry;
  *
  * @author Xinyue Zhao
  */
-public final class DetailActivity extends CusNewsActivity   {
+public final class DetailActivity extends CusNewsActivity {
 	private static final String EXTRAS_QUERY = DetailActivity.class.getName() + ".EXTRAS.query";
 	private static final String EXTRAS_ENTRY = DetailActivity.class.getName() + ".EXTRAS.entry";
 	/**
@@ -26,6 +27,26 @@ public final class DetailActivity extends CusNewsActivity   {
 	 */
 	private static final int LAYOUT = R.layout.activity_detail;
 
+	//------------------------------------------------
+	//Subscribes, event-handlers
+	//------------------------------------------------
+
+	/**
+	 * Handler for {@link com.cusnews.bus.OpenRelatedEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.OpenRelatedEvent}.
+	 */
+	public void onEvent(OpenRelatedEvent e) {
+		DetailActivity.showInstance(this, e.getEntry(), e.getKeyword());
+	}
+
+	//------------------------------------------------
+
+	/**
+	 * Data-binding.
+	 */
+	private ActivityDetailBinding mBinding;
 
 	/**
 	 * Show single instance of {@link DetailActivity}
@@ -34,25 +55,38 @@ public final class DetailActivity extends CusNewsActivity   {
 	 * 		{@link Context}.
 	 * @param entry
 	 * 		A news {@link Entry}.
-	 * 	@param query
-	 * 	The query to the {@code entry}.
+	 * @param query
+	 * 		The query to the {@code entry}.
 	 */
 	public static void showInstance(Context cxt, Entry entry, @Nullable String query) {
 		Intent intent = new Intent(cxt, DetailActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(EXTRAS_ENTRY, (Serializable) entry);
-		intent.putExtra(EXTRAS_QUERY, query == null ? "" :query);
+		intent.putExtra(EXTRAS_QUERY, query == null ? "" : query);
 		cxt.startActivity(intent);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ActivityDetailBinding binding = DataBindingUtil.setContentView(this, LAYOUT);
+		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
+		setData();
+	}
+
+	/**
+	 * Set data on UI.
+	 */
+	private void setData() {
 		Entry entry = (Entry) getIntent().getSerializableExtra(EXTRAS_ENTRY);
 		String query = getIntent().getStringExtra(EXTRAS_QUERY);
-
 		//Init adapter
-		binding.setDetailPagerAdapter(new DetailPagerAdapter(this, getSupportFragmentManager(), entry, query));
+		mBinding.setDetailPagerAdapter(new DetailPagerAdapter(this, getSupportFragmentManager(), entry, query));
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		setData();
 	}
 }

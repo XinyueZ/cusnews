@@ -138,6 +138,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void onEvent(OpenEntryEvent e) {
 		DetailActivity.showInstance(this, e.getEntry(), mKeyword);
 	}
+
+
 	//------------------------------------------------
 
 	@Override
