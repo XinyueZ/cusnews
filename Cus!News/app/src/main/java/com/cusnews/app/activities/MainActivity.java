@@ -256,7 +256,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 	/**
-	 * Add customized view to {@link Tab}.
+	 * Add customized  {@link Tab}.
 	 *
 	 * @param text
 	 * 		The text to show on customized view to {@link Tab}.
