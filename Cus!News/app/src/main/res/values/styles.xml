@@ -38,9 +38,6 @@
         <item name="android:textAppearance">?android:textAppearanceSmall</item>
     </style>
 
-    <style name="Text.Normal.Link">
-        <item name="android:textColor">?colorPrimaryDark</item>
-    </style>
 
     <style name="Text.Normal.Large">
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
@@ -60,6 +57,13 @@
         <item name="android:textAppearance">?android:textAppearanceLarge</item>
     </style>
 
+    <style name="Tab" parent="Text.Normal.Small">
+        <item name="android:textColor">@color/common_white</item>
+    </style>
+
+    <style name="Link" parent="Text.Normal.Small">
+        <item name="android:textColor">?colorPrimaryDark</item>
+    </style>
 
     <style name="FAB">
         <item name="android:layout_gravity">end|bottom</item>

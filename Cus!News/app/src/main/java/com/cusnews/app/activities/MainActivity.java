@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.cusnews.R;
 import com.cusnews.api.Api;
@@ -225,17 +226,17 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init tabs
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Home"));
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("China"));
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("USA"));
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Japan"));
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Germany"));
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Porn"));
+		mBinding.tabs.addTab(addTab("Home"));
+		mBinding.tabs.addTab(addTab("China"));
+		mBinding.tabs.addTab(addTab("USA"));
+		mBinding.tabs.addTab(addTab("Japan"));
+		mBinding.tabs.addTab(addTab("Germany"));
+		mBinding.tabs.addTab(addTab("Porn"));
 		mBinding.tabs.setOnTabSelectedListener(new OnTabSelectedListener() {
 			@Override
 			public void onTabSelected(Tab tab) {
 				mKeyword = tab.getText().toString();
-				if(TextUtils.equals("Home", mKeyword)) {
+				if (TextUtils.equals("Home", mKeyword)) {
 					mKeyword = "";
 				}
 				clear();
@@ -255,61 +256,88 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 	/**
+	 * Add customized view to {@link Tab}.
+	 *
+	 * @param text
+	 * 		The text to show on customized view to {@link Tab}.
+	 *
+	 * @return The customized  {@link Tab}.
+	 */
+	private Tab addTab(String text) {
+		final Tab tab = mBinding.tabs.newTab();
+		tab.setText(text);
+		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
+		tab.setCustomView(tabV);
+		TextView tabTv = (TextView) tabV.findViewById(R.id.text);
+		tabTv.setText(text);
+		tabV.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				tab.select();
+			}
+		});
+		return tab;
+	}
+
+
+	/**
 	 * Get data from server.
 	 */
 	private void getData() {
 		if (!mInProgress) {
 			mBinding.contentSrl.setRefreshing(true);
 			mInProgress = true;
-			Api.getEntries(mKeyword, mStart, App.Instance.getLanguage(), mSrc, App.Instance.getApiKey(), new Callback<Entries>() {
-				@Override
-				public void success(Entries entries, Response response) {
+			Api.getEntries(mKeyword, mStart, App.Instance.getLanguage(), mSrc, App.Instance.getApiKey(),
+					new Callback<Entries>() {
+						@Override
+						public void success(Entries entries, Response response) {
 
-					mBinding.getEntriesAdapter().getData().addAll(entries.getList());
-					mBinding.getEntriesAdapter().notifyDataSetChanged();
-					//Finish loading
-					mBinding.contentSrl.setRefreshing(false);
-					mInProgress = false;
-					mLoading = true;
+							mBinding.getEntriesAdapter().getData().addAll(entries.getList());
+							mBinding.getEntriesAdapter().notifyDataSetChanged();
+							//Finish loading
+							mBinding.contentSrl.setRefreshing(false);
+							mInProgress = false;
+							mLoading = true;
 
-					//Arrive bottom?
-					if (entries.getStart() > entries.getCount()) {
-						if(TextUtils.equals(mSrc, "web")) {
-							mIsBottom = true;
-							Snackbar.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG).show();
-							//For next
-							mSrc = "news";
-						} else {
-							mIsBottom = false;
-							mSrc = "web";
-							Snackbar.make(mBinding.mainCl, R.string.lbl_search_more, Snackbar.LENGTH_LONG).show();
-							mStart = 1;
-							getData();
-						}
-					}
-
-					App.Instance.setLastTimeSearched(mKeyword);
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-					if (mStart > 10) {
-						mStart -= 10;
-					}
-					Snackbar.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
-							R.string.lbl_retry, new OnClickListener() {
-								@Override
-								public void onClick(View v) {
+							//Arrive bottom?
+							if (entries.getStart() > entries.getCount()) {
+								if (TextUtils.equals(mSrc, "web")) {
+									mIsBottom = true;
+									Snackbar.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG).show();
+									//For next
+									mSrc = "news";
+								} else {
+									mIsBottom = false;
+									mSrc = "web";
+									Snackbar.make(mBinding.mainCl, R.string.lbl_search_more, Snackbar.LENGTH_LONG)
+											.show();
+									mStart = 1;
 									getData();
 								}
-							}).show();
+							}
 
-					//Finish loading
-					mBinding.contentSrl.setRefreshing(false);
-					mInProgress = false;
-					mLoading = true;
-				}
-			});
+							App.Instance.setLastTimeSearched(mKeyword);
+						}
+
+						@Override
+						public void failure(RetrofitError error) {
+							if (mStart > 10) {
+								mStart -= 10;
+							}
+							Snackbar.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
+									R.string.lbl_retry, new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											getData();
+										}
+									}).show();
+
+							//Finish loading
+							mBinding.contentSrl.setRefreshing(false);
+							mInProgress = false;
+							mLoading = true;
+						}
+					});
 		}
 	}
 
@@ -345,18 +373,17 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 
-
 	@Override
 	public boolean onPrepareOptionsMenu(final Menu menu) {
 		//Share application.
-		MenuItem  menuAppShare = menu.findItem(R.id.action_share);
-		DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat
-				.getActionProvider(menuAppShare);
+		MenuItem menuAppShare = menu.findItem(R.id.action_share);
+		DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat.getActionProvider(
+				menuAppShare);
 		shareLaterProvider.setShareDataType("text/plain");
 		shareLaterProvider.setOnShareLaterListener(new DynamicShareActionProvider.OnShareLaterListener() {
 			@Override
 			public void onShareClick(final Intent shareIntent) {
-				String subject = getString(R.string.lbl_share_app_title );
+				String subject = getString(R.string.lbl_share_app_title);
 				String text = getString(R.string.lbl_share_app_content, getString(R.string.application_name),
 						App.Instance.getAppDownloadInfo());
 				shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
@@ -399,8 +426,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 
 	@Override
