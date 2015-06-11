@@ -58,6 +58,7 @@
     </style>
 
     <style name="Tab" parent="Text.Normal.Small">
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/common_white</item>
     </style>
 
