@@ -230,7 +230,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init tabs
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.addTab(addTab(App.FALLBACK));
+		mBinding.tabs.addTab( mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
 		mBinding.tabs.addTab(addTab("China"));
 		mBinding.tabs.addTab(addTab("USA"));
 		mBinding.tabs.addTab(addTab("Japan"));
@@ -239,6 +239,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener );
 	}
 
+	/**
+	 * Handling {@link Tab} selections.
+	 */
 	private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
 		@Override
 		public void onTabSelected(Tab tab) {
@@ -246,7 +249,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 
 		private void handleSelectionTab(Tab tab) {
-			if (TextUtils.equals(App.FALLBACK, tab.getText())) {
+			if (tab.getPosition() == 0) {
 				mKeyword = tab.getTag() == null ||
 						(mSearchMenu != null && !MenuItemCompat.isActionViewExpanded(mSearchMenu)) ?
 						"" : tab.getTag().toString();
