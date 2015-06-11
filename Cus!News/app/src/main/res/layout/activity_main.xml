@@ -66,7 +66,9 @@
                     app:shadowResponsiveEffect_enabled="true"
                     app:shadow_radius="@dimen/common_elevation"
                     app:show_animation="@anim/fab_jump_from_down"
-                    app:type="DEFAULT" />
+                    app:type="DEFAULT"
+                    app:stroke_color="@color/fab_material_yellow_900"
+                    app:stroke_width="3dp"/>
 
 
                 <com.software.shell.fab.ActionButton
@@ -80,7 +82,8 @@
                     app:shadowResponsiveEffect_enabled="true"
                     app:shadow_radius="@dimen/common_high_elevation"
                     app:show_animation="@anim/fab_jump_from_down"
-                    app:type="DEFAULT" />
+                    app:type="DEFAULT"
+                    />
 
 
         </android.support.design.widget.CoordinatorLayout>

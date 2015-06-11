@@ -186,7 +186,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					}
 				} else {
 					if (mBinding.fab.isHidden()) {
-						if(mBinding.del.isHidden()) {
+						if (mBinding.del.isHidden()) {
 							mBinding.fab.show();
 						}
 					}
@@ -244,7 +244,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.tabs.addTab(addTab("Porn"));
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
 
-		//Init "del" for all tabs
+		//Init "fab", "del" for all tabs
 		mBinding.del.hide();
 	}
 
@@ -261,6 +261,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 			clear();
 			getData();
+			if (!mBinding.del.isHidden()) {
+				mBinding.del.hide();
+			}
 		}
 
 		@Override
