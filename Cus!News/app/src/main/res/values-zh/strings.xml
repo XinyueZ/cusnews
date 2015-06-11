@@ -6,6 +6,7 @@
     <string name="lbl_no_data">无更多的数据！</string>
     <string name="lbl_search_more">更多搜索！</string>
     <string name="lbl_related">相关</string>
+    <string name="lbl_tabs_tip">添加标签。如果要删除标签，就在标签上长按，你会看到的…</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\n看看吧\n%2$s\n\n%3$s</string>
     <string name="lbl_share_app_title">你好，关照下</string>

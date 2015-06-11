@@ -53,39 +53,126 @@
             </android.support.v4.widget.SwipeRefreshLayout>
 
 
-
-                <com.software.shell.fab.ActionButton
-                    android:id="@+id/del"
-                    style="@style/FAB"
-                    android:layout_gravity="center_horizontal|bottom"
-                    app:button_color="@color/fab_material_blue_grey_500"
-                    app:button_colorPressed="@color/fab_material_blue_grey_900"
-                    app:hide_animation="@anim/fab_jump_to_down"
-                    app:image="@drawable/ic_delete"
-                    app:rippleEffect_enabled="true"
-                    app:shadowResponsiveEffect_enabled="true"
-                    app:shadow_radius="@dimen/common_elevation"
-                    app:show_animation="@anim/fab_jump_from_down"
-                    app:type="DEFAULT"
-                    app:stroke_color="@color/fab_material_yellow_900"
-                    app:stroke_width="3dp"/>
-
-
-                <com.software.shell.fab.ActionButton
-                    android:id="@+id/fab"
-                    style="@style/FAB"
-                    app:button_color="@color/fab_material_red_500"
-                    app:button_colorPressed="@color/fab_material_red_900"
-                    app:hide_animation="@anim/fab_jump_to_down"
-                    app:image="@drawable/fab_plus_icon"
-                    app:rippleEffect_enabled="true"
-                    app:shadowResponsiveEffect_enabled="true"
-                    app:shadow_radius="@dimen/common_high_elevation"
-                    app:show_animation="@anim/fab_jump_from_down"
-                    app:type="DEFAULT"
-                    />
+            <com.software.shell.fab.ActionButton
+                android:id="@+id/del"
+                style="@style/FAB"
+                android:layout_gravity="center_horizontal|bottom"
+                app:button_color="@color/fab_material_blue_grey_500"
+                app:button_colorPressed="@color/fab_material_blue_grey_900"
+                app:hide_animation="@anim/fab_jump_to_down"
+                app:image="@drawable/ic_delete"
+                app:rippleEffect_enabled="true"
+                app:shadowResponsiveEffect_enabled="true"
+                app:shadow_radius="@dimen/common_elevation"
+                app:show_animation="@anim/fab_jump_from_down"
+                app:stroke_color="@color/fab_material_yellow_900"
+                app:stroke_width="3dp"
+                app:type="DEFAULT" />
 
 
+            <com.software.shell.fab.ActionButton
+                android:id="@+id/fab"
+                style="@style/FAB"
+                android:layout_gravity="end|bottom"
+                app:button_color="@color/fab_material_red_500"
+                app:button_colorPressed="@color/fab_material_red_900"
+                app:hide_animation="@anim/fab_jump_to_down"
+                app:image="@drawable/fab_plus_icon"
+                app:rippleEffect_enabled="true"
+                app:shadowResponsiveEffect_enabled="true"
+                app:shadow_radius="@dimen/common_high_elevation"
+                app:show_animation="@anim/fab_jump_from_down"
+                app:type="DEFAULT" />
+
+            <com.cusnews.widgets.RevealLayout
+                android:id="@+id/add_tab_v"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+                <!--android.support.design.widget.TextInputLayout-->
+                <LinearLayout
+                    android:id="@+id/add_tab_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_vertical_image_height"
+                    android:background="@color/fab_material_red_500"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true">
+
+                        <requestFocus />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+
+                        <com.cusnews.widgets.FontTextView
+                            style="@style/Text.Normal.Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lbl_tabs_tip"
+                            android:textColor="@color/common_white" />
+
+                        <EditText
+                            android:id="@+id/editText1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:inputType="text"
+                            android:lines="1"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:minLines="1"
+                            android:text="Android" />
+                    </LinearLayout>
+
+                    <!--<EditText--><!--android:id="@+id/editText1"--><!--android:layout_width="250dp"--><!--android:layout_height="match_parent"--><!--android:layout_weight="3"--><!--android:layout_gravity="left|top"--><!--android:lines="1"--><!--android:maxLength="10"--><!--android:maxLines="1"--><!--android:minLines="1"--><!--android:hint="@string/lbl_tabs_tip"--><!--android:text="Android" />-->
+
+
+                    <LinearLayout
+                        android:id="@+id/add_tab_op_ll"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="top|right"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageButton
+                            android:id="@+id/close_add_tab_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/common_transparent"
+                            android:src="@drawable/ic_delete" />
+
+                        <ImageButton
+                            android:id="@+id/save_added_tab_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/common_transparent"
+                            android:src="@drawable/ic_save" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </com.cusnews.widgets.RevealLayout>
         </android.support.design.widget.CoordinatorLayout>
 
 

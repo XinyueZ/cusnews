@@ -6,6 +6,7 @@
     <string name="lbl_no_data">No more data!</string>
     <string name="lbl_search_more">Search more on web!</string>
     <string name="lbl_related">Related</string>
+    <string name="lbl_tabs_tip">Add one tab. To move tab you can just long-press it and you see…</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\nSee more on it\n%2$s\n\n%3$s</string>
     <string name="lbl_share_download_app">Download %1$s\n%2$s</string>

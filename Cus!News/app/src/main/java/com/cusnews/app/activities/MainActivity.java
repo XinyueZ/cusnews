@@ -247,15 +247,24 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
 
 		//Init "fab", "del" for all tabs
-		mBinding.del.hide();
-		mBinding.del.setOnClickListener(new OnClickListener() {
+		mBinding.addTabV.hide();
+		mBinding.closeAddTabBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Tab tab = (Tab) mBinding.del.getTag();
-				removeTab(tab);
+				mBinding.addTabV.hide();
+				mBinding.fab.show();
+				mBinding.addTabOpLl.setVisibility(View.GONE);
 			}
 		});
-
+		mBinding.fab.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mBinding.addTabV.show();
+				mBinding.fab.hide();
+				mBinding.addTabOpLl.setVisibility(View.VISIBLE);
+			}
+		});
+		mBinding.del.hide();
 		if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
 			mBinding.del.setOnDragListener(new OnDragListener() {
 				@Override
@@ -280,6 +289,14 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						break;
 					}
 					return true;
+				}
+			});
+		} else {
+			mBinding.del.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Tab tab = (Tab) mBinding.del.getTag();
+					removeTab(tab);
 				}
 			});
 		}
@@ -550,7 +567,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	protected void handleIntent(Intent intent) {
 		mKeyword = intent.getStringExtra(SearchManager.QUERY);
-		mKeyword = mKeyword.trim();
+		if(!TextUtils.isEmpty(mKeyword)) {
+			mKeyword = mKeyword.trim();
+		}
 		if (!TextUtils.isEmpty(mKeyword)) {
 			mSearchView.setQueryHint(Html.fromHtml("<font color = #ffffff>" + mKeyword + "</font>"));
 

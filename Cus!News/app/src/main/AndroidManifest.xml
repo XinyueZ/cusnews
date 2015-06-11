@@ -20,7 +20,7 @@
             android:name=".app.activities.MainActivity"
             android:label="@string/application_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

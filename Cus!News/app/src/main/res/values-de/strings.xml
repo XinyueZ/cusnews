@@ -6,6 +6,7 @@
     <string name="lbl_no_data">Keine mehr Daten!</string>
     <string name="lbl_search_more">Suche mehr auf Internet!</string>
     <string name="lbl_related">Ähnlich</string>
+    <string name="lbl_tabs_tip">Tab hinzufügen. Zu Entfernen kannst Du auf dem Tab langdrüken, dann siehst Du…</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\nDas Thema weiter zu lesen\n%2$s\n\n%3$s</string>
     <string name="lbl_share_app_title">Hallo, ich bin hier</string>
