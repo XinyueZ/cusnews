@@ -25,11 +25,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
 import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -246,6 +248,41 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init "fab", "del" for all tabs
 		mBinding.del.hide();
+		mBinding.del.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Tab tab = (Tab) mBinding.del.getTag();
+				removeTab(tab);
+			}
+		});
+
+		if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+			mBinding.del.setOnDragListener(new OnDragListener() {
+				@Override
+				public boolean onDrag(View v, DragEvent event) {
+					Tab tab = (Tab) mBinding.del.getTag();
+					switch (event.getAction()) {
+					case DragEvent.ACTION_DRAG_STARTED:
+						break;
+					case DragEvent.ACTION_DRAG_ENTERED:
+						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_900));
+						break;
+					case DragEvent.ACTION_DRAG_EXITED:
+						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
+						break;
+					case DragEvent.ACTION_DROP:
+						removeTab(tab);
+						break;
+					case DragEvent.ACTION_DRAG_ENDED:
+						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
+						mBinding.del.hide();
+					default:
+						break;
+					}
+					return true;
+				}
+			});
+		}
 	}
 
 	/**
@@ -309,6 +346,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			@Override
 			public boolean onLongClick(View v) {
 				mBinding.del.show();
+				mBinding.del.setTag(tab);
 				if (!mBinding.fab.isHidden()) {
 					mBinding.fab.hide();
 				}
@@ -321,7 +359,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 					v.startDrag(data, shadowBuilder, v, 0);
 				} else {
-
+					//Pre API-11, do nothing after showing "del" button, the remove of a tab will be done by clicking "del".
 				}
 				return true;
 			}
@@ -331,14 +369,23 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 	@Override
 	public void onBackPressed() {
-		if (android.os.Build.VERSION.SDK_INT < VERSION_CODES.HONEYCOMB) {
-			if (!mBinding.del.isHidden()) {
-				mBinding.del.hide();
-			} else {
-				super.onBackPressed();
-			}
+		if (!mBinding.del.isHidden()) {
+			mBinding.del.hide();
 		} else {
 			super.onBackPressed();
+		}
+	}
+
+	/**
+	 * Remove a {@link Tab} from {@link #mBinding#tabs}
+	 *
+	 * @param tab
+	 */
+	private void removeTab(Tab tab) {
+		mBinding.tabs.removeTab(tab);
+		mBinding.del.hide();
+		if(mBinding.tabs.getTabCount() == 1) {
+			mBinding.tabs.setVisibility(View.GONE);
 		}
 	}
 

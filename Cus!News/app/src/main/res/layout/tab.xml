@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cusnews.widgets.MaterialRippleLayout android:id="@+id/content_v"
+<com.cusnews.widgets.MaterialRippleLayout
+    android:id="@+id/content_v"
     style="@style/MaterialRippleLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_transparent"
-    >
+    android:background="@color/common_transparent">
 
     <com.cusnews.widgets.FontTextView
         android:id="@id/text"
         style="@style/Tab"
-        android:ellipsize="end"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/primary_color"
+        android:ellipsize="end"
+        android:gravity="center" />
 </com.cusnews.widgets.MaterialRippleLayout>
