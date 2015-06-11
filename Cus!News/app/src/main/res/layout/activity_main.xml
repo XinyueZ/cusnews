@@ -25,12 +25,12 @@
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     style="@style/ActionBar_ToolBar"
-                    app:layout_scrollFlags="scroll|enterAlways"/>
+                    app:layout_scrollFlags="scroll|enterAlways" />
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabs"
@@ -52,18 +52,37 @@
                     app:entriesAdapter="@{entriesAdapter}" />
             </android.support.v4.widget.SwipeRefreshLayout>
 
-            <com.software.shell.fab.ActionButton
-                android:id="@+id/fab"
-                style="@style/FAB"
-                app:button_color="@color/fab_material_red_500"
-                app:button_colorPressed="@color/fab_material_red_900"
-                app:hide_animation="@anim/fab_jump_to_down"
-                app:image="@drawable/fab_plus_icon"
-                app:rippleEffect_enabled="true"
-                app:shadowResponsiveEffect_enabled="true"
-                app:shadow_radius="@dimen/common_high_elevation"
-                app:show_animation="@anim/fab_jump_from_down"
-                app:type="DEFAULT" />
+
+
+                <com.software.shell.fab.ActionButton
+                    android:id="@+id/del"
+                    style="@style/FAB"
+                    android:layout_gravity="center_horizontal|bottom"
+                    app:button_color="@color/fab_material_blue_grey_500"
+                    app:button_colorPressed="@color/fab_material_blue_grey_900"
+                    app:hide_animation="@anim/fab_jump_to_down"
+                    app:image="@drawable/ic_delete"
+                    app:rippleEffect_enabled="true"
+                    app:shadowResponsiveEffect_enabled="true"
+                    app:shadow_radius="@dimen/common_elevation"
+                    app:show_animation="@anim/fab_jump_from_down"
+                    app:type="DEFAULT" />
+
+
+                <com.software.shell.fab.ActionButton
+                    android:id="@+id/fab"
+                    style="@style/FAB"
+                    app:button_color="@color/fab_material_red_500"
+                    app:button_colorPressed="@color/fab_material_red_900"
+                    app:hide_animation="@anim/fab_jump_to_down"
+                    app:image="@drawable/fab_plus_icon"
+                    app:rippleEffect_enabled="true"
+                    app:shadowResponsiveEffect_enabled="true"
+                    app:shadow_radius="@dimen/common_high_elevation"
+                    app:show_animation="@anim/fab_jump_from_down"
+                    app:type="DEFAULT" />
+
+
         </android.support.design.widget.CoordinatorLayout>
 
 

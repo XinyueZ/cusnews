@@ -2,10 +2,12 @@ package com.cusnews.app.activities;
 
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.NavigationView;
@@ -26,7 +28,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -182,7 +186,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					}
 				} else {
 					if (mBinding.fab.isHidden()) {
-						mBinding.fab.show();
+						if(mBinding.del.isHidden()) {
+							mBinding.fab.show();
+						}
 					}
 				}
 
@@ -230,29 +236,26 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init tabs
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.addTab( mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
 		mBinding.tabs.addTab(addTab("China"));
 		mBinding.tabs.addTab(addTab("USA"));
 		mBinding.tabs.addTab(addTab("Japan"));
 		mBinding.tabs.addTab(addTab("Germany"));
 		mBinding.tabs.addTab(addTab("Porn"));
-		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener );
+		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
+
+		//Init "del" for all tabs
+		mBinding.del.hide();
 	}
 
 	/**
 	 * Handling {@link Tab} selections.
 	 */
 	private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
-		@Override
-		public void onTabSelected(Tab tab) {
-			handleSelectionTab(tab);
-		}
-
 		private void handleSelectionTab(Tab tab) {
 			if (tab.getPosition() == 0) {
-				mKeyword = tab.getTag() == null ||
-						(mSearchMenu != null && !MenuItemCompat.isActionViewExpanded(mSearchMenu)) ?
-						"" : tab.getTag().toString();
+				mKeyword = tab.getTag() == null || (mSearchMenu != null && !MenuItemCompat.isActionViewExpanded(
+						mSearchMenu)) ? "" : tab.getTag().toString();
 			} else {
 				mKeyword = tab.getText().toString();
 			}
@@ -261,14 +264,21 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab) {
-
+		public void onTabSelected(Tab tab) {
+			handleSelectionTab(tab);
 		}
+
 
 		@Override
 		public void onTabReselected(Tab tab) {
 			handleSelectionTab(tab);
 		}
+
+		@Override
+		public void onTabUnselected(Tab tab) {
+		}
+
+
 	};
 
 	/**
@@ -292,9 +302,42 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				tab.select();
 			}
 		});
+		tabV.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				mBinding.del.show();
+				if (!mBinding.fab.isHidden()) {
+					mBinding.fab.hide();
+				}
+
+				if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+					//After API-11 we import drag-drop features to delete tabs.
+					TextView tabTv = (TextView) v.findViewById(R.id.text);
+					String text = tabTv.getText().toString();
+					ClipData data = ClipData.newPlainText(text, text);
+					DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+					v.startDrag(data, shadowBuilder, v, 0);
+				} else {
+
+				}
+				return true;
+			}
+		});
 		return tab;
 	}
 
+	@Override
+	public void onBackPressed() {
+		if (android.os.Build.VERSION.SDK_INT < VERSION_CODES.HONEYCOMB) {
+			if (!mBinding.del.isHidden()) {
+				mBinding.del.hide();
+			} else {
+				super.onBackPressed();
+			}
+		} else {
+			super.onBackPressed();
+		}
+	}
 
 	/**
 	 * Get data from server.
