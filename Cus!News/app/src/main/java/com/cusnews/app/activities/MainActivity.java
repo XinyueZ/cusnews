@@ -1,5 +1,7 @@
 package com.cusnews.app.activities;
 
+import java.security.NoSuchAlgorithmException;
+
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ClipData;
@@ -46,6 +48,10 @@ import com.cusnews.bus.OpenEntryEvent;
 import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
+import com.cusnews.ds.TabLabel;
+import com.cusnews.utils.DeviceUniqueUtil;
+import com.cusnews.utils.TabLabelManager;
+import com.cusnews.utils.TabLabelManager.TabLabelManagerHelper;
 import com.cusnews.widgets.DynamicShareActionProvider;
 
 import de.greenrobot.event.EventBus;
@@ -54,7 +60,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends CusNewsActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends CusNewsActivity implements SearchView.OnQueryTextListener, TabLabelManagerHelper {
 	/**
 	 * Main layout for this component.
 	 */
@@ -238,16 +244,28 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		//Init tabs
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
-		mBinding.tabs.addTab(addTab("China"));
-		mBinding.tabs.addTab(addTab("USA"));
-		mBinding.tabs.addTab(addTab("Japan"));
-		mBinding.tabs.addTab(addTab("Germany"));
-		mBinding.tabs.addTab(addTab("Porn"));
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
+		TabLabelManager.getInstance().init( this);
 
-		//Init "fab", "del" for all tabs
+
+		//Init "fab", "del" for all tabs, save-button for labels.
 		mBinding.addTabV.hide();
+		mBinding.saveAddedTabBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
+						TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
+								DeviceUniqueUtil.getDeviceIdent(App.Instance));
+						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
+								mBinding.coordinatorLayout);
+						mBinding.addTabV.hide();
+					}
+				} catch (NoSuchAlgorithmException e) {
+					//TODO Error when can not get device id.
+				}
+			}
+		});
 		mBinding.closeAddTabBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -280,11 +298,16 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
 						break;
 					case DragEvent.ACTION_DROP:
-						removeTab(tab);
+
 						break;
 					case DragEvent.ACTION_DRAG_ENDED:
 						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
 						mBinding.del.hide();
+
+						TabLabel tabLabel = new TabLabel();
+						tabLabel.setObjectId(mLongPressedObjectId);
+						TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel, MainActivity.this,
+								mBinding.coordinatorLayout);
 					default:
 						break;
 					}
@@ -296,11 +319,15 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				@Override
 				public void onClick(View v) {
 					Tab tab = (Tab) mBinding.del.getTag();
-					removeTab(tab);
+					TabLabel tabLabel = new TabLabel();
+					tabLabel.setObjectId(mLongPressedObjectId);
+					TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel, MainActivity.this,
+							mBinding.coordinatorLayout);
 				}
 			});
 		}
 	}
+
 
 	/**
 	 * Handling {@link Tab} selections.
@@ -339,20 +366,32 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	};
 
 	/**
+	 * Add customized , default, first {@link Tab}.
+	 */
+	@Override
+	public void addDefaultTab( ) {
+		mBinding.tabs.addTab(mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
+	}
+
+	/**
+	 * The object-id of a selected {@link TabLabel} of a {@link Tab}.
+	 */
+	private String mLongPressedObjectId;
+
+	/**
 	 * Add customized  {@link Tab}.
 	 *
-	 * @param text
-	 * 		The text to show on customized view to {@link Tab}.
-	 *
-	 * @return The customized  {@link Tab}.
+	 * @param tabLabel
+	 * 		{@link TabLabel}.
 	 */
-	private Tab addTab(String text) {
+	@Override
+	public void addTab(final TabLabel tabLabel) {
 		final Tab tab = mBinding.tabs.newTab();
-		tab.setText(text);
+		tab.setText(tabLabel.getLabel());
 		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
 		tab.setCustomView(tabV);
 		TextView tabTv = (TextView) tabV.findViewById(R.id.text);
-		tabTv.setText(text);
+		tabTv.setText(tabLabel.getLabel());
 		tabV.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -368,11 +407,12 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					mBinding.fab.hide();
 				}
 
+				mLongPressedObjectId =  tabLabel.getObjectId();
 				if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
 					//After API-11 we import drag-drop features to delete tabs.
 					TextView tabTv = (TextView) v.findViewById(R.id.text);
 					String text = tabTv.getText().toString();
-					ClipData data = ClipData.newPlainText(text, text);
+					ClipData data = ClipData.newPlainText("bmob_id", text);
 					DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 					v.startDrag(data, shadowBuilder, v, 0);
 				} else {
@@ -381,7 +421,22 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				return true;
 			}
 		});
-		return tab;
+		mBinding.tabs.addTab(tab);
+	}
+
+	/**
+	 * Remove a {@link Tab} from {@link Tab}s.
+	 *
+	 * @param tab
+	 * 		{@link Tab}
+	 */
+	@Override
+	public void removeTab(Tab tab) {
+		mBinding.tabs.removeTab(tab);
+		mBinding.del.hide();
+		if (mBinding.tabs.getTabCount() == 1) {
+			mBinding.tabs.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -393,18 +448,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 	}
 
-	/**
-	 * Remove a {@link Tab} from {@link #mBinding#tabs}
-	 *
-	 * @param tab
-	 */
-	private void removeTab(Tab tab) {
-		mBinding.tabs.removeTab(tab);
-		mBinding.del.hide();
-		if(mBinding.tabs.getTabCount() == 1) {
-			mBinding.tabs.setVisibility(View.GONE);
-		}
-	}
 
 	/**
 	 * Get data from server.
@@ -429,14 +472,15 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 							if (entries.getStart() > entries.getCount()) {
 								if (TextUtils.equals(mSrc, "web")) {
 									mIsBottom = true;
-									Snackbar.make(mBinding.mainCl, R.string.lbl_no_data, Snackbar.LENGTH_LONG).show();
+									Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_no_data,
+											Snackbar.LENGTH_LONG).show();
 									//For next
 									mSrc = "news";
 								} else {
 									mIsBottom = false;
 									mSrc = "web";
-									Snackbar.make(mBinding.mainCl, R.string.lbl_search_more, Snackbar.LENGTH_LONG)
-											.show();
+									Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_search_more,
+											Snackbar.LENGTH_LONG).show();
 									mStart = 1;
 									getData();
 								}
@@ -450,13 +494,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 							if (mStart > 10) {
 								mStart -= 10;
 							}
-							Snackbar.make(mBinding.mainCl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
-									R.string.lbl_retry, new OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											getData();
-										}
-									}).show();
+							Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
+									.setAction(R.string.lbl_retry, new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													getData();
+												}
+											}).show();
 
 							//Finish loading
 							mBinding.contentSrl.setRefreshing(false);
@@ -567,7 +611,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	protected void handleIntent(Intent intent) {
 		mKeyword = intent.getStringExtra(SearchManager.QUERY);
-		if(!TextUtils.isEmpty(mKeyword)) {
+		if (!TextUtils.isEmpty(mKeyword)) {
 			mKeyword = mKeyword.trim();
 		}
 		if (!TextUtils.isEmpty(mKeyword)) {

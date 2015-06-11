@@ -156,6 +156,7 @@
     <orderEntry type="library" exported="" name="play-services-wearable-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-games-7.5.0" level="project" />
+    <orderEntry type="library" exported="" name="BmobSDK_V3.3.7_0513" level="project" />
     <orderEntry type="library" exported="" name="play-services-plus-7.5.0" level="project" />
     <orderEntry type="library" exported="" name="antlr4-4.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-fitness-7.5.0" level="project" />

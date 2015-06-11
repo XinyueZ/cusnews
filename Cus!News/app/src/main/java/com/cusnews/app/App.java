@@ -42,6 +42,7 @@ import com.cusnews.api.Api;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 import com.tinyurl4j.data.Response;
 
+import cn.bmob.v3.Bmob;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
@@ -140,10 +141,11 @@ public final class App extends Application {
 	public void onCreate() {
 		super.onCreate();
 		Instance = this;
+		//TODO Config code of Bmob in cfg.properties late.
+		Bmob.initialize(this, "25e18a1ae367f2d0d4561de9026beab6");
 
 		Properties prop = new Properties();
 		InputStream input = null;
-		String value = null;
 		try {
 			/*From "resources".*/
 			input = getClassLoader().getResourceAsStream("key.properties");

@@ -17,7 +17,7 @@
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/main_cl"
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -128,7 +128,7 @@
                             android:textColor="@color/common_white" />
 
                         <EditText
-                            android:id="@+id/editText1"
+                            android:id="@+id/new_tab_label_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|top"
@@ -136,8 +136,7 @@
                             android:lines="1"
                             android:maxLength="10"
                             android:maxLines="1"
-                            android:minLines="1"
-                            android:text="Android" />
+                            android:minLines="1"/>
                     </LinearLayout>
 
                     <!--<EditText--><!--android:id="@+id/editText1"--><!--android:layout_width="250dp"--><!--android:layout_height="match_parent"--><!--android:layout_weight="3"--><!--android:layout_gravity="left|top"--><!--android:lines="1"--><!--android:maxLength="10"--><!--android:maxLines="1"--><!--android:minLines="1"--><!--android:hint="@string/lbl_tabs_tip"--><!--android:text="Android" />-->
