@@ -509,7 +509,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (!mBinding.del.isHidden()) {
 			mBinding.del.hide();
 		} else {
-			super.onBackPressed();
+			if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT) || mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+				mDrawerLayout.closeDrawers();
+			} else {
+				super.onBackPressed();
+			}
 		}
 	}
 
