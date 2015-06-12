@@ -92,7 +92,6 @@
 
                 <!--android.support.design.widget.TextInputLayout-->
                 <LinearLayout
-                    android:id="@+id/add_tab_et"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/line_vertical_image_height"
                     android:background="@color/fab_material_red_500"

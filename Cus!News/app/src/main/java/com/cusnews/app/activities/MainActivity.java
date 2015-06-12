@@ -56,6 +56,7 @@ import com.cusnews.ds.TabLabel;
 import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerHelper;
+import com.cusnews.utils.Utils;
 import com.cusnews.widgets.DynamicShareActionProvider;
 
 import de.greenrobot.event.EventBus;
@@ -268,6 +269,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				} catch (NoSuchAlgorithmException e) {
 					//TODO Error when can not get device id.
 				}
+				Utils.closeKeyboard(mBinding.newTabLabelTv);
 			}
 		});
 		mBinding.closeAddTabBtn.setOnClickListener(new OnClickListener() {
@@ -276,6 +278,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				mBinding.addTabV.hide();
 				mBinding.fab.show();
 				mBinding.addTabOpLl.setVisibility(View.GONE);
+				Utils.closeKeyboard(mBinding.newTabLabelTv);
 			}
 		});
 		mBinding.fab.setOnClickListener(new OnClickListener() {

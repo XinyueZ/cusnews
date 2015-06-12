@@ -3,8 +3,11 @@ package com.cusnews.utils;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 /**
  * Helper class.
@@ -49,5 +52,15 @@ public final class Utils {
 			return i;
 		}
 		return null;
+	}
+
+	/**
+	 * Helper to close keyboard.
+	 * @param editText {@link EditText} the host of keyboard.
+	 */
+	public static void closeKeyboard(EditText editText) {
+		InputMethodManager imm = (InputMethodManager)editText.getContext().getSystemService(
+				Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 }
