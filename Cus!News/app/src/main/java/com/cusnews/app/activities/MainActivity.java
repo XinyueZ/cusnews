@@ -37,6 +37,7 @@ import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
@@ -376,7 +377,23 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			public void success(Trends trends, Response response) {
 				List<String> list = trends.getList();
 				for(String trend : list) {
-					mBinding.navView.getMenu().add(trend);
+					mBinding.navView.getMenu().add(trend).setOnMenuItemClickListener(new OnMenuItemClickListener() {
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+							mDrawerLayout.closeDrawers();
+							TabLabel newTabLabel = null;
+							try {
+								newTabLabel = new TabLabel(item.getTitle().toString(),
+										DeviceUniqueUtil.getDeviceIdent(App.Instance));
+
+								TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
+										mBinding.coordinatorLayout).select();
+							} catch (NoSuchAlgorithmException e) {
+								//TODO Error when can not get device id.
+							}
+							return true;
+						}
+					});
 				}
 			}
 
@@ -442,9 +459,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 *
 	 * @param tabLabel
 	 * 		{@link TabLabel}.
+	 * 	@return The added new {@link Tab}.
 	 */
 	@Override
-	public void addTab(final TabLabel tabLabel) {
+	public Tab addTab(final TabLabel tabLabel) {
 		final Tab tab = mBinding.tabs.newTab();
 		tab.setText(tabLabel.getLabel());
 		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
@@ -501,10 +519,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				return true;
 			}
 		});
-		mBinding.tabs.addTab(tab);
+		mBinding.tabs.addTab(tab, 1);
 		if (mBinding.tabs.getTabCount() > 1) {
 			mBinding.tabs.setVisibility(View.VISIBLE);
 		}
+		return tab;
 	}
 
 	/**

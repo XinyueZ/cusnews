@@ -37,8 +37,10 @@ public class TabLabelManager {
 		 *
 		 * @param tabLabel
 		 * 		{@link TabLabel}.
+		 *
+		 * 	@return The added new {@link Tab}.
 		 */
-		void addTab(TabLabel tabLabel);
+		Tab addTab(TabLabel tabLabel);
 
 		/**
 		 * Remove a {@link Tab} from {@link Tab}s.
@@ -124,11 +126,12 @@ public class TabLabelManager {
 	}
 
 
-	public void addNewRemoteTab(final TabLabel newTabLabel, final TabLabelManagerHelper helper,
+	public Tab addNewRemoteTab(final TabLabel newTabLabel, final TabLabelManagerHelper helper,
 			final View viewForSnack) {
-		helper.addTab(newTabLabel);
+		Tab tab = helper.addTab(newTabLabel);
 		mTabLabels.add(newTabLabel);
 		addNewRemoteTabInternal(newTabLabel, viewForSnack);
+		return tab;
 	}
 
 
