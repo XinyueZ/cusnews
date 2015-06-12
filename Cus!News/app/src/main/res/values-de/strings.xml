@@ -13,6 +13,7 @@
     <string name="lbl_share_app_title">Hallo, ich bin hier</string>
     <string name="lbl_share_app_content">Guten Tag,\n\nmein Name ist %1$s, ich bin ein neuer, sauber, frei unabhängiger Nachrichtendienst.\n\n%2$s</string>
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
+    <string name="lbl_app_reload">Die App muss neugestartet werden, möchtest Du das machen?</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
@@ -36,4 +37,11 @@
     <string name="btn_no">Nein</string>
     <string name="btn_agree">Stimmte zu</string>
     <string name="btn_not_agree">Nein</string>
+
+    <string name="setting_lang">Sprach von Data</string>
+    <string-array name="lang_types">
+        <item>Englisch</item>
+        <item>Deutsch</item>
+        <item>Chinesisch</item>
+    </string-array>
 </resources>

@@ -718,6 +718,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				case R.id.action_faroo_home:
 					WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooBlog());
 					break;
+				case R.id.action_setting:
+					SettingActivity.showInstance(MainActivity.this);
+					break;
 				}
 				return true;
 			}

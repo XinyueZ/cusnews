@@ -14,6 +14,7 @@
     <string name="lbl_share_app_content">你好啊！\n\n我是%1$s，是一个新的，自由的，独立的，清爽型新闻应用。\n\n%2$s</string>
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
     <string name="lbl_play_service">本应用需要谷歌服务，必须先安装然后使用。</string>
+    <string name="lbl_app_reload">应用必须重新启动，重启吗？</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>
@@ -47,4 +48,10 @@
         <string name="about_eula_legal_text">使用该应用程序需要遵守以下条款 a)激活必要硬件使用权限，使应用程序能正确执行任务
             b)谷歌服务条款(http://www.google.com/intl/en/policies/terms/)，谷歌隐私政策(http://www.google.com/intl/en/policies/privacy/). c)任何谷歌服务特定的服务条款和隐私政策。谷歌服务条款和隐私政策可能会不定时更新，恕不另行通知。\n\n一旦您使用了本应用程序，即表示您同意我们根据谷歌的隐私政策和服务条款使用您的数据和相关硬件权限。</string>
 
+    <string name="setting_lang">咨询语言</string>
+    <string-array name="lang_types">
+        <item>英文</item>
+        <item>德文</item>
+        <item>中文</item>
+    </string-array>
 </resources>

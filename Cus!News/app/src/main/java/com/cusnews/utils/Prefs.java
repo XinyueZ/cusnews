@@ -3,6 +3,7 @@ package com.cusnews.utils;
 import java.util.Locale;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.chopping.application.BasicPrefs;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
@@ -35,6 +36,10 @@ public final class Prefs extends BasicPrefs {
 	 * Feeds-language.
 	 */
 	private static final String KEY_LANG = "key.lang";
+	/**
+	 * Feeds-language(value: 0, 1, 2).
+	 */
+	public static final String KEY_LANG_VALUE = "key.lang.value";
 	/**
 	 * Home-page of API-provider.
 	 */
@@ -187,4 +192,31 @@ public final class Prefs extends BasicPrefs {
 		setString(KEY_LANG, language);
 	}
 
+
+	/**
+	 * @return Feeds-language(value: 0-en, 1-de, 2-zh).
+	 */
+	public String getLanguageValue() {
+		return getString(KEY_LANG_VALUE, initLanguageValue());
+	}
+	/**
+	 * Set feeds-language(value: 0-en, 1-de, 2-zh).
+	 * @param  languageValue Feeds-language(value: 0-en, 1-de, 2-zh).
+	 */
+	public void setLanguageValue(String languageValue) {
+		setString(KEY_LANG_VALUE, languageValue);
+	}
+
+	private String initLanguageValue() {
+		if(TextUtils.equals(Locale.getDefault().getLanguage(), "en")) {
+			return "0";
+		}
+		if(TextUtils.equals(Locale.getDefault().getLanguage(), "de")) {
+			return "1";
+		}
+		if(TextUtils.equals(Locale.getDefault().getLanguage(), "zh")) {
+			return "2";
+		}
+		return "0";
+	}
 }

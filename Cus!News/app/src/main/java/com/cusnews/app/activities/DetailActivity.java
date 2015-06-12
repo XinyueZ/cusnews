@@ -88,7 +88,7 @@ public final class DetailActivity extends CusNewsActivity {
 
 
 		int curTime = App.Instance.getAdsShownTimes();
-		int adsTimes = 6;
+		int adsTimes = 7;
 		if (curTime % adsTimes == 0) {
 			// Create an ad.
 			mInterstitialAd = new InterstitialAd(this);

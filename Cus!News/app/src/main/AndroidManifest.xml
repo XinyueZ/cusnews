@@ -59,6 +59,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".app.activities.SettingActivity"
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/SettingsTheme" />
+
+
         <!--Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
