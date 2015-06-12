@@ -80,21 +80,7 @@ public final class App extends Application {
 	///-----
 
 
-	///-----
-	/**
-	 * TODO The search-keyword last time.
-	 */
-	private String mLastTimeSearched;
 
-	public String getLastTimeSearched() {
-		return mLastTimeSearched;
-	}
-
-	public void setLastTimeSearched(String lastTimeSearched) {
-		mLastTimeSearched = lastTimeSearched;
-	}
-
-	///-----
 
 
 	///-----
