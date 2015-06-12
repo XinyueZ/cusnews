@@ -77,7 +77,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 	 * @param context
 	 * 		A context object.
 	 */
-	public static void showInstance(Activity context ) {
+	public static void showInstance(Activity context) {
 		Intent intent = new Intent(context, SettingActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		context.startActivity(intent);
@@ -88,15 +88,16 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Prefs prefs = Prefs.getInstance();
-//		if(getResources().getBoolean(R.bool.landscape)) {
-//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//		}
+		//		if(getResources().getBoolean(R.bool.landscape)) {
+		//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		//		}
 		addPreferencesFromResource(R.xml.settings);
-//		mPb = ProgressDialog.show(this, null, getString(R.string.msg_app_init));
-//		mPb.setCancelable(true);
+		//		mPb = ProgressDialog.show(this, null, getString(R.string.msg_app_init));
+		//		mPb.setCancelable(true);
 		mToolbar = (Toolbar) getLayoutInflater().inflate(R.layout.toolbar, null, false);
 		addContentView(mToolbar, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		mToolbar.setTitle(R.string.action_settings);
+		mToolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
 		mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 		mToolbar.setNavigationOnClickListener(new OnClickListener() {
 			@Override
@@ -105,7 +106,6 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 			}
 		});
 		setTitle(R.string.action_settings);
-
 
 
 		ListPreference sort = (ListPreference) findPreference(Prefs.KEY_LANG_VALUE);
@@ -154,13 +154,13 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		if(preference.getKey().equals(Prefs.KEY_LANG_VALUE)) {
+		if (preference.getKey().equals(Prefs.KEY_LANG_VALUE)) {
 			int pos = Integer.valueOf(newValue.toString());
 			String[] arr = getResources().getStringArray(R.array.lang_types);
 			preference.setSummary(arr[pos]);
 
 			switch (pos) {
-			case  0:
+			case 0:
 				Prefs.getInstance().setLanguage("en");
 				break;
 			case 1:
@@ -171,8 +171,8 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				break;
 			}
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setPositiveButton(R.string.btn_yes,
-					new DialogInterface.OnClickListener() {
+			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setPositiveButton(
+					R.string.btn_yes, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							ActivityCompat.finishAffinity(SettingActivity.this);

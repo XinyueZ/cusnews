@@ -78,14 +78,16 @@ public final class WebViewActivity extends  CusNewsActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(LAYOUT);
-	calcActionBarHeight();
+		calcActionBarHeight();
 
 		//Actionbar
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
 		setSupportActionBar(toolbar);
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(getIntent().getStringExtra(EXTRAS_TITLE));
 
 //		mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.layout.content_srl);

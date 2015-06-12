@@ -299,6 +299,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				} catch (NoSuchAlgorithmException e) {
 					//TODO Error when can not get device id.
 				}
+				mBinding.fab.show();
 				Utils.closeKeyboard(mBinding.newTabLabelTv);
 			}
 		});
@@ -716,7 +717,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 				switch (menuItem.getItemId()) {
 				case R.id.action_faroo_home:
-					WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooBlog());
+					WebViewActivity.showInstance(MainActivity.this, getString(R.string.action_visit_faroo), Prefs.getInstance().getFarooBlog());
 					break;
 				case R.id.action_setting:
 					SettingActivity.showInstance(MainActivity.this);
