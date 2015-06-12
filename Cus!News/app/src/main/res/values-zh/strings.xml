@@ -7,6 +7,7 @@
     <string name="lbl_search_more">更多搜索！</string>
     <string name="lbl_related">相关</string>
     <string name="lbl_tabs_tip">添加标签。如果要删除标签，就在标签上长按，你会看到的…</string>
+    <string name="lbl_remove_tab">你想去除[%1$s]标签吗?</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\n看看吧\n%2$s\n\n%3$s</string>
     <string name="lbl_share_app_title">你好，关照下</string>
@@ -25,4 +26,8 @@
     <string name="no_app_to_share">没找到分享 %s 的应用!</string>
     <string name="no_share_type">没有确定分享类别！</string>
     <string name="error_occurred">报错！</string>
+
+
+    <string name="btn_yes">是的</string>
+    <string name="btn_no">不啦</string>
 </resources>

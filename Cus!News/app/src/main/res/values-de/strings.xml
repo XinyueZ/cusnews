@@ -7,6 +7,7 @@
     <string name="lbl_search_more">Suche mehr auf Internet!</string>
     <string name="lbl_related">Ähnlich</string>
     <string name="lbl_tabs_tip">Tab hinzufügen. Zu Entfernen kannst Du auf dem Tab langdrüken, dann siehst Du…</string>
+    <string name="lbl_remove_tab">Möchtest Du den Tab [%1$s] entfernen?</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\nDas Thema weiter zu lesen\n%2$s\n\n%3$s</string>
     <string name="lbl_share_app_title">Hallo, ich bin hier</string>
@@ -27,4 +28,9 @@
     <string name="no_app_to_share">Keine App %s gefunden!</string>
     <string name="no_share_type">Tye nicht gefunden!</string>
     <string name="error_occurred">Fehler!</string>
+
+
+
+    <string name="btn_yes">Ja</string>
+    <string name="btn_no">Nein</string>
 </resources>

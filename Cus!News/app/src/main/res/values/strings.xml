@@ -7,6 +7,7 @@
     <string name="lbl_search_more">Search more on web!</string>
     <string name="lbl_related">Related</string>
     <string name="lbl_tabs_tip">Add one tab. To move tab you can just long-press it and you see…</string>
+    <string name="lbl_remove_tab">Do you want to remove the tab [%1$s]?</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\nSee more on it\n%2$s\n\n%3$s</string>
     <string name="lbl_share_download_app">Download %1$s\n%2$s</string>
@@ -33,4 +34,7 @@
 
     <string name="interstitial_ad_unit_id">ca-app-pub-9133982521997162/1943700138</string>
 
+
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
 </resources>

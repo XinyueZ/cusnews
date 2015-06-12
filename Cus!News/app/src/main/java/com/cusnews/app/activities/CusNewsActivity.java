@@ -1,6 +1,10 @@
 package com.cusnews.app.activities;
 
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.cusnews.bus.ShareEvent;
 
@@ -50,4 +54,36 @@ public class CusNewsActivity extends AppCompatActivity {
 		EventBus.getDefault().unregister(this);
 	}
 
+
+	/**
+	 * Show  {@link android.support.v4.app.DialogFragment}.
+	 *
+	 * @param _dlgFrg
+	 * 		An instance of {@link android.support.v4.app.DialogFragment}.
+	 * @param _tagName
+	 * 		Tag name for dialog, default is "dlg". To grantee that only one instance of {@link
+	 * 		android.support.v4.app.DialogFragment} can been seen.
+	 */
+	protected void showDialogFragment(DialogFragment _dlgFrg, String _tagName) {
+		try {
+			if (_dlgFrg != null) {
+				DialogFragment dialogFragment = _dlgFrg;
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				// Ensure that there's only one dialog to the user.
+				Fragment prev = getSupportFragmentManager().findFragmentByTag("dlg");
+				if (prev != null) {
+					ft.remove(prev);
+				}
+				try {
+					if (TextUtils.isEmpty(_tagName)) {
+						dialogFragment.show(ft, "dlg");
+					} else {
+						dialogFragment.show(ft, _tagName);
+					}
+				} catch (Exception _e) {
+				}
+			}
+		} catch (Exception _e) {
+		}
+	}
 }

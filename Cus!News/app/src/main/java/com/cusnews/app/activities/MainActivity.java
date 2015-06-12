@@ -2,9 +2,11 @@ package com.cusnews.app.activities;
 
 import java.security.NoSuchAlgorithmException;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
@@ -17,11 +19,13 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -245,7 +249,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		//Init tabs
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
-		TabLabelManager.getInstance().init( this);
+		TabLabelManager.getInstance().init(this);
 
 
 		//Init "fab", "del" for all tabs, save-button for labels.
@@ -314,17 +318,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					return true;
 				}
 			});
-		} else {
-			mBinding.del.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Tab tab = (Tab) mBinding.del.getTag();
-					TabLabel tabLabel = new TabLabel();
-					tabLabel.setObjectId(mLongPressedObjectId);
-					TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel, MainActivity.this,
-							mBinding.coordinatorLayout);
-				}
-			});
 		}
 	}
 
@@ -369,7 +362,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Add customized , default, first {@link Tab}.
 	 */
 	@Override
-	public void addDefaultTab( ) {
+	public void addDefaultTab() {
 		mBinding.tabs.addTab(mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
 	}
 
@@ -401,22 +394,43 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		tabV.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				mBinding.del.show();
-				mBinding.del.setTag(tab);
-				if (!mBinding.fab.isHidden()) {
-					mBinding.fab.hide();
-				}
 
-				mLongPressedObjectId =  tabLabel.getObjectId();
+				mLongPressedObjectId = tabLabel.getObjectId();
 				if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
 					//After API-11 we import drag-drop features to delete tabs.
+					mBinding.del.show();
+					mBinding.del.setTag(tab);
+					if (!mBinding.fab.isHidden()) {
+						mBinding.fab.hide();
+					}
+
 					TextView tabTv = (TextView) v.findViewById(R.id.text);
 					String text = tabTv.getText().toString();
 					ClipData data = ClipData.newPlainText("bmob_id", text);
 					DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
 					v.startDrag(data, shadowBuilder, v, 0);
 				} else {
-					//Pre API-11, do nothing after showing "del" button, the remove of a tab will be done by clicking "del".
+					//Pre API-11, do it with dialog.
+					showDialogFragment(new DialogFragment() {
+						@Override
+						public Dialog onCreateDialog(Bundle savedInstanceState) {
+							// Use the Builder class for convenient dialog construction
+							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+							builder.setTitle(R.string.application_name).setMessage(getString(R.string.lbl_remove_tab,
+									tabLabel.getLabel())).setPositiveButton(R.string.btn_yes,
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											TabLabel tabLabel = new TabLabel();
+											tabLabel.setObjectId(mLongPressedObjectId);
+											TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel,
+													MainActivity.this, mBinding.coordinatorLayout);
+										}
+									});
+							return builder.create();
+						}
+					}, null);
+
 				}
 				return true;
 			}
@@ -496,11 +510,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 							}
 							Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
 									.setAction(R.string.lbl_retry, new OnClickListener() {
-												@Override
-												public void onClick(View v) {
-													getData();
-												}
-											}).show();
+										@Override
+										public void onClick(View v) {
+											getData();
+										}
+									}).show();
 
 							//Finish loading
 							mBinding.contentSrl.setRefreshing(false);
