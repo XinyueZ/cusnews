@@ -214,7 +214,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 
 		//Init adapter.
-		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
+		mBinding.setEntriesAdapter(new EntriesAdapter(Prefs.getInstance().getViewType().getLayoutResId()));
 
 		//Init recycleview.
 		mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
@@ -602,7 +602,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			public void onShareClick(final Intent shareIntent) {
 				String subject = getString(R.string.lbl_share_app_title);
 				String text = getString(R.string.lbl_share_app_content, getString(R.string.application_name),
-						App.Instance.getAppDownloadInfo());
+						Prefs.getInstance().getAppDownloadInfo());
 				shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 				shareIntent.putExtra(Intent.EXTRA_TEXT, text);
 				EventBus.getDefault().post(new ShareEvent(shareIntent));

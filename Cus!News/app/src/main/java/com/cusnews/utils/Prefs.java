@@ -3,6 +3,7 @@ package com.cusnews.utils;
 import android.content.Context;
 
 import com.chopping.application.BasicPrefs;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 /**
  * Store app and device information.
@@ -20,6 +21,14 @@ public final class Prefs extends BasicPrefs {
 	 * Device ident.
 	 */
 	private static final String KEY_DEVICE_IDENT = "key.device.ident";
+	/**
+	 * Type of different views, like horizontal, vertical, grid, etc.
+	 */
+	private static final String KEY_VIEW_TYPE = "key.view.type";
+	/**
+	 * Download-info of application.
+	 */
+	private static final String KEY_APP_DOWNLOAD = "key.app.download";
 
 	/**
 	 * Home-page of API-provider.
@@ -130,6 +139,36 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public String getFarooBlog() {
 		return getString(FAROO_BLOG, "http://blog.faroo.com/");
+	}
+
+	/**
+	 *
+	 * @return {@link ViewType}:  like horizontal, vertical, grid, etc.
+	 */
+	public ViewType getViewType() {
+		return ViewType.fromValue(getInt(KEY_VIEW_TYPE, 1));
+	}
+
+	/**
+	 * Set view-type horizontal, vertical, grid, etc.
+	 * @param viewType  {@link ViewType}.
+	 */
+	public void setViewType(ViewType viewType) {
+		setInt(KEY_VIEW_TYPE, viewType.getValue());
+	}
+
+	/**
+	 * @return Download-info of application.
+	 */
+	public String getAppDownloadInfo() {
+		return getString(KEY_APP_DOWNLOAD, null);
+	}
+
+	/**
+	 * Set download-info of application.
+	 */
+	public void setAppDownloadInfo(String appDownloadInfo) {
+		setString(KEY_APP_DOWNLOAD, appDownloadInfo);
 	}
 
 }

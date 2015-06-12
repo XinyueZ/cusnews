@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.cusnews.R;
-import com.cusnews.app.App;
 import com.cusnews.bus.ChangeViewTypeEvent;
+import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
 
@@ -88,14 +88,14 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	public boolean onMenuItemClick(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
 		case R.id.action_view_type_horizontal:
-			App.Instance.setViewType(ViewType.HORIZONTAL);
+			Prefs.getInstance().setViewType(ViewType.HORIZONTAL);
 			break;
 		case R.id.action_view_type_vertical:
-			App.Instance.setViewType(ViewType.VERTICAL);
+			Prefs.getInstance().setViewType(ViewType.VERTICAL);
 			break;
 		}
 		updateMenuItems(mPopupMenu.getMenu());
-		EventBus.getDefault().post(new ChangeViewTypeEvent(App.Instance.getViewType()));
+		EventBus.getDefault().post(new ChangeViewTypeEvent(Prefs.getInstance().getViewType()));
 		return true;
 	}
 
@@ -106,24 +106,42 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	 * 		The host of all menu-items.
 	 */
 	private void updateMenuItems(Menu menu) {
-		menu.findItem(R.id.action_view_type_horizontal).setChecked(ViewType.HORIZONTAL == App.Instance.getViewType());
-		menu.findItem(R.id.action_view_type_vertical).setChecked(ViewType.VERTICAL == App.Instance.getViewType());
+		menu.findItem(R.id.action_view_type_horizontal).setChecked(ViewType.HORIZONTAL == Prefs.getInstance().getViewType());
+		menu.findItem(R.id.action_view_type_vertical).setChecked(ViewType.VERTICAL == Prefs.getInstance().getViewType());
 	}
 
 
 	public enum ViewType {
-		HORIZONTAL(R.layout.item_horizontal_entry), VERTICAL(R.layout.item_vertical_entry), GRID(-1);
+		HORIZONTAL(0, R.layout.item_horizontal_entry), VERTICAL(1, R.layout.item_vertical_entry), GRID(2, -1);
 		/**
 		 * The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 		 */
 		private int mLayoutResId;
 
-		ViewType(int layoutResId) {
+		private int mValue;
+
+		ViewType(int value, int layoutResId) {
 			mLayoutResId = layoutResId;
+			mValue = value;
 		}
 
 		public int getLayoutResId() {
 			return mLayoutResId;
+		}
+
+		public static ViewType fromValue(int value) {
+			switch (value) {
+			case 0:
+				return HORIZONTAL;
+			case 1:
+				return VERTICAL;
+			default:
+				return null;
+			}
+		}
+
+		public int getValue() {
+			return mValue;
 		}
 	}
 }

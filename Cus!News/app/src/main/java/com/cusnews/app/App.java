@@ -41,7 +41,6 @@ import com.chopping.net.TaskHelper;
 import com.cusnews.R;
 import com.cusnews.api.Api;
 import com.cusnews.utils.Prefs;
-import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 import com.tinyurl4j.data.Response;
 
 import cn.bmob.v3.Bmob;
@@ -63,25 +62,6 @@ public final class App extends Application {
 	 */
 	private String mApiKey;
 
-	///-----
-	/**
-	 * TODO Temp place to save view-types before {@link android.content.SharedPreferences} will be imported.
-	 */
-	private ViewType mViewType = ViewType.VERTICAL;
-
-
-	public ViewType getViewType() {
-		return mViewType;
-	}
-
-	public void setViewType(ViewType viewType) {
-		mViewType = viewType;
-	}
-	///-----
-
-
-
-
 
 	///-----
 	/**
@@ -100,25 +80,6 @@ public final class App extends Application {
 
 	///-----
 
-	///-----
-
-	/**
-	 * TODO App-tinyurl , download url etc.
-	 *
-	 *
-	 */
-	private String mAppDownloadInfo;
-
-	public String getAppDownloadInfo() {
-		return mAppDownloadInfo;
-	}
-
-	public void setAppDownloadInfo(String appDownloadInfo) {
-		mAppDownloadInfo = appDownloadInfo;
-	}
-
-
-	///-----
 
 	/**
 	 * Times that the AdMob shown before, it under App-process domain. When process killed, it recounts
@@ -159,18 +120,19 @@ public final class App extends Application {
 		Api.initialize(this, "http://www.faroo.com/");
 
 
-		String url = getAppDownloadInfo();
+		String url = Prefs.getInstance().getAppDownloadInfo();
 		if (TextUtils.isEmpty(url) || !url.contains("tinyurl")) {
 			com.tinyurl4j.Api.getTinyUrl(getString(R.string.lbl_store_url, getPackageName()), new Callback<Response>() {
 				@Override
 				public void success(Response response, retrofit.client.Response response2) {
-					setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(R.string.application_name), response.getResult()));
+					Prefs.getInstance().setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(
+							R.string.application_name), response.getResult()));
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
-					setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(R.string.application_name), getString(R.string.lbl_store_url,
-							getPackageName())));
+					Prefs.getInstance().setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(
+							R.string.application_name), getString(R.string.lbl_store_url, getPackageName())));
 				}
 			});
 		}
@@ -186,8 +148,8 @@ public final class App extends Application {
 	}
 
 	/**
-	 *
-	 * @return How much times that the AdMob has shown before, it under App-process domain. When process killed, it recounts.
+	 * @return How much times that the AdMob has shown before, it under App-process domain. When process killed, it
+	 * recounts.
 	 */
 	public int getAdsShownTimes() {
 		return mAdsShownTimes;
@@ -195,7 +157,9 @@ public final class App extends Application {
 
 	/**
 	 * Set how much times that the AdMob has shown before, it under App-process domain.
-	 * @param adsShownTimes Times that AdMob has shown.
+	 *
+	 * @param adsShownTimes
+	 * 		Times that AdMob has shown.
 	 */
 	public void setAdsShownTimes(int adsShownTimes) {
 		mAdsShownTimes = adsShownTimes;

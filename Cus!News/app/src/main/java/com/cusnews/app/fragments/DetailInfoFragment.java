@@ -22,6 +22,7 @@ import com.cusnews.app.App;
 import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.DetailInfoBinding;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.Prefs;
 import com.cusnews.widgets.DynamicShareActionProvider;
 import com.tinyurl4j.Api;
 import com.tinyurl4j.data.Response;
@@ -129,7 +130,7 @@ public final class DetailInfoFragment extends CusNewsFragment {
 					String subject = getString(R.string.lbl_share_entry_title, getString(R.string.application_name),
 							entry.getTitle());
 					String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
-							App.Instance.getAppDownloadInfo());
+							Prefs.getInstance().getAppDownloadInfo());
 					shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 					shareIntent.putExtra(Intent.EXTRA_TEXT, text);
 					EventBus.getDefault().post(new ShareEvent(shareIntent));
