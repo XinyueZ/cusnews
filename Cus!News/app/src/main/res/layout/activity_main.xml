@@ -188,35 +188,34 @@
             android:fitsSystemWindows="true"
             app:itemIconTint="@color/primary_accent"
             app:itemTextColor="@color/primary_accent"
-            app:menu="@menu/drawer_view">
+            app:menu="@menu/drawer_view" />
 
-            <ScrollView
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/common_white">
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:layout_gravity="bottom|start"
-                android:background="@color/common_white">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-
-                <LinearLayout
+                <FrameLayout
+                    android:id="@+id/app_list_fl"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content" />
 
-                    <FrameLayout
-                        android:id="@+id/app_list_fl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="start"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:background="@color/common_transparent"
-                        android:onClick="openFarooHome"
-                        android:src="@drawable/faroo_logo" />
-                </LinearLayout>
-            </ScrollView>
-        </android.support.design.widget.NavigationView>
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:background="@color/common_transparent"
+                    android:onClick="openFarooHome"
+                    android:src="@drawable/faroo_logo" />
+            </LinearLayout>
+        </ScrollView>
     </android.support.v4.widget.DrawerLayout>
 </layout>

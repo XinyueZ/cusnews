@@ -9,7 +9,9 @@ import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.Tab;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 
+import com.cusnews.R;
 import com.cusnews.app.App;
 import com.cusnews.ds.TabLabel;
 
@@ -74,11 +76,12 @@ public class TabLabelManager {
 	 *
 	 * @param helper
 	 * 		{@link com.cusnews.utils.TabLabelManager.TabLabelManagerHelper}.
-	 * 	@param loadDefault {@code true} if the first default will also be loaded.
+	 * @param loadDefault
+	 * 		{@code true} if the first default will also be loaded.
 	 */
 	public void init(final TabLabelManagerHelper helper, boolean loadDefault) {
 		//Default page.
-		if(loadDefault) {
+		if (loadDefault) {
 			helper.addDefaultTab();
 		}
 		//Load from cache.
@@ -129,16 +132,23 @@ public class TabLabelManager {
 	}
 
 
-	public void addNewRemoteTabInternal(final TabLabel newTabLabel, final View viewForSnack) {
+	private void addNewRemoteTabInternal(final TabLabel newTabLabel, final View viewForSnack) {
 		newTabLabel.save(App.Instance, new SaveListener() {
 			@Override
 			public void onSuccess() {
-				Snackbar.make(viewForSnack, "Add new tab " + newTabLabel.getLabel(), Snackbar.LENGTH_SHORT).show();
+				Snackbar.make(viewForSnack, viewForSnack.getContext().getString(R.string.lbl_sync_label_added,
+						newTabLabel.getLabel()), Snackbar.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onFailure(int i, String s) {
-				addNewRemoteTabInternal(newTabLabel, viewForSnack);
+				Snackbar.make(viewForSnack, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								addNewRemoteTabInternal(newTabLabel, viewForSnack);
+							}
+						}).show();
 			}
 		});
 	}
@@ -157,16 +167,22 @@ public class TabLabelManager {
 	}
 
 
-	public void removeRemoteTabInternal(final TabLabel tabLabel, final View viewForSnack) {
+	private void removeRemoteTabInternal(final TabLabel tabLabel, final View viewForSnack) {
 		tabLabel.delete(App.Instance, new DeleteListener() {
 			@Override
 			public void onSuccess() {
-				Snackbar.make(viewForSnack, "Remove tab ", Snackbar.LENGTH_SHORT).show();
+				Snackbar.make(viewForSnack, R.string.lbl_sync_label_removed, Snackbar.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onFailure(int i, String s) {
-				removeRemoteTabInternal(tabLabel, viewForSnack);
+				Snackbar.make(viewForSnack, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) { 
+								removeRemoteTabInternal(tabLabel, viewForSnack);
+							}
+						}).show();
 			}
 		});
 	}

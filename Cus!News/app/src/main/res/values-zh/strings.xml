@@ -15,6 +15,9 @@
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
     <string name="lbl_play_service">本应用需要谷歌服务，必须先安装然后使用。</string>
     <string name="lbl_app_reload">应用必须重新启动，重启吗？</string>
+    <string name="lbl_sync_fail">同步失败，请重新尝试。</string>
+    <string name="lbl_sync_label_added">同步添加[%1$s]。</string>
+    <string name="lbl_sync_label_removed">同步删除标签。</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>
@@ -27,6 +30,7 @@
     <string name="action_about">关于</string>
     <string name="action_backward">回退</string>
     <string name="action_forward">向前</string>
+    <string name="action_more_apps">更多应用</string>
 
     <!--For DynamicShareActionProvider-->
     <string name="no_app_to_share">没找到分享 %s 的应用!</string>

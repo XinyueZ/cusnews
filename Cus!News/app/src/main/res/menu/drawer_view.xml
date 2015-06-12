@@ -25,6 +25,11 @@
         android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings" />
 
+    <item
+        android:id="@+id/action_more_apps"
+        android:icon="@drawable/ic_apps"
+        android:title="@string/action_more_apps" />
+
 
     <!--<group android:checkableBehavior="single">-->
         <!--<item-->

@@ -22,30 +22,29 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:layout_height="match_parent" >
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    style="@style/ActionBar_ToolBar"
-                    app:layout_scrollFlags="scroll|enterAlways"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/ActionBar_ToolBar"
+                app:layout_scrollFlags="scroll|enterAlways" />
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
+            android:fitsSystemWindows="true"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="@color/common_white">
+            android:background="@color/common_white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,7 +97,6 @@
                             android:layout_gravity="end"
                             android:orientation="horizontal"
                             android:visibility="@{android.text.TextUtils.isEmpty(entry.author) ? View.GONE : View.VISIBLE}">
-
 
 
                             <com.cusnews.widgets.FontTextView
@@ -162,6 +160,6 @@
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

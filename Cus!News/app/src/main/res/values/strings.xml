@@ -16,6 +16,9 @@
     <string name="lbl_store_url">https://play.google.com/store/apps/details?id=%1$s</string>
     <string name="lbl_play_service">This application needs Google Play Service, you must install it first.</string>
     <string name="lbl_app_reload">The application must be restarted, would you like?</string>
+    <string name="lbl_sync_fail">Synchronization is fail, please retry.</string>
+    <string name="lbl_sync_label_added">Synchronized adding [%1$s].</string>
+    <string name="lbl_sync_label_removed">Synchronized removing tab.</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
@@ -31,6 +34,7 @@
     <string name="action_about">About</string>
     <string name="action_backward">Backward</string>
     <string name="action_forward">Forward</string>
+    <string name="action_more_apps">More Apps</string>
 
     <!--For DynamicShareActionProvider-->
 

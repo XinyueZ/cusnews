@@ -106,6 +106,8 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 			binding.setEntry(entry);
 			binding.setQuery(getArguments().getString(EXTRAS_QUERY));
 
+			//Status-bar should be not transparent when no-image-mode is on.
+			//binding.coordinatorLayout.setStatusBarBackgroundResource(R.color.primary_dark_color);
 
 			//Init actionbar
 			binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);

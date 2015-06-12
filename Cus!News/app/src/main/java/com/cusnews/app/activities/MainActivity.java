@@ -33,6 +33,7 @@ import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.chopping.bus.CloseDrawerEvent;
 import com.cusnews.R;
 import com.cusnews.api.Api;
 import com.cusnews.app.App;
@@ -152,6 +154,16 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	//------------------------------------------------
 
 	/**
+	 * Handler for {@link com.chopping.bus.CloseDrawerEvent }.
+	 *
+	 * @param e
+	 * 		Event {@link com.chopping.bus.CloseDrawerEvent}.
+	 */
+	public void onEvent(CloseDrawerEvent e) {
+		mDrawerLayout.closeDrawer(Gravity.RIGHT);
+	}
+
+	/**
 	 * Handler for {@link com.cusnews.bus.ChangeViewTypeEvent}.
 	 *
 	 * @param e
@@ -173,8 +185,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void onEvent(OpenEntryEvent e) {
 		DetailActivity.showInstance(this, e.getEntry(), mKeyword);
 	}
-
-
 
 
 	/**
@@ -279,7 +289,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
 		TabLabelManager.getInstance().init(this, true);
-		if(mBinding.tabs.getTabCount() == 1) {
+		if (mBinding.tabs.getTabCount() == 1) {
 			mBinding.tabs.setVisibility(View.GONE);
 		}
 
@@ -295,6 +305,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
 								mBinding.coordinatorLayout);
 						mBinding.addTabV.hide();
+						mBinding.newTabLabelTv.setText("");
+						mBinding.addTabOpLl.setVisibility(View.GONE);
+						mBinding.newTabLabelTv.setVisibility(View.GONE);
 					}
 				} catch (NoSuchAlgorithmException e) {
 					//TODO Error when can not get device id.
@@ -306,8 +319,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.closeAddTabBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mBinding.addTabV.hide();
 				mBinding.fab.show();
+				mBinding.addTabV.hide();
+				mBinding.newTabLabelTv.setText("");
 				mBinding.addTabOpLl.setVisibility(View.GONE);
 				mBinding.newTabLabelTv.setVisibility(View.GONE);
 				Utils.closeKeyboard(mBinding.newTabLabelTv);
@@ -316,10 +330,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.fab.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mBinding.addTabV.show();
 				mBinding.fab.hide();
+				mBinding.addTabV.show();
 				mBinding.addTabOpLl.setVisibility(View.VISIBLE);
-				mBinding.newTabLabelTv.setText("");
 				mBinding.newTabLabelTv.setVisibility(View.VISIBLE);
 			}
 		});
@@ -471,7 +484,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 		});
 		mBinding.tabs.addTab(tab);
-		if(mBinding.tabs.getTabCount() > 1) {
+		if (mBinding.tabs.getTabCount() > 1) {
 			mBinding.tabs.setVisibility(View.VISIBLE);
 		}
 	}
@@ -588,7 +601,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			mSearchView.setSearchableInfo(info);
 		}
 
-		if(!Prefs.getInstance().showAllImages()) {
+		if (!Prefs.getInstance().showAllImages()) {
 			menu.findItem(R.id.action_view_type).setVisible(false);
 		}
 		return true;
@@ -717,14 +730,18 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			@Override
 			public boolean onNavigationItemSelected(MenuItem menuItem) {
 				menuItem.setChecked(true);
-				mDrawerLayout.closeDrawers();
+				mDrawerLayout.closeDrawer(Gravity.LEFT);
 
 				switch (menuItem.getItemId()) {
 				case R.id.action_faroo_home:
-					WebViewActivity.showInstance(MainActivity.this, getString(R.string.action_visit_faroo), Prefs.getInstance().getFarooBlog());
+					WebViewActivity.showInstance(MainActivity.this, getString(R.string.action_visit_faroo),
+							Prefs.getInstance().getFarooBlog());
 					break;
 				case R.id.action_setting:
 					SettingActivity.showInstance(MainActivity.this);
+					break;
+				case R.id.action_more_apps:
+					mDrawerLayout.openDrawer(Gravity.RIGHT);
 					break;
 				}
 				return true;
@@ -755,9 +772,12 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 	/**
 	 * Open Faroo's home-page.
-	 * @param view No usage.
+	 *
+	 * @param view
+	 * 		No usage.
 	 */
 	public void openFarooHome(View view) {
+		mDrawerLayout.openDrawer(Gravity.RIGHT);
 		WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooHome());
 	}
 }

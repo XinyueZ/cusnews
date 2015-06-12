@@ -14,6 +14,9 @@
     <string name="lbl_share_app_content">Guten Tag,\n\nmein Name ist %1$s, ich bin ein neuer, sauber, frei unabhängiger Nachrichtendienst.\n\n%2$s</string>
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
     <string name="lbl_app_reload">Die App muss neugestartet werden, möchtest Du das machen?</string>
+    <string name="lbl_sync_fail">Fehler bei dem Synchronisation, bitte wiederholen.</string>
+    <string name="lbl_sync_label_added">Synchronisiere den neuen Tab [%1$s].</string>
+    <string name="lbl_sync_label_removed">Synchronisiere…</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
@@ -25,6 +28,7 @@
     <string name="action_share">Teile</string>
     <string name="action_backward">Zurück</string>
     <string name="action_forward">Weiter</string>
+    <string name="action_more_apps">Weitere Apps</string>
 
     <!--For DynamicShareActionProvider-->
     <string name="no_app_to_share">Keine App %s gefunden!</string>
