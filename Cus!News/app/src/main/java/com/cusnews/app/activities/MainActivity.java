@@ -369,6 +369,22 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				}
 			});
 		}
+
+		//Top-Trends.
+		Api.getTopTrends("", Prefs.getInstance().getLanguage(), App.Instance.getApiKey(), new Callback<Trends>() {
+			@Override
+			public void success(Trends trends, Response response) {
+				List<String> list = trends.getList();
+				for(String trend : list) {
+					mBinding.navView.getMenu().add(trend);
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+			}
+		});
 	}
 
 
@@ -785,24 +801,5 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void openFarooHome(View view) {
 		mDrawerLayout.openDrawer(Gravity.RIGHT);
 		WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooHome());
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Api.getTopTrends("", Prefs.getInstance().getLanguage(), App.Instance.getApiKey(), new Callback<Trends>() {
-			@Override
-			public void success(Trends trends, Response response) {
-				List<String> list = trends.getList();
-				for(String trend : list) {
-					mBinding.navView.getMenu().add(trend);
-				}
-			}
-
-			@Override
-			public void failure(RetrofitError error) {
-
-			}
-		});
 	}
 }
