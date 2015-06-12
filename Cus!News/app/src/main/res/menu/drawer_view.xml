@@ -30,6 +30,10 @@
         android:icon="@drawable/ic_apps"
         android:title="@string/action_more_apps" />
 
+    <item
+        android:id="@+id/action_trends"
+        android:icon="@drawable/ic_social_whatshot"
+        android:title="@string/action_trends" />
 
     <!--<group android:checkableBehavior="single">-->
         <!--<item-->

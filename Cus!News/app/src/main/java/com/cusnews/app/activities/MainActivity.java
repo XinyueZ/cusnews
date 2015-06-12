@@ -1,6 +1,7 @@
 package com.cusnews.app.activities;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -61,6 +62,7 @@ import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
 import com.cusnews.ds.TabLabel;
+import com.cusnews.ds.Trends;
 import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
@@ -783,5 +785,24 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void openFarooHome(View view) {
 		mDrawerLayout.openDrawer(Gravity.RIGHT);
 		WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooHome());
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Api.getTopTrends("", Prefs.getInstance().getLanguage(), App.Instance.getApiKey(), new Callback<Trends>() {
+			@Override
+			public void success(Trends trends, Response response) {
+				List<String> list = trends.getList();
+				for(String trend : list) {
+					mBinding.navView.getMenu().add(trend);
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+			}
+		});
 	}
 }

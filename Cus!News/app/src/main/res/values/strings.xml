@@ -35,6 +35,7 @@
     <string name="action_backward">Backward</string>
     <string name="action_forward">Forward</string>
     <string name="action_more_apps">More Apps</string>
+    <string name="action_trends">Trends</string>
 
     <!--For DynamicShareActionProvider-->
 

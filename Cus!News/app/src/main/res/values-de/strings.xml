@@ -29,6 +29,7 @@
     <string name="action_backward">Zurück</string>
     <string name="action_forward">Weiter</string>
     <string name="action_more_apps">Weitere Apps</string>
+    <string name="action_trends">Trends</string>
 
     <!--For DynamicShareActionProvider-->
     <string name="no_app_to_share">Keine App %s gefunden!</string>

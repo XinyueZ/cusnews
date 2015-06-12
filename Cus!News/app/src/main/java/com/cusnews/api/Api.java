@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.cusnews.ds.Entries;
+import com.cusnews.ds.Trends;
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.Callback;
@@ -150,9 +151,24 @@ public final class Api {
 				@Query("src") String  src,
 				@Query(value = "key" , encodeName = false, encodeValue=false) String  key,
 				Callback<Entries> callback);
-
-
-
+		/**
+		 * API method to get top hot-queries.
+		 *
+		 * @param query
+		 * 		The keyword to query.
+		 * @param lang
+		 * 		Language.
+		 * @param key
+		 * 		The API-key.
+		 * @param callback
+		 * 		The callback after getting feeds.
+		 */
+		@GET("/api?length=10&f=json&c=true&src=trends&start=1")
+		void getTopTrends(
+				@Query("q") String  query,
+				@Query("l") String  lang,
+				@Query(value = "key" , encodeName = false, encodeValue=false) String  key,
+				Callback<Trends> callback);
 	}
 
 	/**
@@ -163,7 +179,7 @@ public final class Api {
 	 * @param start
 	 * 		Page.
 	 * @param lang
-	 * 		Language: en(English), de(German), zh(Chinese), the default is en.
+	 * 		Language: en(English), de(German), zh(Chinese), the default is en(English).
 	 * @param src
 	 * 		Different type: News: news, Search: web, Topics: topics
 	 * @param key
@@ -194,6 +210,37 @@ public final class Api {
 				  src,
 				  key,
 				  callback);
+	}
+
+
+
+	/**
+	 * API method to get top hot-queries.
+	 *
+	 * @param query
+	 * 		The keyword to query.
+	 * @param lang
+	 * 		Language: en(English), de(German), zh(Chinese), the default is en(English).
+	 * @param key
+	 * 		The API-key.
+	 * @param callback
+	 * 		The callback after getting feeds.
+	 */
+	public static final void getTopTrends(
+			String  query,
+			String  lang,
+			String  key,
+			Callback<Trends> callback){
+		assertCall();
+		if (s == null) {
+			RestAdapter adapter = new RestAdapter.Builder().setClient(sClient).setRequestInterceptor(
+					sInterceptor).setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(sHost).build();
+			s = adapter.create(S.class);
+		}
+		if(TextUtils.isEmpty(lang)) {
+			lang = "en";
+		}
+		s.getTopTrends(query, lang, key, callback);
 	}
 
 
