@@ -507,7 +507,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (!mInProgress) {
 			mBinding.contentSrl.setRefreshing(true);
 			mInProgress = true;
-			Api.getEntries(mKeyword, mStart, App.Instance.getLanguage(), mSrc, App.Instance.getApiKey(),
+			Api.getEntries(mKeyword, mStart, Prefs.getInstance().getLanguage(), mSrc, App.Instance.getApiKey(),
 					new Callback<Entries>() {
 						@Override
 						public void success(Entries entries, Response response) {

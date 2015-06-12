@@ -63,22 +63,6 @@ public final class App extends Application {
 	private String mApiKey;
 
 
-	///-----
-	/**
-	 * TODO The search language, default and first release is always English: en, late will be Chinese: zh and German:
-	 * de .
-	 */
-	private String mLanguage = "en";
-
-	public String getLanguage() {
-		return mLanguage;
-	}
-
-	public void setLanguage(String language) {
-		mLanguage = language;
-	}
-
-	///-----
 
 
 	/**

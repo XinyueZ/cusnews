@@ -1,5 +1,7 @@
 package com.cusnews.utils;
 
+import java.util.Locale;
+
 import android.content.Context;
 
 import com.chopping.application.BasicPrefs;
@@ -16,7 +18,7 @@ public final class Prefs extends BasicPrefs {
 	 * <p/>
 	 * {@code true} if EULA has been shown and agreed.
 	 */
-	private static final String KEY_EULA_SHOWN = "key_eula_shown";
+	private static final String KEY_EULA_SHOWN = "key.eula.shown";
 	/**
 	 * Device ident.
 	 */
@@ -29,13 +31,14 @@ public final class Prefs extends BasicPrefs {
 	 * Download-info of application.
 	 */
 	private static final String KEY_APP_DOWNLOAD = "key.app.download";
-
+	/**
+	 * Feeds-language.
+	 */
+	private static final String KEY_LANG = "key.lang";
 	/**
 	 * Home-page of API-provider.
 	 */
 	private static final String FAROO_HOME = "faroo_home";
-
-
 	/**
 	 * Blog-page of API-provider.
 	 */
@@ -169,6 +172,19 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public void setAppDownloadInfo(String appDownloadInfo) {
 		setString(KEY_APP_DOWNLOAD, appDownloadInfo);
+	}
+	/**
+	 * @return Feeds-language.
+	 */
+	public String getLanguage() {
+		return getString(KEY_LANG, Locale.getDefault().getLanguage());
+	}
+	/**
+	 * Set feeds-language.
+	 * @param  language Feeds-language.
+	 */
+	public void setLanguage(String language) {
+		setString(KEY_LANG, language);
 	}
 
 }

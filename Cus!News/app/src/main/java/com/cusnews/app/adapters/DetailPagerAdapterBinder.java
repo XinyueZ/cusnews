@@ -23,6 +23,7 @@ import com.cusnews.app.App;
 import com.cusnews.bus.OpenRelatedEvent;
 import com.cusnews.ds.Entries;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.Prefs;
 
 import org.jsoup.Jsoup;
 
@@ -77,7 +78,7 @@ public final class DetailPagerAdapterBinder {
 				});
 			}
 		} else {
-			Api.getEntries(query, 1, App.Instance.getLanguage(), "web", App.Instance.getApiKey(), new Callback<Entries>() {
+			Api.getEntries(query, 1, Prefs.getInstance().getLanguage(), "web", App.Instance.getApiKey(), new Callback<Entries>() {
 				@Override
 				public void success(Entries entries, Response response) {
 					if (entries.getStart() <= entries.getCount() && vgWrapper.get() != null) {
