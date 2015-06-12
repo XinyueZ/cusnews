@@ -37,8 +37,10 @@ import java.util.Properties;
 import android.app.Application;
 import android.text.TextUtils;
 
+import com.chopping.net.TaskHelper;
 import com.cusnews.R;
 import com.cusnews.api.Api;
+import com.cusnews.utils.Prefs;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 import com.tinyurl4j.data.Response;
 
@@ -141,8 +143,9 @@ public final class App extends Application {
 	public void onCreate() {
 		super.onCreate();
 		Instance = this;
-		//TODO Config code of Bmob in cfg.properties late.
-		Bmob.initialize(this, "25e18a1ae367f2d0d4561de9026beab6");
+
+		TaskHelper.init(getApplicationContext());
+		Prefs.createInstance(this);
 
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -153,6 +156,7 @@ public final class App extends Application {
 				// load a properties file
 				prop.load(input);
 				mApiKey = prop.getProperty("appkey");
+				Bmob.initialize(this, prop.getProperty("bmobkey"));
 			}
 		} catch (IOException ex) {
 			mApiKey = null;

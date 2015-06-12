@@ -201,5 +201,7 @@
     <orderEntry type="library" exported="" name="ST4-4.0.8" level="project" />
     <orderEntry type="library" exported="" name="jsoup-1.8.2" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-7.5.0" level="project" />
+    <orderEntry type="module" module-name="volley_cz" exported="" />
+    <orderEntry type="module" module-name="ChoppingBootstrap" exported="" />
   </component>
 </module>

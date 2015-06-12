@@ -19,6 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -39,6 +40,7 @@ import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -47,13 +49,18 @@ import com.cusnews.api.Api;
 import com.cusnews.app.App;
 import com.cusnews.app.SearchSuggestionProvider;
 import com.cusnews.app.adapters.EntriesAdapter;
+import com.cusnews.app.fragments.AboutDialogFragment;
+import com.cusnews.app.fragments.AppListImpFragment;
 import com.cusnews.bus.ChangeViewTypeEvent;
+import com.cusnews.bus.EULAConfirmedEvent;
+import com.cusnews.bus.EULARejectEvent;
 import com.cusnews.bus.OpenEntryEvent;
 import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
 import com.cusnews.ds.TabLabel;
 import com.cusnews.utils.DeviceUniqueUtil;
+import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerHelper;
 import com.cusnews.utils.Utils;
@@ -168,6 +175,27 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 
+
+
+	/**
+	 * Handler for {@link  EULARejectEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link  EULARejectEvent}.
+	 */
+	public void onEvent(EULARejectEvent e) {
+		ActivityCompat.finishAfterTransition(this);
+	}
+
+	/**
+	 * Handler for {@link EULAConfirmedEvent}
+	 *
+	 * @param e
+	 * 		Event {@link  EULAConfirmedEvent}.
+	 */
+	public void onEvent(EULAConfirmedEvent e) {
+
+	}
 	//------------------------------------------------
 
 	@Override
@@ -183,8 +211,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
+		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 
-		//Init adapter
+		//Init adapter.
 		mBinding.setEntriesAdapter(new EntriesAdapter(App.Instance.getViewType().getLayoutResId()));
 
 		//Init recycleview.
@@ -224,7 +253,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		});
 
-		//Init pull2load
+		//Init pull2load.
 		mBinding.contentSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
 		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
 		mBinding.contentSrl.setProgressViewOffset(false, 0, mActionBarHeight * 2);
@@ -236,22 +265,22 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 		});
 
-		//Init actionbar.
+		//Init actionbar & navi-bar(drawer).
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-		if (navigationView != null) {
-			setupDrawerContent(navigationView);
-		}
+		setupDrawerContent(mBinding.navView);
+
 		getData();
 
-		//Init tabs
+		//Init tabs.
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
 		TabLabelManager.getInstance().init(this);
-
+		if(mBinding.tabs.getTabCount() == 1) {
+			mBinding.tabs.setVisibility(View.GONE);
+		}
 
 		//Init "fab", "del" for all tabs, save-button for labels.
 		mBinding.addTabV.hide();
@@ -278,6 +307,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				mBinding.addTabV.hide();
 				mBinding.fab.show();
 				mBinding.addTabOpLl.setVisibility(View.GONE);
+				mBinding.newTabLabelTv.setVisibility(View.GONE);
 				Utils.closeKeyboard(mBinding.newTabLabelTv);
 			}
 		});
@@ -287,6 +317,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				mBinding.addTabV.show();
 				mBinding.fab.hide();
 				mBinding.addTabOpLl.setVisibility(View.VISIBLE);
+				mBinding.newTabLabelTv.setText("");
+				mBinding.newTabLabelTv.setVisibility(View.VISIBLE);
 			}
 		});
 		mBinding.del.hide();
@@ -305,12 +337,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
 						break;
 					case DragEvent.ACTION_DROP:
-
 						break;
 					case DragEvent.ACTION_DRAG_ENDED:
 						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
 						mBinding.del.hide();
-
 						TabLabel tabLabel = new TabLabel();
 						tabLabel.setObjectId(mLongPressedObjectId);
 						TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel, MainActivity.this,
@@ -439,6 +469,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 		});
 		mBinding.tabs.addTab(tab);
+		if(mBinding.tabs.getTabCount() > 1) {
+			mBinding.tabs.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
@@ -451,7 +484,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void removeTab(Tab tab) {
 		mBinding.tabs.removeTab(tab);
 		mBinding.del.hide();
-		if (mBinding.tabs.getTabCount() == 1) {
+		if (mBinding.tabs.getTabCount() < 2) {
 			mBinding.tabs.setVisibility(View.GONE);
 		}
 	}
@@ -609,6 +642,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				mLayoutManager.scrollToPositionWithOffset(0, 0);
 			}
 			break;
+		case R.id.action_about:
+			showDialogFragment(AboutDialogFragment.newInstance(this), null);
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -669,15 +705,52 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 	}
 
-
+	/**
+	 * Set-up of navi-bar left.
+	 */
 	private void setupDrawerContent(NavigationView navigationView) {
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(MenuItem menuItem) {
 				menuItem.setChecked(true);
 				mDrawerLayout.closeDrawers();
+
+				switch (menuItem.getItemId()) {
+				case R.id.action_faroo_home:
+					WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooBlog());
+					break;
+				}
 				return true;
 			}
 		});
+	}
+
+
+	@Override
+	protected void onAppConfigLoaded() {
+		super.onAppConfigLoaded();
+		showAppList();
+	}
+
+	@Override
+	protected void onAppConfigIgnored() {
+		super.onAppConfigIgnored();
+		showAppList();
+	}
+
+	/**
+	 * Show all external applications links.
+	 */
+	private void showAppList() {
+		getSupportFragmentManager().beginTransaction().replace(R.id.app_list_fl, AppListImpFragment.newInstance(this))
+				.commit();
+	}
+
+	/**
+	 * Open Faroo's home-page.
+	 * @param view No usage.
+	 */
+	public void openFarooHome(View view) {
+		WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooHome());
 	}
 }

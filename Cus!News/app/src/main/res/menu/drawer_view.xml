@@ -16,34 +16,44 @@
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_alert"
-            android:title="Home" />
-        <item
-            android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_alert"
-            android:title="Messages" />
-        <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/ic_alert"
-            android:title="Friends" />
-        <item
-            android:id="@+id/nav_discussion"
-            android:icon="@drawable/ic_alert"
-            android:title="Discussion" />
-    </group>
+    <item
+        android:id="@+id/action_faroo_home"
+        android:icon="@drawable/ic_faroo_home"
+        android:title="@string/action_visit_faroo" />
+    <item
+        android:id="@+id/action_setting"
+        android:icon="@drawable/ic_action_settings"
+        android:title="@string/action_settings" />
 
-    <item android:title="Sub items">
-        <menu>
-            <item
-                android:icon="@drawable/ic_alert"
-                android:title="Sub item 1" />
-            <item
-                android:icon="@drawable/ic_alert"
-                android:title="Sub item 2" />
-        </menu>
-    </item>
+
+    <!--<group android:checkableBehavior="single">-->
+        <!--<item-->
+            <!--android:id="@+id/nav_home"-->
+            <!--android:icon="@drawable/ic_alert"-->
+            <!--android:title="Home" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_messages"-->
+            <!--android:icon="@drawable/ic_alert"-->
+            <!--android:title="Messages" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_friends"-->
+            <!--android:icon="@drawable/ic_alert"-->
+            <!--android:title="Friends" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_discussion"-->
+            <!--android:icon="@drawable/ic_alert"-->
+            <!--android:title="Discussion" />-->
+    <!--</group>-->
+
+    <!--<item android:title="Sub items">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:icon="@drawable/ic_alert"-->
+                <!--android:title="Sub item 1" />-->
+            <!--<item-->
+                <!--android:icon="@drawable/ic_alert"-->
+                <!--android:title="Sub item 2" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

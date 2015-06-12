@@ -38,20 +38,25 @@
                     android:layout_height="wrap_content" />
             </android.support.design.widget.AppBarLayout>
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/content_srl"
+            <FrameLayout
+                android:id="@id/error_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/entries_rv"
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/content_srl"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="none"
-                    app:entriesAdapter="@{entriesAdapter}" />
-            </android.support.v4.widget.SwipeRefreshLayout>
+                    android:layout_height="match_parent">
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/entries_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"
+                        app:entriesAdapter="@{entriesAdapter}" />
+                </android.support.v4.widget.SwipeRefreshLayout>
+            </FrameLayout>
 
             <com.software.shell.fab.ActionButton
                 android:id="@+id/del"
@@ -135,7 +140,7 @@
                             android:lines="1"
                             android:maxLength="10"
                             android:maxLines="1"
-                            android:minLines="1"/>
+                            android:minLines="1" />
                     </LinearLayout>
 
                     <!--<EditText--><!--android:id="@+id/editText1"--><!--android:layout_width="250dp"--><!--android:layout_height="match_parent"--><!--android:layout_weight="3"--><!--android:layout_gravity="left|top"--><!--android:lines="1"--><!--android:maxLength="10"--><!--android:maxLines="1"--><!--android:minLines="1"--><!--android:hint="@string/lbl_tabs_tip"--><!--android:text="Android" />-->
@@ -176,10 +181,42 @@
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:background="@color/common_white"
             android:fitsSystemWindows="true"
-            app:menu="@menu/drawer_view" />
+            app:itemIconTint="@color/primary_accent"
+            app:itemTextColor="@color/primary_accent"
+            app:menu="@menu/drawer_view">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="450dp"
+                android:layout_gravity="bottom|start"
+                android:background="@color/common_white">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/app_list_fl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="start"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:background="@color/common_transparent"
+                        android:onClick="openFarooHome"
+                        android:src="@drawable/faroo_logo" />
+                </LinearLayout>
+            </ScrollView>
+        </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
 </layout>

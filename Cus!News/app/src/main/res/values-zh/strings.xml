@@ -13,7 +13,9 @@
     <string name="lbl_share_app_title">你好，关照下</string>
     <string name="lbl_share_app_content">你好啊！\n\n我是%1$s，是一个新的，自由的，独立的，清爽型新闻应用。\n\n%2$s</string>
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
+    <string name="lbl_play_service">本应用需要谷歌服务，必须先安装然后使用。</string>
 
+    <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>
     <string name="action_view_type">视图</string>
     <string name="action_view_type_horizontal">水平</string>
@@ -21,13 +23,28 @@
     <string name="action_top">回顶端</string>
     <string name="action_search">搜一搜</string>
     <string name="action_share">分享</string>
+    <string name="action_about">关于</string>
+    <string name="action_backward">回退</string>
+    <string name="action_forward">向前</string>
 
     <!--For DynamicShareActionProvider-->
     <string name="no_app_to_share">没找到分享 %s 的应用!</string>
     <string name="no_share_type">没有确定分享类别！</string>
     <string name="error_occurred">报错！</string>
 
-
+    <string name="btn_confirm">确认</string>
     <string name="btn_yes">是的</string>
     <string name="btn_no">不啦</string>
+    <string name="btn_agree">同意</string>
+    <string name="btn_not_agree">拒绝</string>
+
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_body">&lt;b&gt;%1$s &lt;/b&gt;&lt;br&gt;版本%2$s &lt;br&gt;</string>
+    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
+    <string name="about_licenses">开源许可证</string>
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">最终用户许可协议</string>
+        <string name="about_eula_legal_text">使用该应用程序需要遵守以下条款 a)激活必要硬件使用权限，使应用程序能正确执行任务
+            b)谷歌服务条款(http://www.google.com/intl/en/policies/terms/)，谷歌隐私政策(http://www.google.com/intl/en/policies/privacy/). c)任何谷歌服务特定的服务条款和隐私政策。谷歌服务条款和隐私政策可能会不定时更新，恕不另行通知。\n\n一旦您使用了本应用程序，即表示您同意我们根据谷歌的隐私政策和服务条款使用您的数据和相关硬件权限。</string>
+
 </resources>

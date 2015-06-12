@@ -14,7 +14,7 @@
     <string name="lbl_share_app_content">Guten Tag,\n\nmein Name ist %1$s, ich bin ein neuer, sauber, frei unabhängiger Nachrichtendienst.\n\n%2$s</string>
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
 
-
+    <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_view_type">Ansicht</string>
     <string name="action_view_type_horizontal">Horizontal</string>
@@ -22,7 +22,8 @@
     <string name="action_top">Nach oben</string>
     <string name="action_search">Suche</string>
     <string name="action_share">Teile</string>
-
+    <string name="action_backward">Zurück</string>
+    <string name="action_forward">Weiter</string>
 
     <!--For DynamicShareActionProvider-->
     <string name="no_app_to_share">Keine App %s gefunden!</string>
@@ -30,7 +31,9 @@
     <string name="error_occurred">Fehler!</string>
 
 
-
+    <string name="btn_confirm">Ja</string>
     <string name="btn_yes">Ja</string>
     <string name="btn_no">Nein</string>
+    <string name="btn_agree">Stimmte zu</string>
+    <string name="btn_not_agree">Nein</string>
 </resources>
