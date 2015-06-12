@@ -261,6 +261,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+				TabLabelManager.getInstance().init(MainActivity.this, false);
 				getData();
 			}
 		});
@@ -277,7 +278,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		//Init tabs.
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
-		TabLabelManager.getInstance().init(this);
+		TabLabelManager.getInstance().init(this, true);
 		if(mBinding.tabs.getTabCount() == 1) {
 			mBinding.tabs.setVisibility(View.GONE);
 		}
@@ -535,8 +536,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 									getData();
 								}
 							}
-
-							App.Instance.setLastTimeSearched(mKeyword);
 						}
 
 						@Override

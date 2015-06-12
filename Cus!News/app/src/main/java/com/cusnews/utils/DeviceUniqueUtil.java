@@ -23,14 +23,12 @@ public class DeviceUniqueUtil {
 	 */
 	@Nullable
 	public static String getDeviceIdent(Context c) throws NoSuchAlgorithmException {
-		//TODO Save device-id to SharePerference.
-//		Prefs prefs = Prefs.getInstance(c);
-//		if (TextUtils.isEmpty(prefs.getDeviceIdent())) {
-//			String code = DeviceId.getDeviceId(c);
-//			prefs.setDeviceIdent(code);
-//		}
-//		return prefs.getDeviceIdent();
-		return DeviceId.getDeviceId(c);
+		Prefs prefs = Prefs.getInstance();
+		if (TextUtils.isEmpty(prefs.getDeviceIdent())) {
+			String code = DeviceId.getDeviceId(c);
+			prefs.setDeviceIdent(code);
+		}
+		return prefs.getDeviceIdent();
 	}
 
 

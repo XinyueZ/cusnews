@@ -74,10 +74,13 @@ public class TabLabelManager {
 	 *
 	 * @param helper
 	 * 		{@link com.cusnews.utils.TabLabelManager.TabLabelManagerHelper}.
+	 * 	@param loadDefault {@code true} if the first default will also be loaded.
 	 */
-	public void init(final TabLabelManagerHelper helper) {
+	public void init(final TabLabelManagerHelper helper, boolean loadDefault) {
 		//Default page.
-		helper.addDefaultTab();
+		if(loadDefault) {
+			helper.addDefaultTab();
+		}
 		//Load from cache.
 		for (TabLabel cached : mTabLabels) {
 			helper.addTab(cached);
