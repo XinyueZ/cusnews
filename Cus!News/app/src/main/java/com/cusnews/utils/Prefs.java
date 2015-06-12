@@ -41,6 +41,10 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public static final String KEY_LANG_VALUE = "key.lang.value";
 	/**
+	 * Show all images or not.
+	 */
+	public static final String KEY_SHOW_IMAGES = "key.show.images";
+	/**
 	 * Home-page of API-provider.
 	 */
 	private static final String FAROO_HOME = "faroo_home";
@@ -218,5 +222,13 @@ public final class Prefs extends BasicPrefs {
 			return "2";
 		}
 		return "0";
+	}
+
+	/**
+	 *
+	 * @return Show all images or not. {@code true} if show, otherwise not show.
+	 */
+	public boolean showAllImages() {
+		return getBoolean(KEY_SHOW_IMAGES, true);
 	}
 }

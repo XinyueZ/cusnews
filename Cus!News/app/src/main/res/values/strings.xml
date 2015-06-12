@@ -76,4 +76,7 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+
+    <string name="setting_show_image">Show all images of content.</string>
 </resources>

@@ -44,4 +44,6 @@
         <item>Deutsch</item>
         <item>Chinesisch</item>
     </string-array>
+
+    <string name="setting_show_image">Alle Bilder anzeigen.</string>
 </resources>

@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.cusnews.app.fragments.DetailInfoFragment;
+import com.cusnews.app.fragments.DetailInfoNoImageFragment;
 import com.cusnews.app.fragments.DetailSiteFragment;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.Prefs;
 
 /**
  * Detail-pager's adapter. A news detail and a {@link android.webkit.WebView} for news-web.
@@ -52,7 +54,11 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int position) {
 		switch (position) {
 		case 0:
-			return DetailInfoFragment.newInstance(mContext, mEntry, mQuery);
+			if (!Prefs.getInstance().showAllImages()) {
+				return DetailInfoNoImageFragment.newInstance(mContext, mEntry, mQuery);
+			} else {
+				return DetailInfoFragment.newInstance(mContext, mEntry, mQuery);
+			}
 		case 1:
 			return DetailSiteFragment.newInstance(mContext, mEntry);
 		}

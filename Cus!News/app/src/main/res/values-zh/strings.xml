@@ -54,4 +54,6 @@
         <item>德文</item>
         <item>中文</item>
     </string-array>
+
+    <string name="setting_show_image">显示图片。</string>
 </resources>

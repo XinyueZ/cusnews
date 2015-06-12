@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -117,6 +118,10 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		sort.setOnPreferenceChangeListener(this);
 
 
+		CheckBoxPreference showImages = (CheckBoxPreference) findPreference(Prefs.KEY_SHOW_IMAGES);
+		showImages.setOnPreferenceChangeListener(this);
+
+
 		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin = getActionBarHeight(this);
 	}
 
@@ -171,8 +176,20 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				break;
 			}
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setPositiveButton(
-					R.string.btn_yes, new DialogInterface.OnClickListener() {
+			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setNegativeButton(
+					R.string.btn_no, null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					ActivityCompat.finishAffinity(SettingActivity.this);
+				}
+			});
+			builder.create().show();
+		}
+
+		if (preference.getKey().equals(Prefs.KEY_SHOW_IMAGES)) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setNegativeButton(
+					R.string.btn_no, null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							ActivityCompat.finishAffinity(SettingActivity.this);

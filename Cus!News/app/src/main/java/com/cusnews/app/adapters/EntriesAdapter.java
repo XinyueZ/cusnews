@@ -17,6 +17,7 @@ import com.cusnews.BR;
 import com.cusnews.R;
 import com.cusnews.bus.OpenEntryEvent;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
 
@@ -81,6 +82,9 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 		Context cxt = parent.getContext();
 		//		boolean landscape = cxt.getResources().getBoolean(R.bool.landscape);
 		LayoutInflater inflater = LayoutInflater.from(cxt);
+		if(!Prefs.getInstance().showAllImages()) {
+			mLayoutResId = R.layout.item_vertical_no_image_entry;
+		}
 		ViewDataBinding binding = DataBindingUtil.inflate(inflater, mLayoutResId, parent, false);
 		return new EntriesAdapter.ViewHolder(binding);
 	}

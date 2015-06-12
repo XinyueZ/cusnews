@@ -587,6 +587,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
 			mSearchView.setSearchableInfo(info);
 		}
+
+		if(!Prefs.getInstance().showAllImages()) {
+			menu.findItem(R.id.action_view_type).setVisible(false);
+		}
 		return true;
 	}
 

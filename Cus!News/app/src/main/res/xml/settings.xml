@@ -8,5 +8,12 @@
         android:layout="@layout/setting_item"
         android:title="@string/setting_lang" />
 
+    <CheckBoxPreference
+        android:key="key.show.images"
+        android:title="@string/setting_show_image"
+        android:summaryOn="@string/btn_yes"
+        android:summaryOff="@string/btn_no"
+        android:layout="@layout/setting_item"
+        android:defaultValue="true" />
 
 </PreferenceScreen>
