@@ -25,18 +25,11 @@
 
 
 
-    <style name="ActionBar_ToolBar_Standalone">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:minHeight">?attr/actionBarSize</item>
-        <item name="android:theme">@style/AppTheme</item>
-        <item name="android:popupTheme">@style/AppTheme</item>
-        <item name="android:elevation">@dimen/common_high_elevation</item>
-        <item name="theme">@style/AppTheme</item>
-        <item name="popupTheme">@style/AppTheme</item>
+    <style name="ActionBar_ToolBar_Standalone" parent="ActionBar_ToolBar">
         <item name="android:background">@color/primary_color</item>
         <item name="background">@color/primary_color</item>
-        <item name="elevation">@dimen/common_high_elevation</item>
+        <item name="android:theme">@style/AppTheme</item>
+        <item name="theme">@style/AppTheme</item>
     </style>
 
     <style name="Text">

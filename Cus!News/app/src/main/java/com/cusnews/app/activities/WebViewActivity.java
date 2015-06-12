@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -82,24 +83,21 @@ public final class WebViewActivity extends  CusNewsActivity{
 
 		//Actionbar
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		toolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
 		setSupportActionBar(toolbar);
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setDefaultDisplayHomeAsUpEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(getIntent().getStringExtra(EXTRAS_TITLE));
 
-//		mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.layout.content_srl);
-//		mSwipeRefreshLayout.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
-//		mSwipeRefreshLayout.setProgressViewEndTarget(true, mActionBarHeight * 2);
-//		mSwipeRefreshLayout.setProgressViewOffset(false, 0, mActionBarHeight * 2);
-//		mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-//			@Override
-//			public void onRefresh() {
-//				mWebView.reload();
-//			}
-//		});
+		mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.web_view_content_srl);
+		mSwipeRefreshLayout.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
+		mSwipeRefreshLayout.setProgressViewEndTarget(true, mActionBarHeight * 2);
+		mSwipeRefreshLayout.setProgressViewOffset(false, 0, mActionBarHeight * 2);
+		mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				mWebView.reload();
+			}
+		});
 
 		mWebView = (WebView) findViewById(R.id.webView);
 		WebSettings settings = mWebView.getSettings();
@@ -114,12 +112,12 @@ public final class WebViewActivity extends  CusNewsActivity{
 		mWebView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//				mSwipeRefreshLayout.setRefreshing(true);
+				mSwipeRefreshLayout.setRefreshing(true);
 			}
 
 			@Override
 			public void onPageFinished(WebView view, String url) {
-//				mSwipeRefreshLayout.setRefreshing(false);
+				mSwipeRefreshLayout.setRefreshing(false);
 			}
 
 			@Override
