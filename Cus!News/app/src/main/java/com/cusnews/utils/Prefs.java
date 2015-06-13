@@ -45,6 +45,10 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public static final String KEY_SHOW_IMAGES = "key.show.images";
 	/**
+	 * Suggestion on a dialog before adding tab to UI.
+	 */
+	private static final String KEY_ADD_TAB_TIP = "key.add.tab.tip";
+	/**
 	 * Home-page of API-provider.
 	 */
 	private static final String FAROO_HOME = "faroo_home";
@@ -230,5 +234,20 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public boolean showAllImages() {
 		return getBoolean(KEY_SHOW_IMAGES, true);
+	}
+	/**
+	 * Set whether the suggestion on a dialog before adding tab to UI has been shown.
+	 * <p/>
+	 * {@code true} if the tip has been shown before.
+	 */
+	public void setAddTabTip(boolean shown) {
+		setBoolean(KEY_ADD_TAB_TIP, shown);
+	}
+	/**
+	 * Suggestion on a dialog before adding tab to UI.
+	 * @return  {@code true} if the tip has been shown before.
+	 */
+	public boolean addTabTip() {
+		return getBoolean(KEY_ADD_TAB_TIP, false);
 	}
 }

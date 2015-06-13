@@ -381,6 +381,27 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						@Override
 						public boolean onMenuItemClick(MenuItem item) {
 							mDrawerLayout.closeDrawers();
+
+							if(!Prefs.getInstance().addTabTip()) {
+								showDialogFragment(new DialogFragment() {
+									@Override
+									public Dialog onCreateDialog(Bundle savedInstanceState) {
+										// Use the Builder class for convenient dialog construction
+										AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+										builder.setTitle(R.string.application_name).setMessage(R.string.lbl_tabs_tip).setPositiveButton(
+												R.string.btn_ok, null);
+										return builder.create();
+									}
+								}, null);
+								Prefs.getInstance().setAddTabTip(true);
+							}
+
+
+							addTrendToTab(item);
+							return true;
+						}
+
+						private void addTrendToTab(MenuItem item) {
 							TabLabel newTabLabel = null;
 							try {
 								newTabLabel = new TabLabel(item.getTitle().toString(),
@@ -391,7 +412,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 							} catch (NoSuchAlgorithmException e) {
 								//TODO Error when can not get device id.
 							}
-							return true;
 						}
 					});
 				}
