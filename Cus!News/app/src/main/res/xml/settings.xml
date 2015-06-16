@@ -9,11 +9,53 @@
         android:title="@string/setting_lang" />
 
     <CheckBoxPreference
+        android:defaultValue="true"
         android:key="key.show.images"
-        android:title="@string/setting_show_image"
-        android:summaryOn="@string/btn_yes"
-        android:summaryOff="@string/btn_no"
         android:layout="@layout/setting_item"
-        android:defaultValue="true" />
+        android:summaryOff="@string/btn_no"
+        android:summaryOn="@string/btn_yes"
+        android:title="@string/setting_show_image" />
 
+
+    <PreferenceCategory
+        android:layout="@layout/setting_entry"
+        android:title="@string/setting_push">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key.push.on.off"
+            android:layout="@layout/setting_item"
+            android:summaryOff="@string/setting_push_close"
+            android:summaryOn="@string/setting_push_open"
+            android:title="@string/setting_push_open_close" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key.push.news"
+            android:layout="@layout/setting_item"
+            android:title="@string/setting_push_news"
+            android:visibility="gone" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key.push.football"
+            android:layout="@layout/setting_item"
+            android:title="@string/setting_push_football"
+            android:visibility="gone" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key.push.internet"
+            android:layout="@layout/setting_item"
+            android:title="@string/setting_push_internet"
+            android:visibility="gone" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key.push.google"
+            android:layout="@layout/setting_item"
+            android:title="@string/setting_push_google"
+            android:visibility="gone" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="key.push.apple"
+            android:layout="@layout/setting_item"
+            android:title="@string/setting_push_apple"
+            android:visibility="gone" />
+    </PreferenceCategory>
 </PreferenceScreen>

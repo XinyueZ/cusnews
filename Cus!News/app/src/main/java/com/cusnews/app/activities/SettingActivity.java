@@ -2,8 +2,11 @@ package com.cusnews.app.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,8 +15,10 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +31,10 @@ import com.chopping.bus.ApplicationConfigurationLoadingIgnoredEvent;
 import com.chopping.exceptions.CanNotOpenOrFindAppPropertiesException;
 import com.chopping.exceptions.InvalidAppPropertiesException;
 import com.cusnews.R;
+import com.cusnews.gcm.RegistrationIntentService;
+import com.cusnews.gcm.SubscribeIntentService;
+import com.cusnews.gcm.UnregistrationIntentService;
+import com.cusnews.gcm.UnsubscribeIntentService;
 import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -45,6 +54,11 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 	 * Progress indicator.
 	 */
 	private ProgressDialog mPb;
+
+	private BroadcastReceiver mRegistrationBroadcastReceiver;
+	private BroadcastReceiver mUnregistrationBroadcastReceiver;
+	private BroadcastReceiver mSubscribeBroadcastReceiver;
+	private BroadcastReceiver mUnsubscribeBroadcastReceiver;
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
@@ -93,8 +107,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		//		}
 		addPreferencesFromResource(R.xml.settings);
-		//		mPb = ProgressDialog.show(this, null, getString(R.string.msg_app_init));
-		//		mPb.setCancelable(true);
+
 		mToolbar = (Toolbar) getLayoutInflater().inflate(R.layout.toolbar, null, false);
 		addContentView(mToolbar, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		mToolbar.setTitle(R.string.action_settings);
@@ -108,7 +121,44 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		});
 		setTitle(R.string.action_settings);
 
+		//Listeners for register and unregister PUSH.
+		mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					dismissPb();
+				}
+			}
+		};
 
+		mUnregistrationBroadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					dismissPb();
+				}
+			}
+		};
+		mSubscribeBroadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					dismissPb();
+				}
+			}
+		};
+
+		mUnsubscribeBroadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					dismissPb();
+				}
+			}
+		};
+
+
+		//Feeds-language selection.
 		ListPreference sort = (ListPreference) findPreference(Prefs.KEY_LANG_VALUE);
 		String value = prefs.getLanguageValue();
 		sort.setValue(value);
@@ -117,9 +167,24 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		sort.setSummary(arr[pos]);
 		sort.setOnPreferenceChangeListener(this);
 
-
+		//Show-Image-Mode or not.
 		CheckBoxPreference showImages = (CheckBoxPreference) findPreference(Prefs.KEY_SHOW_IMAGES);
 		showImages.setOnPreferenceChangeListener(this);
+
+		//Push.
+		CheckBoxPreference pushOnOff = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_ON_OFF);
+		pushOnOff.setOnPreferenceChangeListener(this);
+		CheckBoxPreference pushNews = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_NEWS);
+		pushNews.setOnPreferenceChangeListener(this);
+		CheckBoxPreference pushFootball = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_FOOTBALL);
+		pushFootball.setOnPreferenceChangeListener(this);
+		CheckBoxPreference pushInternet = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_INTERNET);
+		pushInternet.setOnPreferenceChangeListener(this);
+		CheckBoxPreference pushGoogle = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_GOOGLE);
+		pushGoogle.setOnPreferenceChangeListener(this);
+		CheckBoxPreference pushApple = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_APPLE);
+		pushApple.setOnPreferenceChangeListener(this);
+
 
 
 		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin = getActionBarHeight(this);
@@ -197,6 +262,37 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 					});
 			builder.create().show();
 		}
+
+
+		//Push
+		String lang = Prefs.getInstance().getLanguage();
+		if (preference.getKey().equals(Prefs.KEY_PUSH_ON_OFF)) {
+			if (Boolean.valueOf(newValue.toString())) {
+				mPb = ProgressDialog.show(this, null, "Registering");
+				mPb.setCancelable(true);
+				Intent intent = new Intent(this, RegistrationIntentService.class);
+				startService(intent);
+			} else {
+				mPb = ProgressDialog.show(this, null, "Unregister");
+				mPb.setCancelable(true);
+				Intent intent = new Intent(this, UnregistrationIntentService.class);
+				startService(intent);
+			}
+		}
+
+
+		if (preference.getKey().equals(Prefs.KEY_PUSH_NEWS)) {
+			if (Boolean.valueOf(newValue.toString())) {
+				Intent intent = new Intent(this, SubscribeIntentService.class);
+				intent.putExtra(SubscribeIntentService.TOPIC, "global-" + lang );
+				startService(intent);
+			} else {
+				Intent intent = new Intent(this, UnsubscribeIntentService.class);
+				intent.putExtra(UnsubscribeIntentService.TOPIC, "global-" + lang );
+				startService(intent);
+			}
+
+		}
 		return true;
 	}
 
@@ -223,11 +319,25 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				}
 			}).create().show();
 		}
+
+
+		LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+				new IntentFilter(RegistrationIntentService.REGISTRATION_COMPLETE));
+		LocalBroadcastManager.getInstance(this).registerReceiver(mUnregistrationBroadcastReceiver,
+				new IntentFilter(UnregistrationIntentService.UNREGISTRATION_COMPLETE));
+		LocalBroadcastManager.getInstance(this).registerReceiver(mSubscribeBroadcastReceiver,
+				new IntentFilter(SubscribeIntentService.SUBSCRIBE_COMPLETE));
+		LocalBroadcastManager.getInstance(this).registerReceiver(mUnsubscribeBroadcastReceiver,
+				new IntentFilter(UnsubscribeIntentService.UNSUBSCRIBE_COMPLETE));
 	}
 
 	@Override
 	protected void onPause() {
 		EventBus.getDefault().unregister(this);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnregistrationBroadcastReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mSubscribeBroadcastReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnsubscribeBroadcastReceiver);
 		super.onPause();
 	}
 

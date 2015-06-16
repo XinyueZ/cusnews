@@ -61,8 +61,10 @@ public final class App extends Application {
 	 * Api-key.
 	 */
 	private String mApiKey;
-
-
+	/**
+	 * The id of push-sender.
+	 */
+	private String mSenderId;
 
 
 	/**
@@ -87,6 +89,7 @@ public final class App extends Application {
 				// load a properties file
 				prop.load(input);
 				mApiKey = prop.getProperty("appkey");
+				mSenderId = prop.getProperty("senderId");
 				Bmob.initialize(this, prop.getProperty("bmobkey"));
 			}
 		} catch (IOException ex) {
@@ -147,5 +150,13 @@ public final class App extends Application {
 	 */
 	public void setAdsShownTimes(int adsShownTimes) {
 		mAdsShownTimes = adsShownTimes;
+	}
+
+	/**
+	 *
+	 * @return The id of push-sender.
+	 */
+	public String getSenderId() {
+		return mSenderId;
 	}
 }

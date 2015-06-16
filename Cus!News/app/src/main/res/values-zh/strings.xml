@@ -18,6 +18,9 @@
     <string name="lbl_sync_fail">同步失败，请重新尝试。</string>
     <string name="lbl_sync_label_added">同步添加[%1$s]。</string>
     <string name="lbl_sync_label_removed">同步删除标签。</string>
+    <string name="lbl_register_push_failed">我无法注册推送功能，请检查网络是否通畅。</string>
+    <string name="lbl_unregister_push_failed">我注销推送功能，请检查网络是否通畅。</string>
+
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>
@@ -60,5 +63,15 @@
         <item>中文</item>
     </string-array>
 
-    <string name="setting_show_image">显示图片。</string>
+    <string name="setting_show_image">显示图片</string>
+
+    <string name="setting_push">推送</string>
+    <string name="setting_push_open_close">启动或关闭推送。</string>
+    <string name="setting_push_open">启动</string>
+    <string name="setting_push_close">关闭</string>
+    <string name="setting_push_news">新闻</string>
+    <string name="setting_push_football">足球</string>
+    <string name="setting_push_internet">网络</string>
+    <string name="setting_push_google">谷歌</string>
+    <string name="setting_push_apple">苹果公司</string>
 </resources>

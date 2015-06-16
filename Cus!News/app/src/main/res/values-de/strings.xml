@@ -17,6 +17,9 @@
     <string name="lbl_sync_fail">Fehler bei dem Synchronisation, bitte wiederholen.</string>
     <string name="lbl_sync_label_added">Synchronisiere den neuen Tab [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronisiere…</string>
+    <string name="lbl_register_push_failed">Ich kann die Push-Benachrichtigung nicht registrieren, ist das Internet da?</string>
+    <string name="lbl_unregister_push_failed">Ich kann die Push-Benachrichtigung nicht unregistrieren, ist das Internet da?</string>
+
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
@@ -50,5 +53,15 @@
         <item>Chinesisch</item>
     </string-array>
 
-    <string name="setting_show_image">Alle Bilder anzeigen.</string>
+    <string name="setting_show_image">Alle Bilder anzeigen</string>
+
+    <string name="setting_push">Push</string>
+    <string name="setting_push_open_close">Die Push-Benachrichtigung empfangen.</string>
+    <string name="setting_push_open">Ein</string>
+    <string name="setting_push_close">Aus</string>
+    <string name="setting_push_news">News</string>
+    <string name="setting_push_football">Fußball</string>
+    <string name="setting_push_internet">IT</string>
+    <string name="setting_push_google">Google Inc.</string>
+    <string name="setting_push_apple">Apple Inc.</string>
 </resources>

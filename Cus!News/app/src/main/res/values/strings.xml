@@ -19,6 +19,8 @@
     <string name="lbl_sync_fail">Synchronization is fail, please retry.</string>
     <string name="lbl_sync_label_added">Synchronized adding [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronized removing tab.</string>
+    <string name="lbl_register_push_failed">Can\'t register push-notification, do you have Internet?</string>
+    <string name="lbl_unregister_push_failed">Can\'t unregister push-notification, do you have Internet?</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
@@ -83,5 +85,16 @@
     </string-array>
 
 
-    <string name="setting_show_image">Show all images of content.</string>
+    <string name="setting_show_image">Show all images of content</string>
+
+
+    <string name="setting_push">Push</string>
+    <string name="setting_push_open_close">Receive Push-notification.</string>
+    <string name="setting_push_open">On</string>
+    <string name="setting_push_close">Off</string>
+    <string name="setting_push_news">News</string>
+    <string name="setting_push_football">Soccer</string>
+    <string name="setting_push_internet">IT</string>
+    <string name="setting_push_google">Google Inc.</string>
+    <string name="setting_push_apple">Apple Inc.</string>
 </resources>

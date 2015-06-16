@@ -44,6 +44,16 @@ public final class Prefs extends BasicPrefs {
 	 * Show all images or not.
 	 */
 	public static final String KEY_SHOW_IMAGES = "key.show.images";
+
+	private static final String KEY_PUSH_TOKEN = "key.push.token";
+	public static final String KEY_PUSH_ON_OFF = "key.push.on.off";
+	public static final String KEY_PUSH_NEWS = "key.push.news";
+	public static final String KEY_PUSH_FOOTBALL = "key.push.football";
+	public static final String KEY_PUSH_INTERNET = "key.push.internet";
+	public static final String KEY_PUSH_GOOGLE = "key.push.google";
+	public static final String KEY_PUSH_APPLE = "key.push.apple";
+
+
 	/**
 	 * Suggestion on a dialog before adding tab to UI.
 	 */
@@ -249,5 +259,17 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public boolean addTabTip() {
 		return getBoolean(KEY_ADD_TAB_TIP, false);
+	}
+
+	public boolean getPush(String keyName) {
+		return getBoolean(keyName, false);
+	}
+
+	public void setPushToken(String token) {
+		setString(KEY_PUSH_TOKEN, token);
+	}
+
+	public String getPushToken() {
+		return getString(KEY_PUSH_TOKEN, null);
 	}
 }
