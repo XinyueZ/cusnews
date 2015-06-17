@@ -25,8 +25,8 @@ import com.google.android.gms.ads.InterstitialAd;
  * @author Xinyue Zhao
  */
 public final class DetailActivity extends CusNewsActivity {
-	private static final String EXTRAS_QUERY = DetailActivity.class.getName() + ".EXTRAS.query";
-	private static final String EXTRAS_ENTRY = DetailActivity.class.getName() + ".EXTRAS.entry";
+	public static final String EXTRAS_QUERY = DetailActivity.class.getName() + ".EXTRAS.query";
+	public static final String EXTRAS_ENTRY = DetailActivity.class.getName() + ".EXTRAS.entry";
 	/**
 	 * Main layout for this component.
 	 */

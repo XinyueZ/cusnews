@@ -16,21 +16,32 @@
 
 package com.cusnews.gcm;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
+import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.BigPictureStyle;
+import android.support.v4.app.NotificationCompat.BigTextStyle;
+import android.text.TextUtils;
 
+import com.chopping.utils.Utils;
 import com.cusnews.R;
-import com.cusnews.app.activities.MainActivity;
+import com.cusnews.app.activities.DetailActivity;
+import com.cusnews.ds.Entry;
 import com.google.android.gms.gcm.GcmListenerService;
+import com.squareup.picasso.Picasso;
 
 public class MyGcmListenerService extends GcmListenerService {
-
+    private NotificationManager mNotificationManager;
+    private	NotificationCompat.Builder mNotifyBuilder;
     private static final String TAG = "MyGcmListenerService";
 
     /**
@@ -43,34 +54,72 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("title");
-        sendNotification(message);
+        sendNotification(data);
     }
     // [END receive_message]
 
-    /**
-     * Create and show a simple notification containing the received GCM message.
-     *
-     * @param message GCM message received.
-     */
-    private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+    // Put the message into a notification and post it.
+    // This is just one simple example of what you might choose to do with
+    // a GCM message.
+    private void sendNotification(final Bundle msg) {
+        final String title = msg.getString("title");
+        final String desc = msg.getString("kwic");
+        final String content = msg.getString("content");
+        final String url =  msg.getString("url");
+        final String image = msg.getString("iurl");
+        final String domain = msg.getString("domain");
+        final String author = msg.getString("author");
+        final long date = msg.getLong("date");
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        Entry entry = new Entry(title, desc, content, url, image, domain, author, true, "", date, null);
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(DetailActivity.EXTRAS_ENTRY, (Serializable) entry);
+        intent.putExtra(DetailActivity.EXTRAS_QUERY, "");
+        final PendingIntent contentIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_ONE_SHOT);
+
+
+        if (!TextUtils.isEmpty(image)) {
+            Picasso picasso = Picasso.with(this);
+            try {
+                notify(title, desc, image, contentIntent, picasso);
+            } catch(NullPointerException | IOException e) {
+                fallbackNotify(title, desc, contentIntent);
+            }
+
+        } else {
+            fallbackNotify(title, desc, contentIntent);
+        }
+    }
+
+    private void notify(String title, String desc, String image, PendingIntent contentIntent, Picasso picasso) throws
+            IOException {
+        Bitmap bitmap = picasso.load(Utils.uriStr2URI(image).toASCIIString()).get();
+        mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(
+                System.currentTimeMillis()).setSmallIcon(R.drawable.ic_push_notify).setTicker(title)
+                .setContentTitle(title).setContentText(desc).setStyle(new BigPictureStyle().bigPicture(bitmap)
+                        .setBigContentTitle(title)).setAutoCancel(true).setLargeIcon(bitmap);
+        mNotifyBuilder.setContentIntent(contentIntent);
+
+
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT) {
+            mNotifyBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000 });
+            mNotifyBuilder.setSound(Uri.parse(String.format("android.resource://%s/%s", getPackageName(), R.raw.signal)));
+        }
+        mNotifyBuilder.setLights(getResources().getColor(R.color.primary_color), 1000, 1000);
+
+        mNotificationManager.notify((int) System.currentTimeMillis(), mNotifyBuilder.build());
+    }
+
+    private void fallbackNotify(String title, String desc, PendingIntent contentIntent) {
+        mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(System.currentTimeMillis()).setSmallIcon(
+                R.drawable.ic_push_notify).setTicker(title).setContentTitle(title).setContentText(desc).setStyle(
+                new BigTextStyle().bigText(desc).setBigContentTitle(title)).setAutoCancel(true);
+        mNotifyBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify((int) System.currentTimeMillis(), mNotifyBuilder.build());
     }
 }

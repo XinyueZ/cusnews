@@ -34,9 +34,7 @@ import com.chopping.exceptions.CanNotOpenOrFindAppPropertiesException;
 import com.chopping.exceptions.InvalidAppPropertiesException;
 import com.cusnews.R;
 import com.cusnews.gcm.RegistrationIntentService;
-import com.cusnews.gcm.SubscribeIntentService;
 import com.cusnews.gcm.UnregistrationIntentService;
-import com.cusnews.gcm.UnsubscribeIntentService;
 import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -59,8 +57,6 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 
 	private BroadcastReceiver mRegistrationBroadcastReceiver;
 	private BroadcastReceiver mUnregistrationBroadcastReceiver;
-	private BroadcastReceiver mSubscribeBroadcastReceiver;
-	private BroadcastReceiver mUnsubscribeBroadcastReceiver;
 
 
 	private Preference mSelection;
@@ -147,20 +143,6 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				}
 			}
 		};
-		mSubscribeBroadcastReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				dismissPb();
-			}
-		};
-
-		mUnsubscribeBroadcastReceiver = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				dismissPb();
-			}
-		};
-
 
 		//Feeds-language selection.
 		ListPreference sort = (ListPreference) findPreference(Prefs.KEY_LANG_VALUE);
@@ -285,24 +267,6 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				startService(intent);
 			}
 		}
-
-
-		//if (preference.getKey().equals(Prefs.KEY_PUSH_TOPICS_SELECTIONS)) {
-//			if (Boolean.valueOf(newValue.toString())) {
-//				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_subscribe));
-//				mPb.setCancelable(true);
-//				Intent intent = new Intent(this, SubscribeIntentService.class);
-//				intent.putExtra(SubscribeIntentService.TOPIC, "global-" + lang );
-//				startService(intent);
-//			} else {
-//				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_unscribe));
-//				mPb.setCancelable(true);
-//				Intent intent = new Intent(this, UnsubscribeIntentService.class);
-//				intent.putExtra(UnsubscribeIntentService.TOPIC, "global-" + lang );
-//				startService(intent);
-//			}
-
-//		}
 		return true;
 	}
 
@@ -336,10 +300,6 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				new IntentFilter(RegistrationIntentService.REGISTRATION_COMPLETE));
 		LocalBroadcastManager.getInstance(this).registerReceiver(mUnregistrationBroadcastReceiver,
 				new IntentFilter(UnregistrationIntentService.UNREGISTRATION_COMPLETE));
-		LocalBroadcastManager.getInstance(this).registerReceiver(mSubscribeBroadcastReceiver,
-				new IntentFilter(SubscribeIntentService.SUBSCRIBE_COMPLETE));
-		LocalBroadcastManager.getInstance(this).registerReceiver(mUnsubscribeBroadcastReceiver,
-				new IntentFilter(UnsubscribeIntentService.UNSUBSCRIBE_COMPLETE));
 	}
 
 	@Override
@@ -347,8 +307,6 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		EventBus.getDefault().unregister(this);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnregistrationBroadcastReceiver);
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mSubscribeBroadcastReceiver);
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnsubscribeBroadcastReceiver);
 		super.onPause();
 	}
 

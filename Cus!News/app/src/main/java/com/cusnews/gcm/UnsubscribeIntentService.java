@@ -14,6 +14,7 @@
 package com.cusnews.gcm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -24,7 +25,7 @@ import com.google.android.gms.gcm.GcmPubSub;
 
 public class UnsubscribeIntentService extends IntentService {
 	public static final String UNSUBSCRIBE_COMPLETE = "unsubscribeComplete";
-	public static final String TOPIC = "topic";
+	public static final String TOPICS = "topic";
 	private static final String TAG = "UnsubscribeIntentService";
 
 	public UnsubscribeIntentService() {
@@ -36,7 +37,7 @@ public class UnsubscribeIntentService extends IntentService {
 		try {
 			synchronized (TAG) {
 				String token = Prefs.getInstance().getPushToken();
-				unsubscribeTopics(token, intent.getStringExtra(TOPIC));
+				unsubscribeTopics(token, intent.getStringArrayListExtra(TOPICS));
 			}
 		} catch (Exception e) {
 		}
@@ -49,13 +50,19 @@ public class UnsubscribeIntentService extends IntentService {
 	/**
 	 * Unsubscribe to any GCM topics of interest, as defined by the TOPICS constant.
 	 *
-	 * @param token GCM token
-	 *              @param topic  The topic-name.
-	 * @throws IOException if unable to reach the GCM PubSub service
+	 * @param token
+	 * 		GCM token
+	 * @param topics
+	 * 		The topic-names that have been subscribed.
+	 *
+	 * @throws IOException
+	 * 		if unable to reach the GCM PubSub service
 	 */
 	// [START subscribe_topics]
-	private void unsubscribeTopics(String token, String topic) throws IOException {
+	private void unsubscribeTopics(String token, ArrayList<String> topics) throws IOException {
 		GcmPubSub pubSub = GcmPubSub.getInstance(this);
-		pubSub.unsubscribe(token, "/topics/" + topic);
+		for(String topic : topics) {
+			pubSub.unsubscribe(token, "/topics/" + topic);
+		}
 	}
 }

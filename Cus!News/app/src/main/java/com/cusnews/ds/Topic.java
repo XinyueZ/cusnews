@@ -1,10 +1,15 @@
 package com.cusnews.ds;
 
+import java.util.ArrayList;
+
+import android.content.Intent;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.cusnews.R;
+import com.cusnews.gcm.SubscribeIntentService;
+import com.cusnews.gcm.UnsubscribeIntentService;
 import com.cusnews.utils.Prefs;
 import com.cusnews.widgets.CheckBoxFontTextView;
 
@@ -51,6 +56,17 @@ public final class Topic {
 			CheckBoxFontTextView checkBoxFontTextView = (CheckBoxFontTextView) v.findViewById(R.id.checkbox_tv);
 			checkBoxFontTextView.setChecked(!checkBoxFontTextView.isChecked());
 			Prefs.getInstance().setPush(mPrefsKey, checkBoxFontTextView.isChecked());
+			if(checkBoxFontTextView.isChecked()) {
+				Intent intent = new Intent(v.getContext(), SubscribeIntentService.class);
+				intent.putExtra(SubscribeIntentService.TOPIC, getApiName());
+				v.getContext().startService(intent);
+			} else {
+				ArrayList<String> topics = new ArrayList<>();
+				topics.add(getApiName());
+				Intent intent = new Intent(v.getContext(), UnsubscribeIntentService.class);
+				intent.putStringArrayListExtra(UnsubscribeIntentService.TOPICS, topics);
+				v.getContext().startService(intent);
+			}
 		}
 	};
 
