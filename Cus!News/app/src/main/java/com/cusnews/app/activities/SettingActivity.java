@@ -15,6 +15,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -140,7 +141,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		mUnregistrationBroadcastReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+				if(TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
 					dismissPb();
 				}
 			}
@@ -148,18 +149,14 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		mSubscribeBroadcastReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
-					dismissPb();
-				}
+				dismissPb();
 			}
 		};
 
 		mUnsubscribeBroadcastReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
-					dismissPb();
-				}
+				dismissPb();
 			}
 		};
 
@@ -186,13 +183,16 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 			public boolean onPreferenceClick(Preference preference) {
 				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
 					TopicListActivity.showInstance(SettingActivity.this);
+				} else {
+					Snackbar.make(findViewById(android.R.id.list), R.string.lbl_no_push_opened, Snackbar.LENGTH_LONG).show();
 				}
 				return true;
 			}
 		});
 
 
-		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin = getActionBarHeight(this);
+		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin =
+				(int) (getActionBarHeight(this) * 1.5);
 	}
 
 

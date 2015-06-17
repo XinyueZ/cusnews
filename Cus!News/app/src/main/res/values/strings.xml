@@ -25,6 +25,7 @@
     <string name="lbl_unregistered">Unregistered…</string>
     <string name="lbl_subscribe">Subscribing…</string>
     <string name="lbl_unscribe">Unsubscribing…</string>
+    <string name="lbl_no_push_opened">Please turn on the push-notification first…</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 

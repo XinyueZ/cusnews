@@ -23,6 +23,7 @@
     <string name="lbl_unregistered">Abmeldung…</string>
     <string name="lbl_subscribe">Abo…</string>
     <string name="lbl_unscribe">Abmeldung…</string>
+    <string name="lbl_no_push_opened">Bitte die Push-Benachrichtigung einschalten…</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>

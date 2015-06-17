@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:text="@{com.cusnews.app.App.Instance.getString(topic.localNameResId)}"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:textColor="@color/common_black" />
+            android:textColor="@color/common_black"
+            app:checked="@{topic.subscribed}"/>
 
     </com.cusnews.widgets.MaterialRippleLayout>
 </layout>

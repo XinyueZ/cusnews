@@ -304,6 +304,27 @@ public final class Prefs extends BasicPrefs {
 		return getBoolean(keyName, false);
 	}
 
+
+	/**
+	 * To set whether the push which is named by {@code keyName} has been subscribed or not.
+	 *
+	 * @param keyName
+	 * 		See.
+	 * 		<pre>
+	 * 						<code>
+	 * 						public static final String KEY_PUSH_NEWS = "key.push.news";
+	 * 						public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
+	 * 						public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
+	 * 						public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
+	 * 						public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
+	 * 						</code>
+	 * 				</pre>
+	 *
+	 */
+	public void setPush(String keyName, boolean value) {
+		 setBoolean(keyName, value);
+	}
+
 	/**
 	 * Set the last push-token from Google.
 	 *

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.cusnews.R;
+import com.cusnews.utils.Prefs;
 import com.cusnews.widgets.CheckBoxFontTextView;
 
 /**
@@ -17,13 +18,14 @@ public final class Topic {
 	private String mName;
 	private @StringRes
 	int mLocalNameResId;
-	private boolean mSubscribed;
+	private String mPrefsKey;
 
 
-	public Topic(String language, String name, @StringRes int localNameResId) {
+	public Topic(String language, String name, @StringRes int localNameResId, String prefsKey) {
 		mLanguage = language;
 		mName = name;
 		mLocalNameResId = localNameResId;
+		mPrefsKey = prefsKey;
 	}
 
 	public String getLanguage() {
@@ -48,11 +50,11 @@ public final class Topic {
 		public void onClick(View v) {
 			CheckBoxFontTextView checkBoxFontTextView = (CheckBoxFontTextView) v.findViewById(R.id.checkbox_tv);
 			checkBoxFontTextView.setChecked(!checkBoxFontTextView.isChecked());
-			mSubscribed = checkBoxFontTextView.isChecked();
+			Prefs.getInstance().setPush(mPrefsKey, checkBoxFontTextView.isChecked());
 		}
 	};
 
-	public boolean isSubscribed() {
-		return mSubscribed;
+	public boolean getSubscribed() {
+		return Prefs.getInstance().getPush(mPrefsKey);
 	}
 }

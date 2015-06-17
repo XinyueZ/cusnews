@@ -24,6 +24,7 @@
     <string name="lbl_unregistered">注销…</string>
     <string name="lbl_subscribe">订阅…</string>
     <string name="lbl_unscribe">退订…</string>
+    <string name="lbl_no_push_opened">请先打开推送功能…</string>
 
 
     <string name="action_visit_faroo">Faroo博客</string>
