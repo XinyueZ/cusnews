@@ -13,8 +13,9 @@
     </data>
 
 
-    <FrameLayout
+    <com.cusnews.widgets.MaterialRippleLayout
         android:id="@+id/content_v"
+        style="@style/MaterialRippleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/common_transparent"
@@ -27,9 +28,9 @@
             style="@style/Text.Normal.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{topic.name}"
+            android:text="@{com.cusnews.app.App.Instance.getString(topic.localNameResId)}"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:textColor="@color/common_black" />
 
-    </FrameLayout>
+    </com.cusnews.widgets.MaterialRippleLayout>
 </layout>
