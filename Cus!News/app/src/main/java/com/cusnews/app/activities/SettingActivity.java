@@ -143,6 +143,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 			public void onReceive(Context context, Intent intent) {
 				if(TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
 					dismissPb();
+					mSelection.setSummary(Prefs.getInstance().getPushSelections());
 				}
 			}
 		};

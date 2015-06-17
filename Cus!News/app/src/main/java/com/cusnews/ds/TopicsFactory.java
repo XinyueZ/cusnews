@@ -26,4 +26,17 @@ public final class TopicsFactory {
 		 list.add(new Topic(lang, "Apple"  , R.string.setting_push_apple, Prefs.KEY_PUSH_APPLE));
 		 return list;
 	 }
+
+	/**
+	 * Clear all subscription.
+	 */
+	public static void clear() {
+		Prefs prefs = Prefs.getInstance();
+		prefs.setPushSelections(null);
+		prefs.setPush(Prefs.KEY_PUSH_NEWS, false);
+		prefs.setPush(Prefs.KEY_PUSH_FOOTBALL, false);
+		prefs.setPush(Prefs.KEY_PUSH_INTERNET, false);
+		prefs.setPush(Prefs.KEY_PUSH_GOOGLE, false);
+		prefs.setPush(Prefs.KEY_PUSH_APPLE, false);
+	}
 }

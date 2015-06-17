@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.cusnews.R;
+import com.cusnews.ds.TopicsFactory;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.iid.InstanceID;
 
@@ -39,6 +40,10 @@ public class UnregistrationIntentService extends IntentService {
                 InstanceID instanceID = InstanceID.getInstance(this);
                 instanceID.deleteInstanceID();
                 Prefs.getInstance().setPushToken(null);
+
+
+                //Unsubscribe all.
+                TopicsFactory.clear();
             }
         } catch (Exception e) {
             com.chopping.utils.Utils.showLongToast(this, R.string.lbl_unregister_push_failed);
