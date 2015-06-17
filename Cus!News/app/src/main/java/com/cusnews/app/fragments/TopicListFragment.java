@@ -69,10 +69,14 @@ public final class TopicListFragment extends CusNewsFragment {
 		StringBuilder list = new StringBuilder();
 		List<Topic> topics = mBinding.getTopicsAdapter().getData();
 		for(Topic topic : topics) {
-			list.append(topic.getApiName());
-			list.append(",");
+			if(topic.getSubscribed()) {
+				list.append(topic.getApiName());
+				list.append(",");
+			}
 		}
-		list.delete(list.length()-1, list.length());//Remove last ","
+		if(list.length() > 0) {
+			list.delete(list.length() - 1, list.length());//Remove last ","
+		}
 		prefs.setPushSelections(list.toString());
 	}
 }
