@@ -17,6 +17,7 @@ public final class Topic {
 	private String mName;
 	private @StringRes
 	int mLocalNameResId;
+	private boolean mSubscribed;
 
 
 	public Topic(String language, String name, @StringRes int localNameResId) {
@@ -47,6 +48,11 @@ public final class Topic {
 		public void onClick(View v) {
 			CheckBoxFontTextView checkBoxFontTextView = (CheckBoxFontTextView) v.findViewById(R.id.checkbox_tv);
 			checkBoxFontTextView.setChecked(!checkBoxFontTextView.isChecked());
+			mSubscribed = checkBoxFontTextView.isChecked();
 		}
 	};
+
+	public boolean isSubscribed() {
+		return mSubscribed;
+	}
 }

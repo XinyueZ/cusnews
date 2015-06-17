@@ -16,6 +16,7 @@ import com.cusnews.app.adapters.TopicListAdapter;
 import com.cusnews.databinding.TopicListBinding;
 import com.cusnews.ds.Topic;
 import com.cusnews.ds.TopicsFactory;
+import com.cusnews.utils.Prefs;
 
 /**
  * A list of all topics that will be subscribed to push.
@@ -58,5 +59,20 @@ public final class TopicListFragment extends CusNewsFragment {
 		mBinding = DataBindingUtil.bind(view.findViewById(R.id.topic_list_rv));
 		mBinding.topicListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
 		mBinding.setTopicsAdapter(new TopicListAdapter(mTopicList));
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		Prefs prefs = Prefs.getInstance();
+		prefs.setPushSelections(null);
+		StringBuilder list = new StringBuilder();
+		List<Topic> topics = mBinding.getTopicsAdapter().getData();
+		for(Topic topic : topics) {
+			list.append(topic.getApiName());
+			list.append(",");
+		}
+		list.delete(list.length()-1, list.length());//Remove last ","
+		prefs.setPushSelections(list.toString());
 	}
 }

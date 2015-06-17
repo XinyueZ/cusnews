@@ -77,6 +77,11 @@ public final class App extends Application {
 		super.onCreate();
 		Instance = this;
 
+//		Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(
+//				Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(
+//				this)).build());
+
+
 		TaskHelper.init(getApplicationContext());
 		Prefs.createInstance(this);
 

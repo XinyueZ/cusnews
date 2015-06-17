@@ -60,6 +60,11 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 	private BroadcastReceiver mUnregistrationBroadcastReceiver;
 	private BroadcastReceiver mSubscribeBroadcastReceiver;
 	private BroadcastReceiver mUnsubscribeBroadcastReceiver;
+
+
+	private Preference mSelection;
+
+
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
@@ -175,11 +180,13 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		//Push.
 		CheckBoxPreference pushOnOff = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_ON_OFF);
 		pushOnOff.setOnPreferenceChangeListener(this);
-		Preference selection =  findPreference(Prefs.KEY_PUSH_TOPICS_SELECTIONS);
-		selection.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		mSelection = findPreference(Prefs.KEY_PUSH_TOPICS_SELECTIONS);
+		mSelection.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				TopicListActivity.showInstance(SettingActivity.this);
+				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					TopicListActivity.showInstance(SettingActivity.this);
+				}
 				return true;
 			}
 		});
@@ -301,6 +308,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 
 	@Override
 	protected void onResume() {
+		mSelection.setSummary(Prefs.getInstance().getPushSelections());
 		EventBus.getDefault().registerSticky(this);
 		super.onResume();
 
@@ -369,4 +377,5 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		dismissPb();
 		ActivityCompat.finishAfterTransition(this);
 	}
+
 }

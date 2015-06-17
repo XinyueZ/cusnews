@@ -65,6 +65,8 @@ public final class Api {
 		// Create an HTTP client that uses a cache on the file system. Android applications should use
 		// their Context to get a cache directory.
 		OkHttpClient okHttpClient = new OkHttpClient();
+//		okHttpClient.networkInterceptors().add(new StethoInterceptor());
+
 		File cacheDir = new File(cxt != null ? cxt.getCacheDir().getAbsolutePath() : System.getProperty(
 				"java.io.tmpdir"), UUID.randomUUID().toString());
 		try {
