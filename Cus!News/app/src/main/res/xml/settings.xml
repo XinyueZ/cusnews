@@ -27,35 +27,10 @@
             android:summaryOff="@string/setting_push_close"
             android:summaryOn="@string/setting_push_open"
             android:title="@string/setting_push_open_close" />
-        <CheckBoxPreference
+        <Preference
             android:defaultValue="false"
-            android:key="key.push.news"
+            android:key="key.push.topics.selection"
             android:layout="@layout/setting_item"
-            android:title="@string/setting_push_news"
-            android:visibility="gone" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="key.push.football"
-            android:layout="@layout/setting_item"
-            android:title="@string/setting_push_football"
-            android:visibility="gone" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="key.push.internet"
-            android:layout="@layout/setting_item"
-            android:title="@string/setting_push_internet"
-            android:visibility="gone" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="key.push.google"
-            android:layout="@layout/setting_item"
-            android:title="@string/setting_push_google"
-            android:visibility="gone" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="key.push.apple"
-            android:layout="@layout/setting_item"
-            android:title="@string/setting_push_apple"
-            android:visibility="gone" />
+            android:title="@string/setting_push_selection" />
     </PreferenceCategory>
 </PreferenceScreen>

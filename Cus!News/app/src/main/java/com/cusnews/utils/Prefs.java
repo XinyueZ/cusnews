@@ -3,6 +3,7 @@ package com.cusnews.utils;
 import java.util.Locale;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.chopping.application.BasicPrefs;
@@ -44,15 +45,26 @@ public final class Prefs extends BasicPrefs {
 	 * Show all images or not.
 	 */
 	public static final String KEY_SHOW_IMAGES = "key.show.images";
-
+	/**
+	 * The last push-token from Google.
+	 */
 	private static final String KEY_PUSH_TOKEN = "key.push.token";
+	/**
+	 * The switch on/off push.
+	 */
 	public static final String KEY_PUSH_ON_OFF = "key.push.on.off";
+	/**
+	 * The selections of topics to push, it is the list of api-names sep by ",", see {@link com.cusnews.ds.Topic}.
+	 */
+	public static final String KEY_PUSH_TOPICS_SELECTIONS = "key.push.topics.selection";
+	//--------------
+	//Different push-newsletters
 	public static final String KEY_PUSH_NEWS = "key.push.news";
 	public static final String KEY_PUSH_FOOTBALL = "key.push.football";
 	public static final String KEY_PUSH_INTERNET = "key.push.internet";
 	public static final String KEY_PUSH_GOOGLE = "key.push.google";
 	public static final String KEY_PUSH_APPLE = "key.push.apple";
-
+	//--------------
 
 	/**
 	 * Suggestion on a dialog before adding tab to UI.
@@ -154,21 +166,20 @@ public final class Prefs extends BasicPrefs {
 	}
 
 	/**
-	 * @return  Home-page of API-provider.
+	 * @return Home-page of API-provider.
 	 */
 	public String getFarooHome() {
 		return getString(FAROO_HOME, "http://www.faroo.com/#q=&s=1&l=en&src=web");
 	}
 
 	/**
-	 * @return  Home-Blog of API-provider.
+	 * @return Home-Blog of API-provider.
 	 */
 	public String getFarooBlog() {
 		return getString(FAROO_BLOG, "http://blog.faroo.com/");
 	}
 
 	/**
-	 *
 	 * @return {@link ViewType}:  like horizontal, vertical, grid, etc.
 	 */
 	public ViewType getViewType() {
@@ -177,7 +188,9 @@ public final class Prefs extends BasicPrefs {
 
 	/**
 	 * Set view-type horizontal, vertical, grid, etc.
-	 * @param viewType  {@link ViewType}.
+	 *
+	 * @param viewType
+	 * 		{@link ViewType}.
 	 */
 	public void setViewType(ViewType viewType) {
 		setInt(KEY_VIEW_TYPE, viewType.getValue());
@@ -196,15 +209,19 @@ public final class Prefs extends BasicPrefs {
 	public void setAppDownloadInfo(String appDownloadInfo) {
 		setString(KEY_APP_DOWNLOAD, appDownloadInfo);
 	}
+
 	/**
 	 * @return Feeds-language.
 	 */
 	public String getLanguage() {
 		return getString(KEY_LANG, Locale.getDefault().getLanguage());
 	}
+
 	/**
 	 * Set feeds-language.
-	 * @param  language Feeds-language.
+	 *
+	 * @param language
+	 * 		Feeds-language.
 	 */
 	public void setLanguage(String language) {
 		setString(KEY_LANG, language);
@@ -217,34 +234,37 @@ public final class Prefs extends BasicPrefs {
 	public String getLanguageValue() {
 		return getString(KEY_LANG_VALUE, initLanguageValue());
 	}
+
 	/**
 	 * Set feeds-language(value: 0-en, 1-de, 2-zh).
-	 * @param  languageValue Feeds-language(value: 0-en, 1-de, 2-zh).
+	 *
+	 * @param languageValue
+	 * 		Feeds-language(value: 0-en, 1-de, 2-zh).
 	 */
 	public void setLanguageValue(String languageValue) {
 		setString(KEY_LANG_VALUE, languageValue);
 	}
 
 	private String initLanguageValue() {
-		if(TextUtils.equals(Locale.getDefault().getLanguage(), "en")) {
+		if (TextUtils.equals(Locale.getDefault().getLanguage(), "en")) {
 			return "0";
 		}
-		if(TextUtils.equals(Locale.getDefault().getLanguage(), "de")) {
+		if (TextUtils.equals(Locale.getDefault().getLanguage(), "de")) {
 			return "1";
 		}
-		if(TextUtils.equals(Locale.getDefault().getLanguage(), "zh")) {
+		if (TextUtils.equals(Locale.getDefault().getLanguage(), "zh")) {
 			return "2";
 		}
 		return "0";
 	}
 
 	/**
-	 *
 	 * @return Show all images or not. {@code true} if show, otherwise not show.
 	 */
 	public boolean showAllImages() {
 		return getBoolean(KEY_SHOW_IMAGES, true);
 	}
+
 	/**
 	 * Set whether the suggestion on a dialog before adding tab to UI has been shown.
 	 * <p/>
@@ -253,23 +273,72 @@ public final class Prefs extends BasicPrefs {
 	public void setAddTabTip(boolean shown) {
 		setBoolean(KEY_ADD_TAB_TIP, shown);
 	}
+
 	/**
 	 * Suggestion on a dialog before adding tab to UI.
-	 * @return  {@code true} if the tip has been shown before.
+	 *
+	 * @return {@code true} if the tip has been shown before.
 	 */
 	public boolean addTabTip() {
 		return getBoolean(KEY_ADD_TAB_TIP, false);
 	}
 
+	/**
+	 * To check whether the push which is named by {@code keyName} has been subscribed or not.
+	 *
+	 * @param keyName
+	 * 		See.
+	 * 		<pre>
+	 * 						<code>
+	 * 						public static final String KEY_PUSH_NEWS = "key.push.news";
+	 * 						public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
+	 * 						public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
+	 * 						public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
+	 * 						public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
+	 * 						</code>
+	 * 				</pre>
+	 *
+	 * @return {@code true} if the push named by {@code keyName}  is subscribed.
+	 */
 	public boolean getPush(String keyName) {
 		return getBoolean(keyName, false);
 	}
 
-	public void setPushToken(String token) {
+	/**
+	 * Set the last push-token from Google.
+	 *
+	 * @param token
+	 * 		Last push-token from Google. It could be {@code null} when the registration is failed.
+	 */
+	public void setPushToken(@Nullable String token) {
 		setString(KEY_PUSH_TOKEN, token);
 	}
 
-	public String getPushToken() {
+	/**
+	 * @return Last push-token from Google. It could be {@code null} when the registration is failed or never
+	 * unregistered before.
+	 */
+	public @Nullable String getPushToken() {
 		return getString(KEY_PUSH_TOKEN, null);
+	}
+
+	/**
+	 * The selections of topics to push, it is the list of api-names sep by ",", see {@link com.cusnews.ds.Topic}.
+	 *
+	 * @param nameLis
+	 * 		Current selections. Could be {@code null} if nothing subscribed.
+	 */
+	public void setPushSelections(@Nullable String nameLis) {
+		setString(KEY_PUSH_TOPICS_SELECTIONS, nameLis);
+	}
+
+	/**
+	 * @return The selections of topics to push, it is the list of api-names sep by ",", see {@link
+	 * com.cusnews.ds.Topic}. Could be {@code null} if nothing subscribed.
+	 */
+	public
+	@Nullable
+	String getPushSelections() {
+		return getString(KEY_PUSH_TOPICS_SELECTIONS, null);
 	}
 }

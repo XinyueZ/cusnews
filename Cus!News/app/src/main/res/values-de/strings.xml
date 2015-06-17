@@ -19,7 +19,10 @@
     <string name="lbl_sync_label_removed">Synchronisiere…</string>
     <string name="lbl_register_push_failed">Ich kann die Push-Benachrichtigung nicht registrieren, ist das Internet da?</string>
     <string name="lbl_unregister_push_failed">Ich kann die Push-Benachrichtigung nicht unregistrieren, ist das Internet da?</string>
-
+    <string name="lbl_registering">Anmeldung…</string>
+    <string name="lbl_unregistered">Abmeldung…</string>
+    <string name="lbl_subscribe">Abo…</string>
+    <string name="lbl_unscribe">Abmeldung…</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
@@ -59,6 +62,7 @@
     <string name="setting_push_open_close">Die Push-Benachrichtigung empfangen.</string>
     <string name="setting_push_open">Ein</string>
     <string name="setting_push_close">Aus</string>
+    <string name="setting_push_selection">Themen auswählen</string>
     <string name="setting_push_news">News</string>
     <string name="setting_push_football">Fußball</string>
     <string name="setting_push_internet">IT</string>

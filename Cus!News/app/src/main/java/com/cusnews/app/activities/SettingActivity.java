@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -174,17 +175,14 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		//Push.
 		CheckBoxPreference pushOnOff = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_ON_OFF);
 		pushOnOff.setOnPreferenceChangeListener(this);
-		CheckBoxPreference pushNews = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_NEWS);
-		pushNews.setOnPreferenceChangeListener(this);
-		CheckBoxPreference pushFootball = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_FOOTBALL);
-		pushFootball.setOnPreferenceChangeListener(this);
-		CheckBoxPreference pushInternet = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_INTERNET);
-		pushInternet.setOnPreferenceChangeListener(this);
-		CheckBoxPreference pushGoogle = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_GOOGLE);
-		pushGoogle.setOnPreferenceChangeListener(this);
-		CheckBoxPreference pushApple = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_APPLE);
-		pushApple.setOnPreferenceChangeListener(this);
-
+		Preference selection =  findPreference(Prefs.KEY_PUSH_TOPICS_SELECTIONS);
+		selection.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				TopicListActivity.showInstance(SettingActivity.this);
+				return true;
+			}
+		});
 
 
 		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin = getActionBarHeight(this);
@@ -268,12 +266,12 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		String lang = Prefs.getInstance().getLanguage();
 		if (preference.getKey().equals(Prefs.KEY_PUSH_ON_OFF)) {
 			if (Boolean.valueOf(newValue.toString())) {
-				mPb = ProgressDialog.show(this, null, "Registering");
+				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_registering));
 				mPb.setCancelable(true);
 				Intent intent = new Intent(this, RegistrationIntentService.class);
 				startService(intent);
 			} else {
-				mPb = ProgressDialog.show(this, null, "Unregister");
+				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_unregistered));
 				mPb.setCancelable(true);
 				Intent intent = new Intent(this, UnregistrationIntentService.class);
 				startService(intent);
@@ -281,18 +279,22 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		}
 
 
-		if (preference.getKey().equals(Prefs.KEY_PUSH_NEWS)) {
-			if (Boolean.valueOf(newValue.toString())) {
-				Intent intent = new Intent(this, SubscribeIntentService.class);
-				intent.putExtra(SubscribeIntentService.TOPIC, "global-" + lang );
-				startService(intent);
-			} else {
-				Intent intent = new Intent(this, UnsubscribeIntentService.class);
-				intent.putExtra(UnsubscribeIntentService.TOPIC, "global-" + lang );
-				startService(intent);
-			}
+		//if (preference.getKey().equals(Prefs.KEY_PUSH_TOPICS_SELECTIONS)) {
+//			if (Boolean.valueOf(newValue.toString())) {
+//				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_subscribe));
+//				mPb.setCancelable(true);
+//				Intent intent = new Intent(this, SubscribeIntentService.class);
+//				intent.putExtra(SubscribeIntentService.TOPIC, "global-" + lang );
+//				startService(intent);
+//			} else {
+//				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_unscribe));
+//				mPb.setCancelable(true);
+//				Intent intent = new Intent(this, UnsubscribeIntentService.class);
+//				intent.putExtra(UnsubscribeIntentService.TOPIC, "global-" + lang );
+//				startService(intent);
+//			}
 
-		}
+//		}
 		return true;
 	}
 

@@ -16,7 +16,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="com.cusnews.gcm.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.cusnews.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.cusnews.gcm.permission.C2D_MESSAGE" />
 
@@ -65,9 +66,10 @@
 
         <activity
             android:name=".app.activities.WebViewActivity"
-            android:label="@string/application_name"      android:theme="@style/SettingsTheme"
+            android:label="@string/application_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/SettingsTheme" />
 
 
         <activity
@@ -75,6 +77,11 @@
             android:label="@string/action_settings"
             android:screenOrientation="portrait"
             android:theme="@style/SettingsTheme" />
+
+        <activity
+            android:name=".app.activities.TopicListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Dialog" />
 
 
         <!--Include the AdActivity configChanges and theme. -->
@@ -97,18 +104,15 @@
         </receiver>
 
 
-
-
-
-
         <!-- [START gcm_receiver] -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.cusnews" />
             </intent-filter>
         </receiver>
@@ -117,37 +121,32 @@
         <!-- [START gcm_listener] -->
         <service
             android:name=".gcm.MyGcmListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <!-- [END gcm_listener] -->
-        <!-- [START instanceId_listener] -->
+        <!-- [END gcm_listener] --><!-- [START instanceId_listener] -->
         <service
             android:name=".gcm.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
         <!-- [END instanceId_listener] -->
         <service
             android:name=".gcm.RegistrationIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
         <service
             android:name=".gcm.UnregistrationIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
         <service
             android:name=".gcm.SubscribeIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
         <service
             android:name=".gcm.UnsubscribeIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
     </application>
 
 </manifest>

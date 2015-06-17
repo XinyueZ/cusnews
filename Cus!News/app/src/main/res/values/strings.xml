@@ -21,6 +21,10 @@
     <string name="lbl_sync_label_removed">Synchronized removing tab.</string>
     <string name="lbl_register_push_failed">Can\'t register push-notification, do you have Internet?</string>
     <string name="lbl_unregister_push_failed">Can\'t unregister push-notification, do you have Internet?</string>
+    <string name="lbl_registering">Registering…</string>
+    <string name="lbl_unregistered">Unregistered…</string>
+    <string name="lbl_subscribe">Subscribing…</string>
+    <string name="lbl_unscribe">Unsubscribing…</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
@@ -92,6 +96,7 @@
     <string name="setting_push_open_close">Receive Push-notification.</string>
     <string name="setting_push_open">On</string>
     <string name="setting_push_close">Off</string>
+    <string name="setting_push_selection">Topic selection</string>
     <string name="setting_push_news">News</string>
     <string name="setting_push_football">Soccer</string>
     <string name="setting_push_internet">IT</string>
