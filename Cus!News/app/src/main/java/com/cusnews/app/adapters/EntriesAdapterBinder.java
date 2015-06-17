@@ -3,10 +3,16 @@ package com.cusnews.app.adapters;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.cusnews.bus.OpenEntryEvent;
+import com.cusnews.ds.Entry;
 import com.cusnews.utils.Utils;
 import com.squareup.picasso.Picasso;
+
+import de.greenrobot.event.EventBus;
 
 public final class EntriesAdapterBinder {
 
@@ -19,6 +25,17 @@ public final class EntriesAdapterBinder {
 		recyclerView.setAdapter(adp);
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@BindingAdapter("entryClickListener")
+	public static void setEntryClickListener(View view, final Entry entry) {
+		view.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EventBus.getDefault().post(new OpenEntryEvent(entry));
+			}
+		});
+	}
 
 
 	//@BindingAdapter({ "bind:imageUrl", "bind:error" })

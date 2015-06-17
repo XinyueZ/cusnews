@@ -9,17 +9,12 @@ import android.databinding.ViewDataBinding;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.cusnews.BR;
 import com.cusnews.R;
-import com.cusnews.bus.OpenEntryEvent;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * The adapter for the list of {@link com.cusnews.ds.Entry}s.
@@ -94,14 +89,6 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 		final Entry entry = getData().get(position);
 		holder.mBinding.setVariable(BR.entry, entry);
 		holder.mBinding.executePendingBindings();
-
-		//TODO Must be optimized late.
-		holder.mBinding.getRoot().findViewById(R.id.content_v).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				EventBus.getDefault().post(new OpenEntryEvent(entry));
-			}
-		});
 	}
 
 
