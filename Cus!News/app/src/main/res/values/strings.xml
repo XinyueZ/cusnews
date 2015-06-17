@@ -15,7 +15,8 @@
     <string name="lbl_share_app_content">Hello!\n\nMy name is %1$s and I am a new free light-weight independent news App.\n\n%2$s</string>
     <string name="lbl_store_url">https://play.google.com/store/apps/details?id=%1$s</string>
     <string name="lbl_play_service">This application needs Google Play Service, you must install it first.</string>
-    <string name="lbl_app_reload">The application must be restarted, would you like?</string>
+    <string name="lbl_changed_language">After you change content language, you\'d better restart application to reload new content and all subscribed push-topics will be unsubscribed automatically.</string>
+    <string name="lbl_app_reload">The application should be restarted, would you like?</string>
     <string name="lbl_sync_fail">Synchronization is fail, please retry.</string>
     <string name="lbl_sync_label_added">Synchronized adding [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronized removing tab.</string>

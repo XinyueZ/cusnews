@@ -1,5 +1,7 @@
 package com.cusnews.app.activities;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -33,8 +35,10 @@ import com.chopping.bus.ApplicationConfigurationLoadingIgnoredEvent;
 import com.chopping.exceptions.CanNotOpenOrFindAppPropertiesException;
 import com.chopping.exceptions.InvalidAppPropertiesException;
 import com.cusnews.R;
+import com.cusnews.ds.TopicsFactory;
 import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.gcm.UnregistrationIntentService;
+import com.cusnews.gcm.UnsubscribeIntentService;
 import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -229,11 +233,24 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				break;
 			}
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setNegativeButton(
-					R.string.btn_no, null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
+			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_changed_language).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					ActivityCompat.finishAffinity(SettingActivity.this);
+
+					if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+						//You have Push-feature, so we just remove all subscribed topics.
+						String listOfTopics = Prefs.getInstance().getPushSelections();
+						String[] topicsArray = listOfTopics.split(",");
+						ArrayList<String> topicsList = new ArrayList<>();
+						for(String topic : topicsArray) {
+							topicsList.add(topic);
+						}
+						Intent intent = new Intent(SettingActivity.this, UnsubscribeIntentService.class);
+						intent.putStringArrayListExtra(UnsubscribeIntentService.TOPICS,  topicsList);
+						startService(intent);
+						TopicsFactory.clear();
+					}
 				}
 			});
 			builder.create().show();

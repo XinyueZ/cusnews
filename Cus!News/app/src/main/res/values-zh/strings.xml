@@ -14,7 +14,8 @@
     <string name="lbl_share_app_content">你好啊！\n\n我是%1$s，是一个新的，自由的，独立的，清爽型新闻应用。\n\n%2$s</string>
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
     <string name="lbl_play_service">本应用需要谷歌服务，必须先安装然后使用。</string>
-    <string name="lbl_app_reload">应用必须重新启动，重启吗？</string>
+    <string name="lbl_changed_language">内容语言更改后，就需要重新启动应用，并且先前注册的推送主题都将自动注销。</string>
+    <string name="lbl_app_reload">应用须重新启动，重启吗？</string>
     <string name="lbl_sync_fail">同步失败，请重新尝试。</string>
     <string name="lbl_sync_label_added">同步添加[%1$s]。</string>
     <string name="lbl_sync_label_removed">同步删除标签。</string>

@@ -13,7 +13,8 @@
     <string name="lbl_share_app_title">Hallo, ich bin hier</string>
     <string name="lbl_share_app_content">Guten Tag,\n\nmein Name ist %1$s, ich bin ein neuer, sauber, frei unabhängiger Nachrichtendienst.\n\n%2$s</string>
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
-    <string name="lbl_app_reload">Die App muss neugestartet werden, möchtest Du das machen?</string>
+    <string name="lbl_changed_language">Du solltest die App neustarten, nachdem die Sprache gewechselt ist. Zudem werden alle Push-Benachrichtigungen automatisch abgemeldet.</string>
+    <string name="lbl_app_reload">Die App sollte besser neugestartet werden, möchtest Du das machen?</string>
     <string name="lbl_sync_fail">Fehler bei dem Synchronisation, bitte wiederholen.</string>
     <string name="lbl_sync_label_added">Synchronisiere den neuen Tab [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronisiere…</string>
