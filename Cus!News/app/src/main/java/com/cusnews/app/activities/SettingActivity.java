@@ -35,6 +35,7 @@ import com.chopping.bus.ApplicationConfigurationLoadingIgnoredEvent;
 import com.chopping.exceptions.CanNotOpenOrFindAppPropertiesException;
 import com.chopping.exceptions.InvalidAppPropertiesException;
 import com.cusnews.R;
+import com.cusnews.bus.SelectedTopicsEvent;
 import com.cusnews.ds.TopicsFactory;
 import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.gcm.UnregistrationIntentService;
@@ -91,6 +92,15 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		onAppConfigIgnored();
 	}
 
+	/**
+	 * Handler for {@link com.cusnews.bus.SelectedTopicsEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.SelectedTopicsEvent}.
+	 */
+	public void onEvent(SelectedTopicsEvent e) {
+		mSelection.setSummary(Prefs.getInstance().getPushSelections());
+	}
 	//------------------------------------------------
 
 	/**
@@ -269,8 +279,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 		}
 
 
-		//Push
-		String lang = Prefs.getInstance().getLanguage();
+		//Push turn on/off
 		if (preference.getKey().equals(Prefs.KEY_PUSH_ON_OFF)) {
 			if (Boolean.valueOf(newValue.toString())) {
 				mPb = ProgressDialog.show(this, null, getString(R.string.lbl_registering));

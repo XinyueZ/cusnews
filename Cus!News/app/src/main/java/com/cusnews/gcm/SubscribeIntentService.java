@@ -19,6 +19,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.cusnews.R;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.gcm.GcmPubSub;
 
@@ -39,6 +40,7 @@ public class SubscribeIntentService extends IntentService {
 				subscribeTopics(token, intent.getStringExtra(TOPIC));
 			}
 		} catch (Exception e) {
+			com.chopping.utils.Utils.showLongToast(this, R.string.lbl_register_push_failed);
 		}
 
 		Intent subscribeComplete = new Intent(SUBSCRIBE_COMPLETE);

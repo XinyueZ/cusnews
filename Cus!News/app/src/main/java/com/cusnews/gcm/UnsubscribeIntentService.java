@@ -20,6 +20,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.cusnews.R;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.gcm.GcmPubSub;
 
@@ -40,6 +41,7 @@ public class UnsubscribeIntentService extends IntentService {
 				unsubscribeTopics(token, intent.getStringArrayListExtra(TOPICS));
 			}
 		} catch (Exception e) {
+			com.chopping.utils.Utils.showLongToast(this, R.string.lbl_unregister_push_failed);
 		}
 
 		Intent unsubscribeComplete = new Intent(UNSUBSCRIBE_COMPLETE);

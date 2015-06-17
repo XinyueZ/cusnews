@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 
 import com.cusnews.R;
 import com.cusnews.app.adapters.TopicListAdapter;
+import com.cusnews.bus.SelectedTopicsEvent;
 import com.cusnews.databinding.TopicListBinding;
 import com.cusnews.ds.Topic;
 import com.cusnews.ds.TopicsFactory;
 import com.cusnews.utils.Prefs;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * A list of all topics that will be subscribed to push.
@@ -78,5 +81,6 @@ public final class TopicListFragment extends CusNewsFragment {
 			list.delete(list.length() - 1, list.length());//Remove last ","
 		}
 		prefs.setPushSelections(list.toString());
+		EventBus.getDefault().post(new SelectedTopicsEvent());
 	}
 }
