@@ -1,6 +1,11 @@
 package com.cusnews.ds;
 
 import android.support.annotation.StringRes;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+import com.cusnews.R;
+import com.cusnews.widgets.CheckBoxFontTextView;
 
 /**
  * The topic can be subscribed as pushed by Google.
@@ -35,4 +40,13 @@ public final class Topic {
 	public String getApiName() {
 		return String.format("%s-%s", mName, mLanguage);
 	}
+
+
+	public OnClickListener ClickListener  = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			CheckBoxFontTextView checkBoxFontTextView = (CheckBoxFontTextView) v.findViewById(R.id.checkbox_tv);
+			checkBoxFontTextView.setChecked(!checkBoxFontTextView.isChecked());
+		}
+	};
 }
