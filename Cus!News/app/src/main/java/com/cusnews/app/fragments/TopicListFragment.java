@@ -3,24 +3,31 @@ package com.cusnews.app.fragments;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.chopping.utils.Utils;
 import com.cusnews.R;
+import com.cusnews.app.App;
 import com.cusnews.app.adapters.TopicListAdapter;
 import com.cusnews.bus.SelectedTopicsEvent;
 import com.cusnews.databinding.TopicListBinding;
 import com.cusnews.ds.Topic;
 import com.cusnews.ds.TopicsFactory;
+import com.cusnews.gcm.SubscribeIntentService;
 import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -43,21 +50,59 @@ public final class TopicListFragment extends DialogFragment {
 	 * Data-binding.
 	 */
 	private TopicListBinding mBinding;
+	/**
+	 * Listener while abo push-topic.
+	 */
+	private BroadcastReceiver mSubscribeReceiver;
 
 	public static TopicListFragment newInstance(Context context) {
 		return (TopicListFragment) Fragment.instantiate(context, TopicListFragment.class.getName());
 	}
 
+	private android.os.Handler mHandler = new android.os.Handler();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mTopicList = TopicsFactory.create();
+
+		mSubscribeReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, final Intent intent) {
+				mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						String name = intent.getStringExtra(SubscribeIntentService.SUBSCRIBE_NAME);
+						boolean result = intent.getBooleanExtra(SubscribeIntentService.SUBSCRIBE_RESULT, false);
+
+						if(result) {
+							mBinding.getTopicsAdapter().notifyDataSetChanged();
+						} else {
+							Utils.showLongToast(App.Instance, getString(R.string.lbl_subscribe_fail, name));
+						}
+					}
+				});
+			}
+		};
 	}
 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(LAYOUT, container, false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mSubscribeReceiver, new IntentFilter(
+				SubscribeIntentService.SUBSCRIBE_COMPLETE));
+	}
+
+	@Override
+	public void onPause() {
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mSubscribeReceiver);
+		super.onPause();
 	}
 
 	@Override
@@ -84,13 +129,13 @@ public final class TopicListFragment extends DialogFragment {
 		prefs.setPushSelections(null);
 		StringBuilder list = new StringBuilder();
 		List<Topic> topics = mBinding.getTopicsAdapter().getData();
-		for(Topic topic : topics) {
-			if(topic.getSubscribed()) {
+		for (Topic topic : topics) {
+			if (topic.getSubscribed()) {
 				list.append(topic.getApiName());
 				list.append(",");
 			}
 		}
-		if(list.length() > 0) {
+		if (list.length() > 0) {
 			list.delete(list.length() - 1, list.length());//Remove last ","
 		}
 		prefs.setPushSelections(list.toString());

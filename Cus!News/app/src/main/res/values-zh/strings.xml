@@ -25,6 +25,8 @@
     <string name="lbl_unregistered">注销…</string>
     <string name="lbl_subscribe">订阅…</string>
     <string name="lbl_unsubscribe">退订…</string>
+    <string name="lbl_subscribe_fail">订阅 [%1$s] 失败，请重来。</string>
+    <string name="lbl_unsubscribe_fail">退订 [%1$s] 失败，请重来。</string>
     <string name="lbl_no_push_opened">请先打开推送功能…</string>
     <string name="lbl_data_source">API(数据来源)：</string>
     <string name="lbl_ask_push">你是否愿意注册一些咨询的推送？</string>

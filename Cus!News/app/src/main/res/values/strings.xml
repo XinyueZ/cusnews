@@ -26,6 +26,8 @@
     <string name="lbl_unregistered">Unregistered…</string>
     <string name="lbl_subscribe">Subscribing…</string>
     <string name="lbl_unsubscribe">Unsubscribing…</string>
+    <string name="lbl_subscribe_fail">Subscribed [%1$s] failed, please retry.</string>
+    <string name="lbl_unsubscribe_fail">Unubscribed [%1$s] failed, please retry.</string>
     <string name="lbl_no_push_opened">Please turn on the push-notification first…</string>
     <string name="lbl_data_source">API(Data-Source):</string>
     <string name="lbl_ask_push">Would you like to subscribe Push-notifications of some topics?</string>

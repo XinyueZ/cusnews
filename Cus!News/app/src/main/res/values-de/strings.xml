@@ -24,6 +24,8 @@
     <string name="lbl_unregistered">Abmeldung…</string>
     <string name="lbl_subscribe">Abonniere…</string>
     <string name="lbl_unsubscribe">Storniere…</string>
+    <string name="lbl_subscribe_fail">Fehler bei Abo von [%1$s], bitte wiederholen.</string>
+    <string name="lbl_unsubscribe_fail">Fehler bei Storno von [%1$s], bitte wiederholen.</string>
     <string name="lbl_no_push_opened">Bitte die Push-Benachrichtigung einschalten…</string>
     <string name="lbl_data_source">API(Datenquelle):</string>
     <string name="lbl_ask_push">Möchtest Du die Push-Benachrichtigungen von einigen Themen einschalten?</string>

@@ -54,11 +54,14 @@ public final class Topic {
 		@Override
 		public void onClick(View v) {
 			CheckBoxFontTextView checkBoxFontTextView = (CheckBoxFontTextView) v.findViewById(R.id.checkbox_tv);
-			checkBoxFontTextView.setChecked(!checkBoxFontTextView.isChecked());
-			Prefs.getInstance().setPush(mPrefsKey, checkBoxFontTextView.isChecked());
-			if(checkBoxFontTextView.isChecked()) {
+			boolean prevStatus = checkBoxFontTextView.isChecked();
+			checkBoxFontTextView.setChecked(!prevStatus);
+			if(!prevStatus) {
+				//Previous is not checked, then we wanna check and subscribe.
 				Intent intent = new Intent(v.getContext(), SubscribeIntentService.class);
 				intent.putExtra(SubscribeIntentService.TOPIC, getApiName());
+				intent.putExtra(SubscribeIntentService.STORAGE_NAME, getPrefsKey());
+				intent.putExtra(SubscribeIntentService.SUBSCRIBE_NAME, v.getContext().getString(getLocalNameResId()));
 				v.getContext().startService(intent);
 			} else {
 				ArrayList<String> topics = new ArrayList<>();
@@ -72,5 +75,9 @@ public final class Topic {
 
 	public boolean getSubscribed() {
 		return Prefs.getInstance().getPush(mPrefsKey);
+	}
+
+	private String getPrefsKey() {
+		return mPrefsKey;
 	}
 }

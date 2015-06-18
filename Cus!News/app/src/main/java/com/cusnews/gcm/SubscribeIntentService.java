@@ -19,12 +19,14 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.cusnews.R;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.gcm.GcmPubSub;
 
 public class SubscribeIntentService extends IntentService {
 	public static final String SUBSCRIBE_COMPLETE = "subscribeComplete";
+	public static final String SUBSCRIBE_RESULT = "result";
+	public static final String SUBSCRIBE_NAME = "name";
+	public static final String STORAGE_NAME = "storage_name";
 	public static final String TOPIC = "topic";
 	private static final String TAG = "SubscribeIntentService";
 
@@ -34,16 +36,22 @@ public class SubscribeIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		Prefs prefs  = Prefs.getInstance();
+		Intent subscribeComplete = new Intent(SUBSCRIBE_COMPLETE);
+		String token = Prefs.getInstance().getPushToken();
+		String topic = intent.getStringExtra(TOPIC);
+		String storage =  intent.getStringExtra(STORAGE_NAME);
+		subscribeComplete.putExtra(SUBSCRIBE_NAME, intent.getStringExtra(SUBSCRIBE_NAME));
 		try {
 			synchronized (TAG) {
-				String token = Prefs.getInstance().getPushToken();
-				subscribeTopics(token, intent.getStringExtra(TOPIC));
+				subscribeTopics(token, topic);
+				prefs.setPush(storage, true);
+				subscribeComplete.putExtra(SUBSCRIBE_RESULT, true);
 			}
 		} catch (Exception e) {
-			com.chopping.utils.Utils.showLongToast(this, R.string.lbl_register_push_failed);
+			prefs.setPush(storage, false);
+			subscribeComplete.putExtra(SUBSCRIBE_RESULT, false);
 		}
-
-		Intent subscribeComplete = new Intent(SUBSCRIBE_COMPLETE);
 		LocalBroadcastManager.getInstance(this).sendBroadcast(subscribeComplete);
 	}
 
