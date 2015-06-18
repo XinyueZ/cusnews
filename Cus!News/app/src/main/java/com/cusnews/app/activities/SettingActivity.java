@@ -242,25 +242,26 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				Prefs.getInstance().setLanguage("zh");
 				break;
 			}
+
+			if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+				//You have Push-feature, so we just remove all subscribed topics.
+				String listOfTopics = Prefs.getInstance().getPushSelections();
+				String[] topicsArray = listOfTopics.split(",");
+				ArrayList<String> topicsList = new ArrayList<>();
+				for(String topic : topicsArray) {
+					topicsList.add(topic);
+				}
+				Intent intent = new Intent(SettingActivity.this, UnsubscribeIntentService.class);
+				intent.putStringArrayListExtra(UnsubscribeIntentService.TOPICS,  topicsList);
+				startService(intent);
+				TopicsFactory.clear();
+			}
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_changed_language).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
+			builder.setCancelable(false).setTitle(R.string.application_name).setMessage(R.string.lbl_changed_language).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					ActivityCompat.finishAffinity(SettingActivity.this);
-
-					if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
-						//You have Push-feature, so we just remove all subscribed topics.
-						String listOfTopics = Prefs.getInstance().getPushSelections();
-						String[] topicsArray = listOfTopics.split(",");
-						ArrayList<String> topicsList = new ArrayList<>();
-						for(String topic : topicsArray) {
-							topicsList.add(topic);
-						}
-						Intent intent = new Intent(SettingActivity.this, UnsubscribeIntentService.class);
-						intent.putStringArrayListExtra(UnsubscribeIntentService.TOPICS,  topicsList);
-						startService(intent);
-						TopicsFactory.clear();
-					}
 				}
 			});
 			builder.create().show();
@@ -268,7 +269,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 
 		if (preference.getKey().equals(Prefs.KEY_SHOW_IMAGES)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setNegativeButton(
+			builder.setCancelable(true).setTitle(R.string.application_name).setMessage(R.string.lbl_app_reload).setNegativeButton(
 					R.string.btn_no, null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {

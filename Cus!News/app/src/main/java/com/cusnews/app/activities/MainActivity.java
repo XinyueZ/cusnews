@@ -838,7 +838,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		No usage.
 	 */
 	public void openFarooHome(View view) {
-		mDrawerLayout.openDrawer(Gravity.RIGHT);
+		mDrawerLayout.closeDrawer(Gravity.RIGHT);
 		WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooHome());
 	}
 }
