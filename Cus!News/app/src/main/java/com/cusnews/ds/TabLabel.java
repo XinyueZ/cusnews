@@ -1,6 +1,8 @@
 package com.cusnews.ds;
 
 
+import android.text.TextUtils;
+
 import cn.bmob.v3.BmobObject;
 
 public final class TabLabel extends BmobObject  {
@@ -23,5 +25,11 @@ public final class TabLabel extends BmobObject  {
 
 	public String getLabel() {
 		return mLabel;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		TabLabel other = (TabLabel) o;
+		return TextUtils.equals(mLabel, other.getLabel());
 	}
 }

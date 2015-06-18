@@ -7,7 +7,6 @@ import java.util.List;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.Tab;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -101,7 +100,8 @@ public class TabLabelManager {
 					for (TabLabel tabLabel : list) {
 						boolean found = false;
 						for (TabLabel cached : mTabLabels) {
-							if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
+							if(cached.equals(tabLabel)){
+							//if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
 								found = true;
 								break;
 							}
@@ -161,7 +161,8 @@ public class TabLabelManager {
 			final View viewForSnack) {
 		helper.removeTab(tab);
 		for (TabLabel cached : mTabLabels) {
-			if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
+			if(cached.equals(tabLabel)){
+			//if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
 				mTabLabels.remove(cached);
 				removeRemoteTabInternal(tabLabel, viewForSnack);
 				break;

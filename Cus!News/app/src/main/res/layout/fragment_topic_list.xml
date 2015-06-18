@@ -18,7 +18,7 @@
 
         <com.cusnews.widgets.FontTextView
             android:id="@+id/title_tv"
-            style="@style/Text.Bold"
+            style="@style/Text.Normal.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
