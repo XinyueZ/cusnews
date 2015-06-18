@@ -1,7 +1,5 @@
 package com.cusnews.app.activities;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -36,10 +34,8 @@ import com.chopping.exceptions.CanNotOpenOrFindAppPropertiesException;
 import com.chopping.exceptions.InvalidAppPropertiesException;
 import com.cusnews.R;
 import com.cusnews.bus.SelectedTopicsEvent;
-import com.cusnews.ds.TopicsFactory;
 import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.gcm.UnregistrationIntentService;
-import com.cusnews.gcm.UnsubscribeIntentService;
 import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -250,17 +246,8 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 			}
 
 			if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
-				//You have Push-feature, so we just remove all subscribed topics.
-				String listOfTopics = Prefs.getInstance().getPushSelections();
-				String[] topicsArray = listOfTopics.split(",");
-				ArrayList<String> topicsList = new ArrayList<>();
-				for(String topic : topicsArray) {
-					topicsList.add(topic);
-				}
-				Intent intent = new Intent(SettingActivity.this, UnsubscribeIntentService.class);
-				intent.putStringArrayListExtra(UnsubscribeIntentService.TOPICS,  topicsList);
+				Intent intent = new Intent(this, UnregistrationIntentService.class);
 				startService(intent);
-				TopicsFactory.clear();
 			}
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);

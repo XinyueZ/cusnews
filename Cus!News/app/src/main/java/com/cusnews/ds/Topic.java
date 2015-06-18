@@ -1,7 +1,5 @@
 package com.cusnews.ds;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.support.annotation.StringRes;
 import android.view.View;
@@ -56,6 +54,7 @@ public final class Topic {
 			CheckBoxFontTextView checkBoxFontTextView = (CheckBoxFontTextView) v.findViewById(R.id.checkbox_tv);
 			boolean prevStatus = checkBoxFontTextView.isChecked();
 			checkBoxFontTextView.setChecked(!prevStatus);
+
 			if(!prevStatus) {
 				//Previous is not checked, then we wanna check and subscribe.
 				Intent intent = new Intent(v.getContext(), SubscribeIntentService.class);
@@ -64,10 +63,11 @@ public final class Topic {
 				intent.putExtra(SubscribeIntentService.SUBSCRIBE_NAME, v.getContext().getString(getLocalNameResId()));
 				v.getContext().startService(intent);
 			} else {
-				ArrayList<String> topics = new ArrayList<>();
-				topics.add(getApiName());
+				//Unsubscribe topic.
 				Intent intent = new Intent(v.getContext(), UnsubscribeIntentService.class);
-				intent.putStringArrayListExtra(UnsubscribeIntentService.TOPICS, topics);
+				intent.putExtra(UnsubscribeIntentService.TOPIC, getApiName());
+				intent.putExtra(UnsubscribeIntentService.STORAGE_NAME, getPrefsKey());
+				intent.putExtra(UnsubscribeIntentService.UNSUBSCRIBE_NAME, v.getContext().getString(getLocalNameResId()));
 				v.getContext().startService(intent);
 			}
 		}

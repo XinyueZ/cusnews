@@ -28,6 +28,7 @@ import com.cusnews.databinding.TopicListBinding;
 import com.cusnews.ds.Topic;
 import com.cusnews.ds.TopicsFactory;
 import com.cusnews.gcm.SubscribeIntentService;
+import com.cusnews.gcm.UnsubscribeIntentService;
 import com.cusnews.utils.Prefs;
 
 import de.greenrobot.event.EventBus;
@@ -51,15 +52,18 @@ public final class TopicListFragment extends DialogFragment {
 	 */
 	private TopicListBinding mBinding;
 	/**
-	 * Listener while abo push-topic.
+	 * Listener while subscribe push-topic.
 	 */
 	private BroadcastReceiver mSubscribeReceiver;
+	/**
+	 * Listener while unsubscribe push-topic.
+	 */
+	private BroadcastReceiver mUnsubscribeReceiver;
 
 	public static TopicListFragment newInstance(Context context) {
 		return (TopicListFragment) Fragment.instantiate(context, TopicListFragment.class.getName());
 	}
 
-	private android.os.Handler mHandler = new android.os.Handler();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,20 +72,26 @@ public final class TopicListFragment extends DialogFragment {
 
 		mSubscribeReceiver = new BroadcastReceiver() {
 			@Override
-			public void onReceive(Context context, final Intent intent) {
-				mHandler.post(new Runnable() {
-					@Override
-					public void run() {
-						String name = intent.getStringExtra(SubscribeIntentService.SUBSCRIBE_NAME);
-						boolean result = intent.getBooleanExtra(SubscribeIntentService.SUBSCRIBE_RESULT, false);
+			public void onReceive(Context context,   Intent intent) {
+				String name = intent.getStringExtra(SubscribeIntentService.SUBSCRIBE_NAME);
+				boolean result = intent.getBooleanExtra(SubscribeIntentService.SUBSCRIBE_RESULT, false);
 
-						if(result) {
-							mBinding.getTopicsAdapter().notifyDataSetChanged();
-						} else {
-							Utils.showLongToast(App.Instance, getString(R.string.lbl_subscribe_fail, name));
-						}
-					}
-				});
+				mBinding.getTopicsAdapter().notifyDataSetChanged();
+				if(!result) {
+					Utils.showLongToast(App.Instance, getString(R.string.lbl_subscribe_fail, name));
+				}
+			}
+		};
+		mUnsubscribeReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context,   Intent intent) {
+				String name = intent.getStringExtra(UnsubscribeIntentService.UNSUBSCRIBE_NAME);
+				boolean result = intent.getBooleanExtra(UnsubscribeIntentService.UNSUBSCRIBE_RESULT, false);
+
+				mBinding.getTopicsAdapter().notifyDataSetChanged();
+				if(!result) {
+					Utils.showLongToast(App.Instance, getString(R.string.lbl_unsubscribe_fail, name));
+				}
 			}
 		};
 	}
@@ -97,11 +107,14 @@ public final class TopicListFragment extends DialogFragment {
 		super.onResume();
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mSubscribeReceiver, new IntentFilter(
 				SubscribeIntentService.SUBSCRIBE_COMPLETE));
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mUnsubscribeReceiver, new IntentFilter(
+				UnsubscribeIntentService.UNSUBSCRIBE_COMPLETE));
 	}
 
 	@Override
 	public void onPause() {
 		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mSubscribeReceiver);
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mUnsubscribeReceiver);
 		super.onPause();
 	}
 

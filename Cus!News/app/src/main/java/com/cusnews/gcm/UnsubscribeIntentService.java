@@ -14,19 +14,20 @@
 package com.cusnews.gcm;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.cusnews.R;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.gcm.GcmPubSub;
 
 public class UnsubscribeIntentService extends IntentService {
 	public static final String UNSUBSCRIBE_COMPLETE = "unsubscribeComplete";
-	public static final String TOPICS = "topic";
+	public static final String TOPIC = "topic";
+	public static final String UNSUBSCRIBE_RESULT = "result";
+	public static final String UNSUBSCRIBE_NAME = "name";
+	public static final String STORAGE_NAME = "storage_name";
 	private static final String TAG = "UnsubscribeIntentService";
 
 	public UnsubscribeIntentService() {
@@ -35,16 +36,22 @@ public class UnsubscribeIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		Prefs prefs  = Prefs.getInstance();
+		Intent unsubscribeComplete = new Intent(UNSUBSCRIBE_COMPLETE);
+		String token = Prefs.getInstance().getPushToken();
+		String topic = intent.getStringExtra(TOPIC);
+		String storage =  intent.getStringExtra(STORAGE_NAME);
+		unsubscribeComplete.putExtra(UNSUBSCRIBE_NAME, intent.getStringExtra(UNSUBSCRIBE_NAME));
 		try {
 			synchronized (TAG) {
-				String token = Prefs.getInstance().getPushToken();
-				unsubscribeTopics(token, intent.getStringArrayListExtra(TOPICS));
+				unsubscribeTopics(token, topic);
+				prefs.setPush(storage, false);
+				unsubscribeComplete.putExtra(UNSUBSCRIBE_RESULT, true);
 			}
 		} catch (Exception e) {
-			com.chopping.utils.Utils.showLongToast(this, R.string.lbl_unregister_push_failed);
+			prefs.setPush(storage, true);
+			unsubscribeComplete.putExtra(UNSUBSCRIBE_RESULT, false);
 		}
-
-		Intent unsubscribeComplete = new Intent(UNSUBSCRIBE_COMPLETE);
 		LocalBroadcastManager.getInstance(this).sendBroadcast(unsubscribeComplete);
 	}
 
@@ -54,17 +61,15 @@ public class UnsubscribeIntentService extends IntentService {
 	 *
 	 * @param token
 	 * 		GCM token
-	 * @param topics
-	 * 		The topic-names that have been subscribed.
+	 * @param topic
+	 * 		The topic-name that have been subscribed.
 	 *
 	 * @throws IOException
 	 * 		if unable to reach the GCM PubSub service
 	 */
 	// [START subscribe_topics]
-	private void unsubscribeTopics(String token, ArrayList<String> topics) throws IOException {
+	private void unsubscribeTopics(String token, String topic) throws IOException {
 		GcmPubSub pubSub = GcmPubSub.getInstance(this);
-		for(String topic : topics) {
-			pubSub.unsubscribe(token, "/topics/" + topic);
-		}
+		pubSub.unsubscribe(token, "/topics/" + topic);
 	}
 }
