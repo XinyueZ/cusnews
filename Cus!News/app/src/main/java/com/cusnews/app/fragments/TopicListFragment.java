@@ -2,13 +2,17 @@ package com.cusnews.app.fragments;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.cusnews.R;
@@ -26,7 +30,7 @@ import de.greenrobot.event.EventBus;
  *
  * @author Xinyue Zhao
  */
-public final class TopicListFragment extends CusNewsFragment {
+public final class TopicListFragment extends DialogFragment {
 	/**
 	 * Main layout for this component.
 	 */
@@ -59,9 +63,18 @@ public final class TopicListFragment extends CusNewsFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		mBinding = DataBindingUtil.bind(view.findViewById(R.id.topic_list_rv));
+		mBinding = DataBindingUtil.bind(view.findViewById(R.id.topic_list_ll));
 		mBinding.topicListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
 		mBinding.setTopicsAdapter(new TopicListAdapter(mTopicList));
+		mBinding.closeBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Activity activity = getActivity();
+				if (activity != null) {
+					ActivityCompat.finishAfterTransition(activity);
+				}
+			}
+		});
 	}
 
 	@Override

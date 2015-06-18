@@ -60,8 +60,9 @@
 
             <com.software.shell.fab.ActionButton
                 android:id="@+id/del"
-                style="@style/FAB" android:visibility="invisible"
+                style="@style/FAB"
                 android:layout_gravity="center_horizontal|bottom"
+                android:visibility="invisible"
                 app:button_color="@color/fab_material_blue_grey_500"
                 app:button_colorPressed="@color/fab_material_blue_grey_900"
                 app:hide_animation="@anim/fab_jump_to_down"
@@ -194,8 +195,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:fitsSystemWindows="true"
-            android:background="@color/common_white">
+            android:background="@color/common_white"
+            android:fitsSystemWindows="true">
 
 
             <LinearLayout
@@ -208,14 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="start"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:background="@color/common_transparent"
-                    android:onClick="openFarooHome"
-                    android:src="@drawable/faroo_logo" />
+
             </LinearLayout>
         </ScrollView>
     </android.support.v4.widget.DrawerLayout>

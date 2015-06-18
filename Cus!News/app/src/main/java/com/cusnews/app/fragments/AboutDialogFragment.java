@@ -19,10 +19,12 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.cusnews.R;
+import com.cusnews.app.activities.WebViewActivity;
 import com.cusnews.bus.EULAConfirmedEvent;
 import com.cusnews.bus.EULARejectEvent;
 import com.cusnews.utils.Prefs;
@@ -106,11 +108,17 @@ public final class AboutDialogFragment extends DialogFragment {
 		// Show "About" dialog.
 		LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
-		TextView aboutBodyView = (TextView) layoutInflater.inflate(R.layout.fragment_dialog_about, null);
+		View dialogV = layoutInflater.inflate(R.layout.fragment_dialog_about, null);;
+		TextView aboutBodyView = (TextView) dialogV.findViewById(R.id.dialog_text_tv);
 		aboutBodyView.setText(aboutBody);
 		aboutBodyView.setMovementMethod(new LinkMovementMethod());
-
-		return new AlertDialog.Builder(getActivity()).setTitle(R.string.action_about).setView(aboutBodyView)
+		dialogV.findViewById(R.id.powered_by_ll).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				WebViewActivity.showInstance(getActivity(), "Faroo", Prefs.getInstance().getFarooHome());
+			}
+		});
+		return new AlertDialog.Builder(getActivity()).setTitle(R.string.action_about).setView(dialogV)
 				.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						dialog.dismiss();

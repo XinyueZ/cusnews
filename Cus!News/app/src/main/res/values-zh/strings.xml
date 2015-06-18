@@ -14,7 +14,7 @@
     <string name="lbl_share_app_content">你好啊！\n\n我是%1$s，是一个新的，自由的，独立的，清爽型新闻应用。\n\n%2$s</string>
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
     <string name="lbl_play_service">本应用需要谷歌服务，必须先安装然后使用。</string>
-    <string name="lbl_changed_language">内容语言更改后，就需要重新启动应用，并且先前注册的推送主题都将自动注销。</string>
+    <string name="lbl_changed_language">因为内容语言更改了，所以就需要重新启动应用，并且先前注册的推送主题都已经自动注销。</string>
     <string name="lbl_app_reload">应用须重新启动，重启吗？</string>
     <string name="lbl_sync_fail">同步失败，请重新尝试。</string>
     <string name="lbl_sync_label_added">同步添加[%1$s]。</string>
@@ -24,9 +24,11 @@
     <string name="lbl_registering">注册…</string>
     <string name="lbl_unregistered">注销…</string>
     <string name="lbl_subscribe">订阅…</string>
-    <string name="lbl_unscribe">退订…</string>
+    <string name="lbl_unsubscribe">退订…</string>
     <string name="lbl_no_push_opened">请先打开推送功能…</string>
-
+    <string name="lbl_data_source">API(数据来源)：</string>
+    <string name="lbl_ask_push">你是否愿意注册一些咨询的推送？</string>
+    <string name="lbl_push_list">推送主题</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>

@@ -4,11 +4,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -22,6 +26,7 @@ import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
@@ -64,6 +69,7 @@ import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
 import com.cusnews.ds.TabLabel;
 import com.cusnews.ds.Trends;
+import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
@@ -130,6 +136,15 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Search menu.
 	 */
 	private MenuItem mSearchMenu;
+
+	/**
+	 * Progress indicator.
+	 */
+	private ProgressDialog mPb;
+	/**
+	 * Listener while registering push-feature.
+	 */
+	private BroadcastReceiver mRegistrationBroadcastReceiver;
 
 	/**
 	 * Calculate height of actionbar.
@@ -207,7 +222,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link  EULAConfirmedEvent}.
 	 */
 	public void onEvent(EULAConfirmedEvent e) {
-
+		if (!Prefs.getInstance().askedPush()) {
+			askPush();
+		}
 	}
 	//------------------------------------------------
 
@@ -215,6 +232,16 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		calcActionBarHeight();
+		//Listener on registering push-feature.
+		mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					dismissPb();
+				}
+				TopicListActivity.showInstance(MainActivity.this);
+			}
+		};
 
 		mKeyword = "";//App.Instance.getLastTimeSearched();
 
@@ -376,20 +403,20 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			@Override
 			public void success(Trends trends, Response response) {
 				List<String> list = trends.getList();
-				for(String trend : list) {
+				for (String trend : list) {
 					mBinding.navView.getMenu().add(trend).setOnMenuItemClickListener(new OnMenuItemClickListener() {
 						@Override
 						public boolean onMenuItemClick(MenuItem item) {
 							mDrawerLayout.closeDrawers();
 
-							if(!Prefs.getInstance().addTabTip()) {
+							if (!Prefs.getInstance().addTabTip()) {
 								showDialogFragment(new DialogFragment() {
 									@Override
 									public Dialog onCreateDialog(Bundle savedInstanceState) {
 										// Use the Builder class for convenient dialog construction
 										AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-										builder.setTitle(R.string.application_name).setMessage(R.string.lbl_tabs_tip).setPositiveButton(
-												R.string.btn_ok, null);
+										builder.setTitle(R.string.application_name).setMessage(R.string.lbl_tabs_tip)
+												.setPositiveButton(R.string.btn_ok, null);
 										return builder.create();
 									}
 								}, null);
@@ -404,8 +431,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						private void addTrendToTab(MenuItem item) {
 							TabLabel newTabLabel = null;
 							try {
-								newTabLabel = new TabLabel(item.getTitle().toString(),
-										DeviceUniqueUtil.getDeviceIdent(App.Instance));
+								newTabLabel = new TabLabel(item.getTitle().toString(), DeviceUniqueUtil.getDeviceIdent(
+										App.Instance));
 
 								TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
 										mBinding.coordinatorLayout).select();
@@ -479,7 +506,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 *
 	 * @param tabLabel
 	 * 		{@link TabLabel}.
-	 * 	@return The added new {@link Tab}.
+	 *
+	 * @return The added new {@link Tab}.
 	 */
 	@Override
 	public Tab addTab(final TabLabel tabLabel) {
@@ -566,7 +594,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (!mBinding.del.isHidden()) {
 			mBinding.del.hide();
 		} else {
-			if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT) || mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+			if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT) || mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
 				mDrawerLayout.closeDrawers();
 			} else {
 				super.onBackPressed();
@@ -832,13 +860,56 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 	/**
-	 * Open Faroo's home-page.
-	 *
-	 * @param view
-	 * 		No usage.
+	 * To ask whether opening Push-feature.
 	 */
-	public void openFarooHome(View view) {
-		mDrawerLayout.closeDrawer(Gravity.RIGHT);
-		WebViewActivity.showInstance(MainActivity.this, "Faroo", Prefs.getInstance().getFarooHome());
+	private void askPush() {
+		Prefs.getInstance().setAskedPush(true);
+		showDialogFragment(new DialogFragment() {
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				// Use the Builder class for convenient dialog construction
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNegativeButton(
+						R.string.btn_no, null).setPositiveButton(R.string.btn_yes,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
+								mPb.setCancelable(true);
+								Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+								startService(intent);
+							}
+						});
+				return builder.create();
+			}
+		}, null);
+	}
+
+	/**
+	 * Remove the progress indicator.
+	 */
+	private void dismissPb() {
+		if (mPb != null && mPb.isShowing()) {
+			mPb.dismiss();
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		dismissPb();
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(
+				RegistrationIntentService.REGISTRATION_COMPLETE));
+	}
+
+	@Override
+	protected void onPause() {
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+		super.onPause();
 	}
 }

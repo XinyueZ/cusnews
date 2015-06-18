@@ -15,7 +15,7 @@
     <string name="lbl_share_app_content">Hello!\n\nMy name is %1$s and I am a new free light-weight independent news App.\n\n%2$s</string>
     <string name="lbl_store_url">https://play.google.com/store/apps/details?id=%1$s</string>
     <string name="lbl_play_service">This application needs Google Play Service, you must install it first.</string>
-    <string name="lbl_changed_language">After you change content language, you\'d better restart application to reload new content and all subscribed push-topics will be unsubscribed automatically.</string>
+    <string name="lbl_changed_language">Because you\'ve changed content-language, you\'d better restart application to reload new content and all subscribed push-topics have already been unsubscribed automatically.</string>
     <string name="lbl_app_reload">The application should be restarted, would you like?</string>
     <string name="lbl_sync_fail">Synchronization is fail, please retry.</string>
     <string name="lbl_sync_label_added">Synchronized adding [%1$s].</string>
@@ -25,8 +25,11 @@
     <string name="lbl_registering">Registering…</string>
     <string name="lbl_unregistered">Unregistered…</string>
     <string name="lbl_subscribe">Subscribing…</string>
-    <string name="lbl_unscribe">Unsubscribing…</string>
+    <string name="lbl_unsubscribe">Unsubscribing…</string>
     <string name="lbl_no_push_opened">Please turn on the push-notification first…</string>
+    <string name="lbl_data_source">API(Data-Source):</string>
+    <string name="lbl_ask_push">Would you like to subscribe Push-notifications of some topics?</string>
+    <string name="lbl_push_list">Topics to push</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
@@ -78,7 +81,7 @@
 
 
 
-    <string name="setting_lang">Feeds Language</string>
+    <string name="setting_lang">Content-language</string>
     <string-array name="lang_types">
         <item>English</item>
         <item>German</item>

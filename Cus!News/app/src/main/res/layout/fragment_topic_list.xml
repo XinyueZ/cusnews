@@ -11,10 +11,49 @@
             type="com.cusnews.app.adapters.TopicListAdapter" />
     </data>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/topic_list_rv"
+    <RelativeLayout
+        android:id="@+id/topic_list_ll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        app:topicsAdapter="@{topicsAdapter}" />
+        android:layout_height="match_parent">
+
+        <com.cusnews.widgets.FontTextView
+            android:id="@+id/title_tv"
+            style="@style/Text.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/lbl_push_list" />
+
+        <View
+            android:id="@+id/div"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/title_tv"
+            android:background="@color/grey_500" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/topic_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/close_btn"
+            android:layout_below="@+id/div"
+            android:scrollbars="none"
+            app:topicsAdapter="@{topicsAdapter}" />
+
+        <Button
+            android:id="@+id/close_btn"
+            style="@style/Text.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/btn_ok" />
+    </RelativeLayout>
 </layout>

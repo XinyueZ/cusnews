@@ -65,6 +65,10 @@ public final class Prefs extends BasicPrefs {
 	public static final String KEY_PUSH_GOOGLE = "key.push.google";
 	public static final String KEY_PUSH_APPLE = "key.push.apple";
 	//--------------
+	/**
+	 * Has asked opening push or not.
+	 */
+	private static final String KEY_ASKED_PUSH = "key.asked.push";
 
 	/**
 	 * Suggestion on a dialog before adding tab to UI.
@@ -361,5 +365,17 @@ public final class Prefs extends BasicPrefs {
 	@Nullable
 	String getPushSelections() {
 		return getString(KEY_PUSH_TOPICS_SELECTIONS, null);
+	}
+	/**
+	 * Set that the App has asked opening push or not.
+	 */
+	public void setAskedPush(boolean asked) {
+		setBoolean(KEY_ASKED_PUSH, asked);
+	}
+	/**
+	 * Has asked opening push or not.
+	 */
+	public boolean askedPush(){
+		return getBoolean(KEY_ASKED_PUSH, false);
 	}
 }

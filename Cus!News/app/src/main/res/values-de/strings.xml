@@ -13,18 +13,21 @@
     <string name="lbl_share_app_title">Hallo, ich bin hier</string>
     <string name="lbl_share_app_content">Guten Tag,\n\nmein Name ist %1$s, ich bin ein neuer, sauber, frei unabhängiger Nachrichtendienst.\n\n%2$s</string>
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
-    <string name="lbl_changed_language">Du solltest die App neustarten, nachdem die Sprache gewechselt ist. Zudem werden alle Push-Benachrichtigungen automatisch abgemeldet.</string>
+    <string name="lbl_changed_language">Die App solltest einmal neu gestartet werden, da die Feeds-Sprache schon gewechselt geworden ist. Zudem sind alle abonnierte Push-Benachrichtigungen schon automatisch storniert.</string>
     <string name="lbl_app_reload">Die App sollte besser neugestartet werden, möchtest Du das machen?</string>
     <string name="lbl_sync_fail">Fehler bei dem Synchronisation, bitte wiederholen.</string>
     <string name="lbl_sync_label_added">Synchronisiere den neuen Tab [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronisiere…</string>
-    <string name="lbl_register_push_failed">Ich kann die Push-Benachrichtigung nicht registrieren, ist das Internet da?</string>
-    <string name="lbl_unregister_push_failed">Ich kann die Push-Benachrichtigung nicht unregistrieren, ist das Internet da?</string>
+    <string name="lbl_register_push_failed">Ich kann die Push-Benachrichtigung nicht anmelden, könntest Du die Internetverbinden durchchecken?</string>
+    <string name="lbl_unregister_push_failed">Ich kann die Push-Benachrichtigung nicht abmelden, könntest Du die Internetverbinden durchchecken?</string>
     <string name="lbl_registering">Anmeldung…</string>
     <string name="lbl_unregistered">Abmeldung…</string>
-    <string name="lbl_subscribe">Abo…</string>
-    <string name="lbl_unscribe">Abmeldung…</string>
+    <string name="lbl_subscribe">Abonniere…</string>
+    <string name="lbl_unsubscribe">Storniere…</string>
     <string name="lbl_no_push_opened">Bitte die Push-Benachrichtigung einschalten…</string>
+    <string name="lbl_data_source">API(Datenquelle):</string>
+    <string name="lbl_ask_push">Möchtest Du die Push-Benachrichtigungen von einigen Themen einschalten?</string>
+    <string name="lbl_push_list">Themen zu benachrichtigen</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
@@ -51,7 +54,7 @@
     <string name="btn_agree">Stimmte zu</string>
     <string name="btn_not_agree">Nein</string>
 
-    <string name="setting_lang">Sprach von Data</string>
+    <string name="setting_lang">Feeds-Sprache</string>
     <string-array name="lang_types">
         <item>Englisch</item>
         <item>Deutsch</item>

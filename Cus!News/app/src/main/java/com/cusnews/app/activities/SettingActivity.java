@@ -59,8 +59,13 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 	 * Progress indicator.
 	 */
 	private ProgressDialog mPb;
-
+	/**
+	 * Listener while registering push-feature.
+	 */
 	private BroadcastReceiver mRegistrationBroadcastReceiver;
+	/**
+	 * Listener while unregistering push-feature.
+	 */
 	private BroadcastReceiver mUnregistrationBroadcastReceiver;
 
 
@@ -173,6 +178,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 
 		//Push.
 		CheckBoxPreference pushOnOff = (CheckBoxPreference) findPreference(Prefs.KEY_PUSH_ON_OFF);
+		pushOnOff.setChecked(!TextUtils.isEmpty(prefs.getPushToken()));
 		pushOnOff.setOnPreferenceChangeListener(this);
 		mSelection = findPreference(Prefs.KEY_PUSH_TOPICS_SELECTIONS);
 		mSelection.setOnPreferenceClickListener(new OnPreferenceClickListener() {
