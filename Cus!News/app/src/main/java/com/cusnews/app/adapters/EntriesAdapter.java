@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.cusnews.BR;
 import com.cusnews.R;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 /**
  * The adapter for the list of {@link com.cusnews.ds.Entry}s.
@@ -34,25 +34,23 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	/**
 	 * Constructor of {@link EntriesAdapter}
 	 *
-	 * @param layoutResId
-	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
+	 * @param viewType The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 */
-	public EntriesAdapter(@LayoutRes int layoutResId) {
+	public EntriesAdapter(ViewType viewType) {
 		setData(new ArrayList<Entry>());
-		mLayoutResId = layoutResId;
+		mLayoutResId = viewType.getLayoutResId();
 	}
 
 	/**
 	 * Constructor of {@link EntriesAdapter}
 	 *
-	 * @param layoutResId
-	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
+	 * @param  viewType  The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 * @param entries
 	 * 		Data-source.
 	 */
-	public EntriesAdapter(@LayoutRes int layoutResId, List<Entry> entries) {
+	public EntriesAdapter(ViewType viewType, List<Entry> entries) {
 		setData(entries);
-		mLayoutResId = layoutResId;
+		mLayoutResId = viewType.getLayoutResId();
 	}
 
 	/**

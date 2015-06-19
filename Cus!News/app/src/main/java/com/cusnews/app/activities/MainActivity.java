@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -33,6 +34,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -80,6 +82,7 @@ import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
 import com.cusnews.utils.Utils;
 import com.cusnews.widgets.DynamicShareActionProvider;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -99,7 +102,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * The layout-mgr controls over {@link RecyclerView}.
 	 */
-	private LinearLayoutManager mLayoutManager;
+	private RecyclerView.LayoutManager  mLayoutManager;
 	/**
 	 * Data-binding.
 	 */
@@ -149,7 +152,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Listener while registering push-feature.
 	 */
 	private BroadcastReceiver mRegistrationBroadcastReceiver;
-
+	private static final int GRID_SPAN = 3;
 	/**
 	 * Calculate height of actionbar.
 	 */
@@ -192,7 +195,17 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
 	 */
 	public void onEvent(ChangeViewTypeEvent e) {
-		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType().getLayoutResId(),
+		switch (e.getViewType()) {
+		case GRID:
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN ));
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			break;
+		default:
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			break;
+		}
+		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType(),
 				mBinding.getEntriesAdapter().getData());
 		mBinding.setEntriesAdapter(newAdp);
 	}
@@ -258,10 +271,20 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 
 		//Init adapter.
-		mBinding.setEntriesAdapter(new EntriesAdapter(Prefs.getInstance().getViewType().getLayoutResId()));
+		ViewType vt = Prefs.getInstance().getViewType();
+		mBinding.setEntriesAdapter(new EntriesAdapter(vt));
 
 		//Init recycleview.
-		mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
+		switch (vt) {
+		case GRID:
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN  ));
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			break;
+		default:
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			break;
+		}
 		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -281,7 +304,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 				mVisibleItemCount = mLayoutManager.getChildCount();
 				mTotalItemCount = mLayoutManager.getItemCount();
-				mPastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
+				if(mLayoutManager instanceof  LinearLayoutManager) {
+					mPastVisibleItems = ((LinearLayoutManager)mLayoutManager).findFirstVisibleItemPosition();
+				}
 
 				if (!mIsBottom) {
 					if (mLoading) {
@@ -766,7 +791,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			return true;
 		case R.id.action_to_top:
 			if (mBinding.getEntriesAdapter() != null && mBinding.getEntriesAdapter().getItemCount() > 0) {
-				mLayoutManager.scrollToPositionWithOffset(0, 0);
+				if(mLayoutManager instanceof LinearLayoutManager) {
+					((LinearLayoutManager)mLayoutManager).scrollToPositionWithOffset(0, 0);
+				}
 			}
 			break;
 		case R.id.action_about:

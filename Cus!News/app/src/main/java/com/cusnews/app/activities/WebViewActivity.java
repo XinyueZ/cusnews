@@ -2,6 +2,7 @@ package com.cusnews.app.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -19,6 +20,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cusnews.R;
+import com.cusnews.utils.Prefs;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 
 /**
@@ -80,6 +83,18 @@ public final class WebViewActivity extends  CusNewsActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(LAYOUT);
 		calcActionBarHeight();
+
+		Prefs prefs = Prefs.getInstance();
+		ViewType vt = prefs.getViewType();
+		switch (vt) {
+		case GRID:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			break;
+		default:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			break;
+		}
+
 
 		//Actionbar
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

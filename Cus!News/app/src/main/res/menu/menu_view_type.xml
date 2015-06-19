@@ -14,5 +14,11 @@
             android:title="@string/action_view_type_vertical"
             android:checkable="true"
             app:showAsAction="never" />
+
+         <item
+             android:id="@+id/action_view_type_grid"
+             android:title="@string/action_view_type_grid"
+             android:checkable="true"
+             app:showAsAction="never" />
     </group>
 </menu>

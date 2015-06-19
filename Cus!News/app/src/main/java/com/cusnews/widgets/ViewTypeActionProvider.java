@@ -93,6 +93,9 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 		case R.id.action_view_type_vertical:
 			Prefs.getInstance().setViewType(ViewType.VERTICAL);
 			break;
+		case R.id.action_view_type_grid:
+			Prefs.getInstance().setViewType(ViewType.GRID);
+			break;
 		}
 		updateMenuItems(mPopupMenu.getMenu());
 		EventBus.getDefault().post(new ChangeViewTypeEvent(Prefs.getInstance().getViewType()));
@@ -108,11 +111,12 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	private void updateMenuItems(Menu menu) {
 		menu.findItem(R.id.action_view_type_horizontal).setChecked(ViewType.HORIZONTAL == Prefs.getInstance().getViewType());
 		menu.findItem(R.id.action_view_type_vertical).setChecked(ViewType.VERTICAL == Prefs.getInstance().getViewType());
+		menu.findItem(R.id.action_view_type_grid).setChecked(ViewType.GRID == Prefs.getInstance().getViewType());
 	}
 
 
 	public enum ViewType {
-		HORIZONTAL(0, R.layout.item_horizontal_entry), VERTICAL(1, R.layout.item_vertical_entry), GRID(2, -1);
+		HORIZONTAL(0, R.layout.item_horizontal_entry), VERTICAL(1, R.layout.item_vertical_entry), GRID(2, R.layout.item_grid_entry);
 		/**
 		 * The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 		 */
@@ -135,6 +139,8 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 				return HORIZONTAL;
 			case 1:
 				return VERTICAL;
+			case 2:
+				return GRID;
 			default:
 				return null;
 			}

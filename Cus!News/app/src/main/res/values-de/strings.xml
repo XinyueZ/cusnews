@@ -37,6 +37,7 @@
     <string name="action_view_type">Ansicht</string>
     <string name="action_view_type_horizontal">Horizontal</string>
     <string name="action_view_type_vertical">Vertikal</string>
+    <string name="action_view_type_grid">Grid</string>
     <string name="action_top">Nach oben</string>
     <string name="action_search">Suche</string>
     <string name="action_share">Teile</string>

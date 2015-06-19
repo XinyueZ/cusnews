@@ -38,6 +38,7 @@
     <string name="action_view_type">视图</string>
     <string name="action_view_type_horizontal">水平</string>
     <string name="action_view_type_vertical">垂直</string>
+    <string name="action_view_type_grid">网格</string>
     <string name="action_top">回顶端</string>
     <string name="action_search">搜一搜</string>
     <string name="action_share">分享</string>

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.cusnews.bus.SelectedTopicsEvent;
 import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.gcm.UnregistrationIntentService;
 import com.cusnews.utils.Prefs;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 import de.greenrobot.event.EventBus;
 
@@ -121,9 +123,15 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Prefs prefs = Prefs.getInstance();
-		//		if(getResources().getBoolean(R.bool.landscape)) {
-		//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		//		}
+		ViewType vt = prefs.getViewType();
+		switch (vt) {
+		case GRID:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			break;
+		default:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			break;
+		}
 		addPreferencesFromResource(R.xml.settings);
 
 		mToolbar = (Toolbar) getLayoutInflater().inflate(R.layout.toolbar, null, false);
@@ -191,7 +199,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 
 
 		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin =
-				(int) (getActionBarHeight(this) * 1.5);
+				(int) (getActionBarHeight(this) * 1.2);
 	}
 
 

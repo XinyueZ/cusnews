@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.chopping.application.BasicPrefs;
+import com.cusnews.R;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 
 /**
@@ -187,7 +188,7 @@ public final class Prefs extends BasicPrefs {
 	 * @return {@link ViewType}:  like horizontal, vertical, grid, etc.
 	 */
 	public ViewType getViewType() {
-		return ViewType.fromValue(getInt(KEY_VIEW_TYPE, 1));
+		return ViewType.fromValue(getInt(KEY_VIEW_TYPE, mContext.getResources().getBoolean(R.bool.landscape) ? 2:1));
 	}
 
 	/**

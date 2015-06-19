@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import com.cusnews.app.adapters.DetailPagerAdapter;
 import com.cusnews.bus.OpenRelatedEvent;
 import com.cusnews.databinding.ActivityDetailBinding;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.Prefs;
+import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -82,6 +85,15 @@ public final class DetailActivity extends CusNewsActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ViewType vt = Prefs.getInstance().getViewType();
+		switch (vt) {
+		case GRID:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			break;
+		default:
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			break;
+		}
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 		setData();
