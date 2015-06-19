@@ -181,7 +181,7 @@ public class TabLabelManager {
 			public void onFailure(int i, String s) {
 				View anchorV = anchor.get();
 				if (anchorV != null) {
-					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
+					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG).setAction(R.string.btn_retry,
 							new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -239,7 +239,7 @@ public class TabLabelManager {
 			public void onFailure(int i, String s) {
 				View anchorV = anchor.get();
 				if (anchorV != null) {
-					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
+					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG).setAction(R.string.btn_retry,
 							new OnClickListener() {
 								@Override
 								public void onClick(View v) {
