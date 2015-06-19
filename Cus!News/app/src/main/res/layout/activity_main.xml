@@ -188,8 +188,9 @@
             android:background="@color/common_white"
             android:fitsSystemWindows="true"
             app:itemIconTint="@color/primary_accent"
+            app:menu="@menu/drawer_view"
             app:itemTextColor="@color/primary_accent"
-            app:menu="@menu/drawer_view" />
+            android:theme="@style/NavDrawerItem"/>
 
         <ScrollView
             android:layout_width="match_parent"

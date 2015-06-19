@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <group android:checkableBehavior="single">
     <item
         android:id="@+id/action_faroo_home"
         android:icon="@drawable/ic_faroo_home"
@@ -29,12 +29,7 @@
         android:id="@+id/action_more_apps"
         android:icon="@drawable/ic_apps"
         android:title="@string/action_more_apps" />
-
-    <item
-        android:id="@+id/action_trends"
-        android:icon="@drawable/ic_social_whatshot"
-        android:title="@string/action_trends" />
-
+    </group>
     <!--<group android:checkableBehavior="single">-->
         <!--<item-->
             <!--android:id="@+id/nav_home"-->
@@ -54,15 +49,13 @@
             <!--android:title="Discussion" />-->
     <!--</group>-->
 
-    <!--<item android:title="Sub items">-->
-        <!--<menu>-->
-            <!--<item-->
-                <!--android:icon="@drawable/ic_alert"-->
-                <!--android:title="Sub item 1" />-->
-            <!--<item-->
-                <!--android:icon="@drawable/ic_alert"-->
-                <!--android:title="Sub item 2" />-->
-        <!--</menu>-->
-    <!--</item>-->
+    <item
+        android:id="@+id/action_trends"
+        android:icon="@drawable/ic_social_whatshot"
+        android:title="@string/action_trends">
+        <menu>
+            <!--A more trends...-->
+        </menu>
+    </item>
 
 </menu>

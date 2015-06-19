@@ -1,10 +1,6 @@
 <resources>
 
-    <!--Actionbar overflow menu divider-->
-    <style name="OverflowDropDown" parent="@style/Widget.AppCompat.ListView.DropDown">
-        <item name="android:dividerHeight">1dp</item>
-        <item name="android:background">@color/primary_accent</item>
-    </style>
+
 
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Light">
@@ -107,5 +103,13 @@
         <item name="mrl_rippleDelayClick">true</item>
         <item name="mrl_rippleHover">true</item>
         <item name="mrl_rippleOverlay">true</item>
+    </style>
+
+
+
+
+    <style name="NavDrawerItem"
+        parent="@style/Theme.AppCompat.Light">
+        <item name="android:textColorSecondary">@color/primary_accent</item>
     </style>
 </resources>

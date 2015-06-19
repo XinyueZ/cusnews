@@ -43,6 +43,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
@@ -50,6 +51,9 @@ import android.view.View.OnDragListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.BaseAdapter;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chopping.bus.CloseDrawerEvent;
@@ -402,47 +406,61 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			@Override
 			public void success(Trends trends, Response response) {
 				List<String> list = trends.getList();
+				MenuItem trendsMenu = mBinding.navView.getMenu().findItem(R.id.action_trends);
+				SubMenu trendsMenuSub = trendsMenu.getSubMenu();
 				for (String trend : list) {
-					mBinding.navView.getMenu().add(trend).setOnMenuItemClickListener(new OnMenuItemClickListener() {
-						@Override
-						public boolean onMenuItemClick(MenuItem item) {
-							mDrawerLayout.closeDrawers();
+					trendsMenuSub.add(trend).setIcon(R.drawable.ic_social_whatshot).setVisible(true).setOnMenuItemClickListener(
+							new OnMenuItemClickListener() {
+								@Override
+								public boolean onMenuItemClick(MenuItem item) {
+									mDrawerLayout.closeDrawers();
 
-							if (!Prefs.getInstance().addTabTip()) {
-								showDialogFragment(new DialogFragment() {
-									@Override
-									public Dialog onCreateDialog(Bundle savedInstanceState) {
-										// Use the Builder class for convenient dialog construction
-										AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-										builder.setTitle(R.string.application_name).setMessage(R.string.lbl_tabs_tip)
-												.setPositiveButton(R.string.btn_ok, null);
-										return builder.create();
+									if (!Prefs.getInstance().addTabTip()) {
+										showDialogFragment(new DialogFragment() {
+											@Override
+											public Dialog onCreateDialog(Bundle savedInstanceState) {
+												// Use the Builder class for convenient dialog construction
+												AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+												builder.setTitle(R.string.application_name).setMessage(
+														R.string.lbl_tabs_tip).setPositiveButton(R.string.btn_ok, null);
+												return builder.create();
+											}
+										}, null);
+										Prefs.getInstance().setAddTabTip(true);
 									}
-								}, null);
-								Prefs.getInstance().setAddTabTip(true);
-							}
 
 
-							addTrendToTab(item);
-							return true;
-						}
-
-						private void addTrendToTab(MenuItem item) {
-							TabLabel newTabLabel;
-							try {
-								newTabLabel = new TabLabel(item.getTitle().toString().trim(), DeviceUniqueUtil.getDeviceIdent(
-										App.Instance));
-
-								Tab newTab = TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
-										mBinding.coordinatorLayout);
-								if(newTab != null) {
-									newTab.select();
+									addTrendToTab(item);
+									return true;
 								}
-							} catch (NoSuchAlgorithmException e) {
-								//TODO Error when can not get device id.
-							}
-						}
+
+								private void addTrendToTab(MenuItem item) {
+									TabLabel newTabLabel;
+									try {
+										newTabLabel = new TabLabel(item.getTitle().toString().trim(),
+												DeviceUniqueUtil.getDeviceIdent(App.Instance));
+
+										Tab newTab = TabLabelManager.getInstance().addNewRemoteTab(newTabLabel,
+												MainActivity.this, mBinding.coordinatorLayout);
+										if (newTab != null) {
+											newTab.select();
+										}
+									} catch (NoSuchAlgorithmException e) {
+										//TODO Error when can not get device id.
+									}
+								}
 					});
+				}
+
+				for (int i = 0, count =  mBinding.navView.getChildCount(); i < count; i++) {
+					final View child =  mBinding.navView.getChildAt(i);
+					if (child != null && child instanceof ListView) {
+						final ListView menuView = (ListView) child;
+						final HeaderViewListAdapter adapter = (HeaderViewListAdapter) menuView.getAdapter();
+						final BaseAdapter wrapped = (BaseAdapter) adapter.getWrappedAdapter();
+						wrapped.notifyDataSetChanged();
+						break;
+					}
 				}
 			}
 

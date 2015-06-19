@@ -53,5 +53,10 @@
 
     </style>
 
+    <!--Actionbar overflow menu divider-->
+    <style name="OverflowDropDown" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:background">@color/primary_accent</item>
+    </style>
 
 </resources>
