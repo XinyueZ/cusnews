@@ -20,6 +20,7 @@
     <string name="lbl_sync_fail">Synchronization is fail, please retry.</string>
     <string name="lbl_sync_label_added">Synchronized adding [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronized removing tab.</string>
+    <string name="lbl_sync_same_label">You\'ve already same tab [%1$s].</string>
     <string name="lbl_register_push_failed">Can\'t register push-notification, do you have Internet?</string>
     <string name="lbl_unregister_push_failed">Can\'t unregister push-notification, do you have Internet?</string>
     <string name="lbl_registering">Registering…</string>

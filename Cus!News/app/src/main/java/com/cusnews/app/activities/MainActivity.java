@@ -73,7 +73,7 @@ import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
-import com.cusnews.utils.TabLabelManager.TabLabelManagerHelper;
+import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
 import com.cusnews.utils.Utils;
 import com.cusnews.widgets.DynamicShareActionProvider;
 
@@ -83,7 +83,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends CusNewsActivity implements SearchView.OnQueryTextListener, TabLabelManagerHelper {
+public class MainActivity extends CusNewsActivity implements SearchView.OnQueryTextListener, TabLabelManagerUIHelper {
 	/**
 	 * Main layout for this component.
 	 */
@@ -301,7 +301,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				TabLabelManager.getInstance().init(MainActivity.this, false);
 				getData();
 			}
 		});
@@ -429,13 +428,16 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						}
 
 						private void addTrendToTab(MenuItem item) {
-							TabLabel newTabLabel = null;
+							TabLabel newTabLabel;
 							try {
-								newTabLabel = new TabLabel(item.getTitle().toString(), DeviceUniqueUtil.getDeviceIdent(
+								newTabLabel = new TabLabel(item.getTitle().toString().trim(), DeviceUniqueUtil.getDeviceIdent(
 										App.Instance));
 
-								TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
-										mBinding.coordinatorLayout).select();
+								Tab newTab = TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
+										mBinding.coordinatorLayout);
+								if(newTab != null) {
+									newTab.select();
+								}
 							} catch (NoSuchAlgorithmException e) {
 								//TODO Error when can not get device id.
 							}
@@ -510,12 +512,12 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @return The added new {@link Tab}.
 	 */
 	@Override
-	public Tab addTab(final TabLabel tabLabel) {
+	public Tab addTab(  TabLabel tabLabel) {
+		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
+		TextView tabTv = (TextView) tabV.findViewById(R.id.text);
 		final Tab tab = mBinding.tabs.newTab();
 		tab.setText(tabLabel.getLabel());
-		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
 		tab.setCustomView(tabV);
-		TextView tabTv = (TextView) tabV.findViewById(R.id.text);
 		tabTv.setText(tabLabel.getLabel());
 		tabV.setOnClickListener(new OnClickListener() {
 			@Override
@@ -523,10 +525,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				tab.select();
 			}
 		});
+		tabV.setTag(tabLabel);
 		tabV.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-
+				final TabLabel tabLabel = (TabLabel) v.getTag();
 				mLongPressedObjectId = tabLabel.getObjectId();
 				if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
 					//After API-11 we import drag-drop features to delete tabs.

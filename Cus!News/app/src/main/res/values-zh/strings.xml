@@ -31,6 +31,7 @@
     <string name="lbl_data_source">API(数据来源)：</string>
     <string name="lbl_ask_push">你是否愿意注册一些咨询的推送？</string>
     <string name="lbl_push_list">推送主题</string>
+    <string name="lbl_sync_same_label">[%1$s] 已经作为标签存在了。</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>

@@ -1,12 +1,15 @@
 package com.cusnews.utils;
 
+import java.lang.ref.WeakReference;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TabLayout.Tab;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -25,7 +28,7 @@ import cn.bmob.v3.listener.SaveListener;
  * @author Xinyue Zhao
  */
 public class TabLabelManager {
-	public interface TabLabelManagerHelper {
+	public interface TabLabelManagerUIHelper {
 		/**
 		 * Add customized , default, first {@link Tab}.
 		 */
@@ -37,7 +40,7 @@ public class TabLabelManager {
 		 * @param tabLabel
 		 * 		{@link TabLabel}.
 		 *
-		 * 	@return The added new {@link Tab}.
+		 * @return The added new {@link Tab}.
 		 */
 		Tab addTab(TabLabel tabLabel);
 
@@ -53,7 +56,7 @@ public class TabLabelManager {
 	/**
 	 * Cached list of all {@link TabLabel}s from backend.
 	 */
-	private List<TabLabel> mTabLabels = new LinkedList<>();
+	private List<TabLabel> mCachedTabLabels = new LinkedList<>();
 	/**
 	 * Singleton.
 	 */
@@ -76,17 +79,17 @@ public class TabLabelManager {
 	 * For initialize the {@link TabLayout} when host {@link android.app.Activity} is being created.
 	 *
 	 * @param helper
-	 * 		{@link com.cusnews.utils.TabLabelManager.TabLabelManagerHelper}.
+	 * 		{@link TabLabelManagerUIHelper}.
 	 * @param loadDefault
 	 * 		{@code true} if the first default will also be loaded.
 	 */
-	public void init(final TabLabelManagerHelper helper, boolean loadDefault) {
+	public void init(final TabLabelManagerUIHelper helper, boolean loadDefault) {
 		//Default page.
 		if (loadDefault) {
 			helper.addDefaultTab();
 		}
 		//Load from cache.
-		for (TabLabel cached : mTabLabels) {
+		for (TabLabel cached : mCachedTabLabels) {
 			helper.addTab(cached);
 		}
 		//Load from backend and refresh tabs.
@@ -99,15 +102,14 @@ public class TabLabelManager {
 				public void onSuccess(List<TabLabel> list) {
 					for (TabLabel tabLabel : list) {
 						boolean found = false;
-						for (TabLabel cached : mTabLabels) {
-							if(cached.equals(tabLabel)){
-							//if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
+						for (TabLabel cached : mCachedTabLabels) {
+							if (cached.equals(tabLabel)) {
 								found = true;
 								break;
 							}
 						}
 						if (!found) {
-							mTabLabels.add(tabLabel);
+							mCachedTabLabels.add(tabLabel);
 							helper.addTab(tabLabel);
 						}
 
@@ -125,68 +127,126 @@ public class TabLabelManager {
 		}
 	}
 
-
-	public Tab addNewRemoteTab(final TabLabel newTabLabel, final TabLabelManagerHelper helper,
-			final View viewForSnack) {
+	/**
+	 * Add a new {@link TabLabel}.
+	 *
+	 * @param newTabLabel
+	 * 		The  new {@link TabLabel}.
+	 * @param helper
+	 * 		Use helper to refresh UI before removing  {@link TabLabel}.
+	 * @param viewForSnack
+	 * 		The anchor for {@link Snackbar} for result-messages.
+	 *
+	 * @return A {@link Tab} that hosts the new {@link TabLabel}. It might be {@code null} if the {@code newTabLabel}
+	 * has same wording(label) equal to label of an existing {@link TabLabel} in  {@link #mCachedTabLabels}.
+	 */
+	public
+	@Nullable
+	Tab addNewRemoteTab(TabLabel newTabLabel, TabLabelManagerUIHelper helper, View viewForSnack) {
+		//Same label should not be added again.
+		for (TabLabel cached : mCachedTabLabels) {
+			if (cached.equals(newTabLabel)) {
+				Snackbar.make(viewForSnack, viewForSnack.getContext().getString(R.string.lbl_sync_same_label,
+						newTabLabel.getLabel()), Snackbar.LENGTH_SHORT).show();
+				return null;
+			}
+		}
 		Tab tab = helper.addTab(newTabLabel);
-		mTabLabels.add(newTabLabel);
+		mCachedTabLabels.add(newTabLabel);
 		addNewRemoteTabInternal(newTabLabel, viewForSnack);
 		return tab;
 	}
 
-
-	private void addNewRemoteTabInternal(final TabLabel newTabLabel, final View viewForSnack) {
+	/**
+	 * Save a new {@link TabLabel} to backend.
+	 *
+	 * @param newTabLabel
+	 * 		New {@link TabLabel}.
+	 * @param viewForSnack
+	 * 		The anchor for {@link Snackbar} for result-messages.
+	 */
+	private void addNewRemoteTabInternal(final TabLabel newTabLabel, View viewForSnack) {
+		final WeakReference<View> anchor = new WeakReference<>(viewForSnack);
 		newTabLabel.save(App.Instance, new SaveListener() {
 			@Override
 			public void onSuccess() {
-				Snackbar.make(viewForSnack, viewForSnack.getContext().getString(R.string.lbl_sync_label_added,
-						newTabLabel.getLabel()), Snackbar.LENGTH_SHORT).show();
+				View anchorV = anchor.get();
+				if (anchorV != null) {
+					Snackbar.make(anchorV, anchorV.getContext().getString(R.string.lbl_sync_label_added,
+							newTabLabel.getLabel()), Snackbar.LENGTH_SHORT).show();
+				}
 			}
 
 			@Override
 			public void onFailure(int i, String s) {
-				Snackbar.make(viewForSnack, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
-						new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								addNewRemoteTabInternal(newTabLabel, viewForSnack);
-							}
-						}).show();
+				View anchorV = anchor.get();
+				if (anchorV != null) {
+					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
+							new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									addNewRemoteTabInternal(newTabLabel, anchor.get());
+								}
+							}).show();
+				}
 			}
 		});
 	}
 
-
-	public void removeRemoteTab(final Tab tab, final TabLabel tabLabel, final TabLabelManagerHelper helper,
-			final View viewForSnack) {
+	/**
+	 * Remove a {@link TabLabel} and its host {@link Tab}. It delete cached item and them remove from backend.
+	 *
+	 * @param tab
+	 * 		{@link Tab} that hosts {@code tabLabel}.
+	 * @param tabLabel
+	 * 		{@link TabLabel}   to remove.
+	 * @param helper
+	 * 		Use helper to refresh UI before removing  {@link TabLabel}.
+	 * @param viewForSnack
+	 * 		The anchor for {@link Snackbar} for result-messages.
+	 */
+	public void removeRemoteTab(Tab tab, TabLabel tabLabel, TabLabelManagerUIHelper helper, View viewForSnack) {
 		helper.removeTab(tab);
-		for (TabLabel cached : mTabLabels) {
-			if(cached.equals(tabLabel)){
-			//if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
-				mTabLabels.remove(cached);
+		for (TabLabel cached : mCachedTabLabels) {
+			if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
+				mCachedTabLabels.remove(cached);
 				removeRemoteTabInternal(tabLabel, viewForSnack);
 				break;
 			}
 		}
 	}
 
-
-	private void removeRemoteTabInternal(final TabLabel tabLabel, final View viewForSnack) {
+	/**
+	 * Remove a  {@link TabLabel} from backend.
+	 *
+	 * @param tabLabel
+	 * 		Existed {@link TabLabel}.
+	 * @param viewForSnack
+	 * 		The anchor for {@link Snackbar} for result-messages.
+	 */
+	private void removeRemoteTabInternal(final TabLabel tabLabel, View viewForSnack) {
+		final WeakReference<View> anchor = new WeakReference<>(viewForSnack);
 		tabLabel.delete(App.Instance, new DeleteListener() {
 			@Override
 			public void onSuccess() {
-				Snackbar.make(viewForSnack, R.string.lbl_sync_label_removed, Snackbar.LENGTH_SHORT).show();
+				View anchorV = anchor.get();
+				if (anchorV != null) {
+					Snackbar.make(anchorV, R.string.lbl_sync_label_removed, Snackbar.LENGTH_SHORT).show();
+				}
 			}
 
 			@Override
 			public void onFailure(int i, String s) {
-				Snackbar.make(viewForSnack, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
-						new OnClickListener() {
-							@Override
-							public void onClick(View v) { 
-								removeRemoteTabInternal(tabLabel, viewForSnack);
-							}
-						}).show();
+				View anchorV = anchor.get();
+				if (anchorV != null) {
+					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_SHORT).setAction(R.string.btn_retry,
+							new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									removeRemoteTabInternal(tabLabel, anchor.get());
+								}
+							}).show();
+				}
 			}
 		});
 	}

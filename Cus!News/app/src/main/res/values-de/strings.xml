@@ -30,6 +30,7 @@
     <string name="lbl_data_source">API(Datenquelle):</string>
     <string name="lbl_ask_push">Möchtest Du die Push-Benachrichtigungen von einigen Themen einschalten?</string>
     <string name="lbl_push_list">Themen zu benachrichtigen</string>
+    <string name="lbl_sync_same_label">Du hast schon den Tab [%1$s].</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
