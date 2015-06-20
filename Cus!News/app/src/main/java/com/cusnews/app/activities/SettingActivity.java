@@ -129,7 +129,7 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			break;
 		default:
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			break;
 		}
 		addPreferencesFromResource(R.xml.settings);

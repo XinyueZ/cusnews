@@ -282,7 +282,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			break;
 		default:
 			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			break;
 		}
 		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -496,7 +496,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		});
 	}
 
-
+	private  int mSelectedIndex;
 	/**
 	 * Handling {@link Tab} selections.
 	 */
@@ -513,6 +513,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			if (!mBinding.del.isHidden()) {
 				mBinding.del.hide();
 			}
+			mSelectedIndex = tab.getPosition();
 		}
 
 		@Override
@@ -724,6 +725,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
+				if( mSelectedIndex == 0 ) {
+					clear();
+					mKeyword = "";
+				}
 				return true;
 			}
 		});
