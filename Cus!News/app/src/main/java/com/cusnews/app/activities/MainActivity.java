@@ -262,6 +262,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Prefs prefs = Prefs.getInstance();
 		calcActionBarHeight();
 		//Listener on registering push-feature.
 		mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -500,6 +501,14 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 			}
 		});
+
+
+		if(prefs.isEULAOnceConfirmed() && TextUtils.isEmpty(prefs.getGoogleId())) {
+			ConnectGoogleActivity.showInstance(this);
+		} else if(prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty(prefs.getGoogleId())) {
+			getData();
+			TabLabelManager.getInstance().init(this, true);
+		}
 	}
 
 	private int mSelectedIndex;

@@ -8,11 +8,10 @@ import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
-import com.chopping.application.LL;
 import com.chopping.utils.Utils;
 import com.cusnews.R;
 import com.cusnews.app.App;
@@ -35,7 +34,7 @@ import com.squareup.picasso.Picasso;
  *
  * @author Xinyue Zhao
  */
-public final class ConnectGoogleActivity extends AppCompatActivity {
+public final class ConnectGoogleActivity extends CusNewsActivity {
 	/**
 	 * Main layout for this component.
 	 */
@@ -87,12 +86,13 @@ public final class ConnectGoogleActivity extends AppCompatActivity {
 		}
 
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
+		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 		mBinding.googleLoginBtn.setSize(SignInButton.SIZE_WIDE);
 		mGoogleApiClient = new GoogleApiClient.Builder(App.Instance, new GoogleApiClient.ConnectionCallbacks() {
 			@Override
 			public void onConnected(Bundle bundle) {
 				String account = Plus.AccountApi.getAccountName(mGoogleApiClient);
-				LL.d("G-Account:" + account);
+//				LL.d("G-Account:" + account);
 				Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
 						new ResultCallback<LoadPeopleResult>() {
 							@Override
@@ -109,7 +109,7 @@ public final class ConnectGoogleActivity extends AppCompatActivity {
 												person.getDisplayName()));
 
 										Prefs.getInstance().setGoogleId(person.getId());
-										LL.d("G-Id:" + person.getId());
+//										LL.d("G-Id:" + person.getId());
 
 										mBinding.loginPb.setVisibility(View.GONE);
 										mBinding.closeBtn.setVisibility(View.VISIBLE);
