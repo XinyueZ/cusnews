@@ -75,6 +75,11 @@ public final class Prefs extends BasicPrefs {
 	 * Suggestion on a dialog before adding tab to UI.
 	 */
 	private static final String KEY_ADD_TAB_TIP = "key.add.tab.tip";
+
+	/**
+	 * Google's ID
+	 */
+	private static final String KEY_GOOGLE_ID = "key.google.id";
 	/**
 	 * Home-page of API-provider.
 	 */
@@ -87,6 +92,7 @@ public final class Prefs extends BasicPrefs {
 	 * The Instance.
 	 */
 	private static Prefs sInstance;
+
 
 	private Prefs() {
 		super(null);
@@ -188,7 +194,7 @@ public final class Prefs extends BasicPrefs {
 	 * @return {@link ViewType}:  like horizontal, vertical, grid, etc.
 	 */
 	public ViewType getViewType() {
-		return ViewType.fromValue(getInt(KEY_VIEW_TYPE, mContext.getResources().getBoolean(R.bool.landscape) ? 2:1));
+		return ViewType.fromValue(getInt(KEY_VIEW_TYPE, mContext.getResources().getBoolean(R.bool.landscape) ? 2 : 1));
 	}
 
 	/**
@@ -294,14 +300,14 @@ public final class Prefs extends BasicPrefs {
 	 * @param keyName
 	 * 		See.
 	 * 		<pre>
-	 * 						<code>
-	 * 						public static final String KEY_PUSH_NEWS = "key.push.news";
-	 * 						public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
-	 * 						public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
-	 * 						public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
-	 * 						public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
-	 * 						</code>
-	 * 				</pre>
+	 * 								<code>
+	 * 								public static final String KEY_PUSH_NEWS = "key.push.news";
+	 * 								public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
+	 * 								public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
+	 * 								public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
+	 * 								public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
+	 * 								</code>
+	 * 						</pre>
 	 *
 	 * @return {@code true} if the push named by {@code keyName}  is subscribed.
 	 */
@@ -316,18 +322,17 @@ public final class Prefs extends BasicPrefs {
 	 * @param keyName
 	 * 		See.
 	 * 		<pre>
-	 * 						<code>
-	 * 						public static final String KEY_PUSH_NEWS = "key.push.news";
-	 * 						public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
-	 * 						public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
-	 * 						public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
-	 * 						public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
-	 * 						</code>
-	 * 				</pre>
-	 *
+	 * 								<code>
+	 * 								public static final String KEY_PUSH_NEWS = "key.push.news";
+	 * 								public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
+	 * 								public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
+	 * 								public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
+	 * 								public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
+	 * 								</code>
+	 * 						</pre>
 	 */
 	public void setPush(String keyName, boolean value) {
-		 setBoolean(keyName, value);
+		setBoolean(keyName, value);
 	}
 
 	/**
@@ -344,7 +349,9 @@ public final class Prefs extends BasicPrefs {
 	 * @return Last push-token from Google. It could be {@code null} when the registration is failed or never
 	 * unregistered before.
 	 */
-	public @Nullable String getPushToken() {
+	public
+	@Nullable
+	String getPushToken() {
 		return getString(KEY_PUSH_TOKEN, null);
 	}
 
@@ -367,16 +374,32 @@ public final class Prefs extends BasicPrefs {
 	String getPushSelections() {
 		return getString(KEY_PUSH_TOPICS_SELECTIONS, null);
 	}
+
 	/**
 	 * Set that the App has asked opening push or not.
 	 */
 	public void setAskedPush(boolean asked) {
 		setBoolean(KEY_ASKED_PUSH, asked);
 	}
+
 	/**
 	 * Has asked opening push or not.
 	 */
-	public boolean askedPush(){
+	public boolean askedPush() {
 		return getBoolean(KEY_ASKED_PUSH, false);
+	}
+
+	/**
+	 * Google's ID
+	 */
+	public void setGoogleId(String id) {
+		setString(KEY_GOOGLE_ID, id);
+	}
+
+	/**
+	 * Google's ID
+	 */
+	public String getGoogleId() {
+		return getString(KEY_GOOGLE_ID, null);
 	}
 }

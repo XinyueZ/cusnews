@@ -59,12 +59,12 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.jsoup:jsoup:1.8.2'
-    //Should be removed late:
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.pnikosis:materialish-progress:1.5'
 }
 
 // Rename final apks

@@ -31,6 +31,11 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
 
+        <!-- This meta-data tag is required to use Google Play Services. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <provider
             android:name=".app.SearchSuggestionProvider"
             android:authorities="@string/suggestion_auth"
@@ -84,7 +89,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
-
+        <activity
+            android:name=".app.activities.ConnectGoogleActivity"
+            android:screenOrientation="portrait" />
         <!--Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
@@ -138,16 +145,16 @@
         <!-- [END instanceId_listener] -->
         <service
             android:name=".gcm.RegistrationIntentService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".gcm.UnregistrationIntentService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".gcm.SubscribeIntentService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".gcm.UnsubscribeIntentService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

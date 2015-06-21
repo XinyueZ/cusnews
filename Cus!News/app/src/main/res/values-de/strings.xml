@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Cus!News</string>
     <string name="application_name">Cus!News</string>
+    <string name="lbl_hello">Hallo %1$s!</string>
     <string name="lbl_retry">Wiederholen</string>
     <string name="lbl_loading_error">Fehler bei der Ladung!</string>
     <string name="lbl_no_data">Keine mehr Daten!</string>
@@ -57,6 +58,7 @@
     <string name="btn_no">Nein</string>
     <string name="btn_agree">Stimmte zu</string>
     <string name="btn_not_agree">Nein</string>
+    <string name="btn_begin">Fangen wir an</string>
 
     <string name="setting_lang">Feeds-Sprache</string>
     <string-array name="lang_types">

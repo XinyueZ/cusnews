@@ -1,7 +1,6 @@
 package com.cusnews.utils;
 
 import java.lang.ref.WeakReference;
-import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -93,38 +92,34 @@ public class TabLabelManager {
 			helper.addTab(cached);
 		}
 		//Load from backend and refresh tabs.
-		try {
-			/*To get all labels*/
-			BmobQuery<TabLabel> queryTabLabels = new BmobQuery<>();
-			queryTabLabels.addWhereEqualTo("mUID", DeviceUniqueUtil.getDeviceIdent(App.Instance));
-			queryTabLabels.findObjects(App.Instance, new FindListener<TabLabel>() {
-				@Override
-				public void onSuccess(List<TabLabel> list) {
-					for (TabLabel tabLabel : list) {
-						boolean found = false;
-						for (TabLabel cached : mCachedTabLabels) {
-							if (cached.equals(tabLabel)) {
-								found = true;
-								break;
-							}
+		BmobQuery<TabLabel> queryTabLabels = new BmobQuery<>();
+		queryTabLabels.addWhereEqualTo("mUID", Prefs.getInstance().getGoogleId());
+		queryTabLabels.findObjects(App.Instance, new FindListener<TabLabel>() {
+			@Override
+			public void onSuccess(List<TabLabel> list) {
+				for (TabLabel tabLabel : list) {
+					boolean found = false;
+					for (TabLabel cached : mCachedTabLabels) {
+						if (cached.equals(tabLabel)) {
+							found = true;
+							break;
 						}
-						if (!found) {
-							mCachedTabLabels.add(tabLabel);
-							helper.addTab(tabLabel);
-						}
-
 					}
+					if (!found) {
+						mCachedTabLabels.add(tabLabel);
+						helper.addTab(tabLabel);
+					}
+
 				}
+			}
 
-				@Override
-				public void onError(int i, String s) {
+			@Override
+			public void onError(int i, String s) {
 
 
-				}
-			});
-		} catch (NoSuchAlgorithmException e) {
-			//TODO Error when can not get device id.
-		}
+			}
+		});
+
 	}
 
 	/**

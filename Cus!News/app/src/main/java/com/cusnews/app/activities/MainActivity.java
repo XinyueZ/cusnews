@@ -1,6 +1,5 @@
 package com.cusnews.app.activities;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import android.app.Dialog;
@@ -76,7 +75,6 @@ import com.cusnews.ds.Entries;
 import com.cusnews.ds.TabLabel;
 import com.cusnews.ds.Trends;
 import com.cusnews.gcm.RegistrationIntentService;
-import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
@@ -102,7 +100,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * The layout-mgr controls over {@link RecyclerView}.
 	 */
-	private RecyclerView.LayoutManager  mLayoutManager;
+	private RecyclerView.LayoutManager mLayoutManager;
 	/**
 	 * Data-binding.
 	 */
@@ -153,6 +151,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	private BroadcastReceiver mRegistrationBroadcastReceiver;
 	private static final int GRID_SPAN = 3;
+
 	/**
 	 * Calculate height of actionbar.
 	 */
@@ -197,7 +196,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void onEvent(ChangeViewTypeEvent e) {
 		switch (e.getViewType()) {
 		case GRID:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN ));
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN));
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			break;
 		default:
@@ -205,8 +204,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			break;
 		}
-		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType(),
-				mBinding.getEntriesAdapter().getData());
+		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType(), mBinding.getEntriesAdapter().getData());
 		mBinding.setEntriesAdapter(newAdp);
 	}
 
@@ -239,11 +237,27 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link  EULAConfirmedEvent}.
 	 */
 	public void onEvent(EULAConfirmedEvent e) {
-		if (!Prefs.getInstance().askedPush()) {
-			askPush();
-		}
+		ConnectGoogleActivity.showInstance(this);
 	}
 	//------------------------------------------------
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case ConnectGoogleActivity.REQ:
+			if (resultCode == RESULT_OK) {
+				if (!Prefs.getInstance().askedPush()) {
+					askPush();
+				}
+				TabLabelManager.getInstance().init(this, true);
+				getData();
+			} else {
+				ActivityCompat.finishAffinity(this);
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -277,12 +291,12 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		//Init recycleview.
 		switch (vt) {
 		case GRID:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN  ));
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN));
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			break;
 		default:
 			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
-//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 			break;
 		}
 		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -304,8 +318,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 				mVisibleItemCount = mLayoutManager.getChildCount();
 				mTotalItemCount = mLayoutManager.getItemCount();
-				if(mLayoutManager instanceof  LinearLayoutManager) {
-					mPastVisibleItems = ((LinearLayoutManager)mLayoutManager).findFirstVisibleItemPosition();
+				if (mLayoutManager instanceof LinearLayoutManager) {
+					mPastVisibleItems = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
 				}
 
 				if (!mIsBottom) {
@@ -341,12 +355,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		setupDrawerContent(mBinding.navView);
 
-		getData();
 
 		//Init tabs.
 		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
-		TabLabelManager.getInstance().init(this, true);
 		if (mBinding.tabs.getTabCount() == 1) {
 			mBinding.tabs.setVisibility(View.GONE);
 		}
@@ -356,20 +368,18 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.saveAddedTabBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
-						TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
-								DeviceUniqueUtil.getDeviceIdent(App.Instance));
-						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
-								mBinding.coordinatorLayout);
-						mBinding.addTabV.hide();
-						mBinding.newTabLabelTv.setText("");
-						mBinding.addTabOpLl.setVisibility(View.GONE);
-						mBinding.newTabLabelTv.setVisibility(View.GONE);
-					}
-				} catch (NoSuchAlgorithmException e) {
-					//TODO Error when can not get device id.
+
+				if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
+					TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
+							Prefs.getInstance().getGoogleId());
+					TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
+							mBinding.coordinatorLayout);
+					mBinding.addTabV.hide();
+					mBinding.newTabLabelTv.setText("");
+					mBinding.addTabOpLl.setVisibility(View.GONE);
+					mBinding.newTabLabelTv.setVisibility(View.GONE);
 				}
+
 				mBinding.fab.show();
 				Utils.closeKeyboard(mBinding.newTabLabelTv);
 			}
@@ -434,8 +444,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				MenuItem trendsMenu = mBinding.navView.getMenu().findItem(R.id.action_trends);
 				SubMenu trendsMenuSub = trendsMenu.getSubMenu();
 				for (String trend : list) {
-					trendsMenuSub.add(trend).setIcon(R.drawable.ic_social_whatshot).setVisible(true).setOnMenuItemClickListener(
-							new OnMenuItemClickListener() {
+					trendsMenuSub.add(trend).setIcon(R.drawable.ic_social_whatshot).setVisible(true)
+							.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 								@Override
 								public boolean onMenuItemClick(MenuItem item) {
 									mDrawerLayout.closeDrawers();
@@ -461,24 +471,20 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 								private void addTrendToTab(MenuItem item) {
 									TabLabel newTabLabel;
-									try {
-										newTabLabel = new TabLabel(item.getTitle().toString().trim(),
-												DeviceUniqueUtil.getDeviceIdent(App.Instance));
+									newTabLabel = new TabLabel(item.getTitle().toString().trim(),
+											Prefs.getInstance().getGoogleId());
 
-										Tab newTab = TabLabelManager.getInstance().addNewRemoteTab(newTabLabel,
-												MainActivity.this, mBinding.coordinatorLayout);
-										if (newTab != null) {
-											newTab.select();
-										}
-									} catch (NoSuchAlgorithmException e) {
-										//TODO Error when can not get device id.
+									Tab newTab = TabLabelManager.getInstance().addNewRemoteTab(newTabLabel,
+											MainActivity.this, mBinding.coordinatorLayout);
+									if (newTab != null) {
+										newTab.select();
 									}
 								}
-					});
+							});
 				}
 
-				for (int i = 0, count =  mBinding.navView.getChildCount(); i < count; i++) {
-					final View child =  mBinding.navView.getChildAt(i);
+				for (int i = 0, count = mBinding.navView.getChildCount(); i < count; i++) {
+					final View child = mBinding.navView.getChildAt(i);
 					if (child != null && child instanceof ListView) {
 						final ListView menuView = (ListView) child;
 						final HeaderViewListAdapter adapter = (HeaderViewListAdapter) menuView.getAdapter();
@@ -496,7 +502,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		});
 	}
 
-	private  int mSelectedIndex;
+	private int mSelectedIndex;
 	/**
 	 * Handling {@link Tab} selections.
 	 */
@@ -556,7 +562,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @return The added new {@link Tab}.
 	 */
 	@Override
-	public Tab addTab(  TabLabel tabLabel) {
+	public Tab addTab(TabLabel tabLabel) {
 		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
 		TextView tabTv = (TextView) tabV.findViewById(R.id.text);
 		final Tab tab = mBinding.tabs.newTab();
@@ -654,59 +660,61 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Get data from server.
 	 */
 	private void getData() {
-		if (!mInProgress) {
-			mBinding.contentSrl.setRefreshing(true);
-			mInProgress = true;
-			Api.getEntries(mKeyword, mStart, Prefs.getInstance().getLanguage(), mSrc, App.Instance.getApiKey(),
-					new Callback<Entries>() {
-						@Override
-						public void success(Entries entries, Response response) {
+		if (!TextUtils.isEmpty(Prefs.getInstance().getGoogleId())) {
+			if (!mInProgress) {
+				mBinding.contentSrl.setRefreshing(true);
+				mInProgress = true;
+				Api.getEntries(mKeyword, mStart, Prefs.getInstance().getLanguage(), mSrc, App.Instance.getApiKey(),
+						new Callback<Entries>() {
+							@Override
+							public void success(Entries entries, Response response) {
 
-							mBinding.getEntriesAdapter().getData().addAll(entries.getList());
-							mBinding.getEntriesAdapter().notifyDataSetChanged();
-							//Finish loading
-							mBinding.contentSrl.setRefreshing(false);
-							mInProgress = false;
-							mLoading = true;
+								mBinding.getEntriesAdapter().getData().addAll(entries.getList());
+								mBinding.getEntriesAdapter().notifyDataSetChanged();
+								//Finish loading
+								mBinding.contentSrl.setRefreshing(false);
+								mInProgress = false;
+								mLoading = true;
 
-							//Arrive bottom?
-							if (entries.getStart() > entries.getCount()) {
-								if (TextUtils.equals(mSrc, "web")) {
-									mIsBottom = true;
-									Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_no_data,
-											Snackbar.LENGTH_LONG).show();
-									//For next
-									mSrc = "news";
-								} else {
-									mIsBottom = false;
-									mSrc = "web";
-									Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_search_more,
-											Snackbar.LENGTH_LONG).show();
-									mStart = 1;
-									getData();
+								//Arrive bottom?
+								if (entries.getStart() > entries.getCount()) {
+									if (TextUtils.equals(mSrc, "web")) {
+										mIsBottom = true;
+										Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_no_data,
+												Snackbar.LENGTH_LONG).show();
+										//For next
+										mSrc = "news";
+									} else {
+										mIsBottom = false;
+										mSrc = "web";
+										Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_search_more,
+												Snackbar.LENGTH_LONG).show();
+										mStart = 1;
+										getData();
+									}
 								}
 							}
-						}
 
-						@Override
-						public void failure(RetrofitError error) {
-							if (mStart > 10) {
-								mStart -= 10;
+							@Override
+							public void failure(RetrofitError error) {
+								if (mStart > 10) {
+									mStart -= 10;
+								}
+								Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_loading_error,
+										Snackbar.LENGTH_LONG).setAction(R.string.lbl_retry, new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										getData();
+									}
+								}).show();
+
+								//Finish loading
+								mBinding.contentSrl.setRefreshing(false);
+								mInProgress = false;
+								mLoading = true;
 							}
-							Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_loading_error, Snackbar.LENGTH_LONG)
-									.setAction(R.string.lbl_retry, new OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											getData();
-										}
-									}).show();
-
-							//Finish loading
-							mBinding.contentSrl.setRefreshing(false);
-							mInProgress = false;
-							mLoading = true;
-						}
-					});
+						});
+			}
 		}
 	}
 
@@ -725,7 +733,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
-				if( mSelectedIndex == 0 ) {
+				if (mSelectedIndex == 0) {
 					clear();
 					mKeyword = "";
 				}
@@ -796,8 +804,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			return true;
 		case R.id.action_to_top:
 			if (mBinding.getEntriesAdapter() != null && mBinding.getEntriesAdapter().getItemCount() > 0) {
-				if(mLayoutManager instanceof LinearLayoutManager) {
-					((LinearLayoutManager)mLayoutManager).scrollToPositionWithOffset(0, 0);
+				if (mLayoutManager instanceof LinearLayoutManager) {
+					((LinearLayoutManager) mLayoutManager).scrollToPositionWithOffset(0, 0);
 				}
 			}
 			break;
@@ -917,25 +925,38 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	private void askPush() {
 		Prefs.getInstance().setAskedPush(true);
-		showDialogFragment(new DialogFragment() {
+		//TODO Need using fragment, but I do not know why it does not work.
+		//		showDialogFragment(new DialogFragment() {
+		//			@Override
+		//			public Dialog onCreateDialog(Bundle savedInstanceState) {
+		//				// Use the Builder class for convenient dialog construction
+		//				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		//				builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNegativeButton(
+		//						R.string.btn_no, null).setPositiveButton(R.string.btn_yes,
+		//						new DialogInterface.OnClickListener() {
+		//							@Override
+		//							public void onClick(DialogInterface dialog, int which) {
+		//								mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
+		//								mPb.setCancelable(true);
+		//								Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+		//								startService(intent);
+		//							}
+		//						});
+		//				return builder.create();
+		//			}
+		//		}, null);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNegativeButton(R.string.btn_no,
+				null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
 			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				// Use the Builder class for convenient dialog construction
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNegativeButton(
-						R.string.btn_no, null).setPositiveButton(R.string.btn_yes,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
-								mPb.setCancelable(true);
-								Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-								startService(intent);
-							}
-						});
-				return builder.create();
+			public void onClick(DialogInterface dialog, int which) {
+				mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
+				mPb.setCancelable(true);
+				Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+				startService(intent);
 			}
-		}, null);
+		}).create().show();
 	}
 
 	/**
