@@ -86,7 +86,7 @@ public class MyGcmListenerService extends GcmListenerService {
             Picasso picasso = Picasso.with(this);
             try {
                 notify(title, desc, image, contentIntent, picasso);
-            } catch(NullPointerException | IOException e) {
+            } catch(NullPointerException | IOException   | OutOfMemoryError e) {
                 fallbackNotify(title, desc, contentIntent);
             }
 
@@ -96,7 +96,7 @@ public class MyGcmListenerService extends GcmListenerService {
     }
 
     private void notify(String title, String desc, String image, PendingIntent contentIntent, Picasso picasso) throws
-            IOException {
+            IOException, OutOfMemoryError {
         Bitmap bitmap = picasso.load(Utils.uriStr2URI(image).toASCIIString()).get();
         mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(
                 System.currentTimeMillis()).setSmallIcon(R.drawable.ic_push_notify).setTicker(title)
