@@ -76,6 +76,7 @@ import com.cusnews.ds.Entries;
 import com.cusnews.ds.TabLabel;
 import com.cusnews.ds.Trends;
 import com.cusnews.gcm.RegistrationIntentService;
+import com.cusnews.gcm.UnregistrationIntentService;
 import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
@@ -295,6 +296,12 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 		mThumbIv = (ImageView) findViewById(R.id.thumb_iv);
 		mAccountTv = (TextView) findViewById(R.id.account_tv);
+		findViewById(R.id.exit_btn).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				exitAccount();
+			}
+		});
 
 		//Init adapter.
 		ViewType vt = Prefs.getInstance().getViewType();
@@ -1019,5 +1026,22 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	protected void onPause() {
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
 		super.onPause();
+	}
+
+	/**
+	 * Exit current account, here unregister all push-elements etc.
+	 */
+	public void exitAccount() {
+		mDrawerLayout.closeDrawers();
+		Prefs prefs = Prefs.getInstance();
+		if(!TextUtils.isEmpty(prefs.getPushToken())) {
+			Intent intent = new Intent(this, UnregistrationIntentService.class);
+			startService(intent);
+		}
+		prefs.setAskedPush(false);
+		prefs.setGoogleId(null);
+		prefs.setGoogleThumbUrl(null);
+		prefs.setGoogleDisplyName(null);
+		ConnectGoogleActivity.showInstance(this);
 	}
 }
