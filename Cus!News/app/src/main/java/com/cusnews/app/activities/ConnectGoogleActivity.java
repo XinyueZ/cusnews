@@ -7,6 +7,7 @@ import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,8 +92,8 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 		mGoogleApiClient = new GoogleApiClient.Builder(App.Instance, new GoogleApiClient.ConnectionCallbacks() {
 			@Override
 			public void onConnected(Bundle bundle) {
-//				String account = Plus.AccountApi.getAccountName(mGoogleApiClient);
-//				LL.d("G-Account:" + account);
+				//				String account = Plus.AccountApi.getAccountName(mGoogleApiClient);
+				//				LL.d("G-Account:" + account);
 				Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
 						new ResultCallback<LoadPeopleResult>() {
 							@Override
@@ -131,7 +132,6 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 		}, new GoogleApiClient.OnConnectionFailedListener() {
 			@Override
 			public void onConnectionFailed(ConnectionResult connectionResult) {
-				//TODO Remove progress
 				if (connectionResult.hasResolution()) {
 					try {
 						connectionResult.startResolutionForResult(ConnectGoogleActivity.this, REQUEST_CODE_RESOLVE_ERR);
@@ -139,8 +139,13 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 						mGoogleApiClient.connect();
 					}
 				} else {
-					// TODO Snack information
-					// mSnackBar.show(getString(R.string.lbl_login_fail));
+					Snackbar.make(mBinding.loginContentLl, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
+							R.string.btn_close_app, new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							ActivityCompat.finishAffinity(ConnectGoogleActivity.this);
+						}
+					}).show();
 				}
 			}
 		}).addApi(Plus.API, PlusOptions.builder().build()).addScope(Plus.SCOPE_PLUS_LOGIN).build();
@@ -193,7 +198,6 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 	 */
 	private void loginGPlus() {
 		if (mConnectionResult == null) {
-			//Show Progress....
 			mGoogleApiClient.connect();
 		} else {
 			try {

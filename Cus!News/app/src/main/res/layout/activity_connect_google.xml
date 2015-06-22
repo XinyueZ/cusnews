@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/login_content_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"

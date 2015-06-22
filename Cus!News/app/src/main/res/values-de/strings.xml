@@ -59,6 +59,7 @@
     <string name="btn_agree">Stimmte zu</string>
     <string name="btn_not_agree">Nein</string>
     <string name="btn_begin">Fangen wir an</string>
+    <string name="btn_close_app">App beenden</string>
 
     <string name="setting_lang">Feeds-Sprache</string>
     <string-array name="lang_types">
