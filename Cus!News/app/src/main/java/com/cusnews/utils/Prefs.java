@@ -81,6 +81,14 @@ public final class Prefs extends BasicPrefs {
 	 */
 	private static final String KEY_GOOGLE_ID = "key.google.id";
 	/**
+	 * The display-name of Google's user.
+	 */
+	private static final String KEY_GOOGLE_DISPLAY_NAME = "key.google.display.name";
+	/**
+	 * Url to user's profile-image.
+	 */
+	private static final String KEY_GOOGLE_THUMB_URL = "key.google.thumb.url";
+	/**
 	 * Home-page of API-provider.
 	 */
 	private static final String FAROO_HOME = "faroo_home";
@@ -92,7 +100,6 @@ public final class Prefs extends BasicPrefs {
 	 * The Instance.
 	 */
 	private static Prefs sInstance;
-
 
 	private Prefs() {
 		super(null);
@@ -401,5 +408,33 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public String getGoogleId() {
 		return getString(KEY_GOOGLE_ID, null);
+	}
+
+	/**
+	 * The display-name of Google's user.
+	 */
+	public void setGoogleDisplyName(String displayName) {
+		setString(KEY_GOOGLE_DISPLAY_NAME, displayName);
+	}
+
+	/**
+	 * The display-name of Google's user.
+	 */
+	public String getGoogleDisplyName() {
+		return getString(KEY_GOOGLE_DISPLAY_NAME, null);
+	}
+
+	/**
+	 * The display-name of Google's user.
+	 */
+	public void setGoogleThumbUrl(String thumbUrl) {
+		setString(KEY_GOOGLE_THUMB_URL, thumbUrl);
+	}
+
+	/**
+	 * Url to user's profile-image.
+	 */
+	public String getGoogleThumbUrl() {
+		return getString(KEY_GOOGLE_THUMB_URL, null);
 	}
 }

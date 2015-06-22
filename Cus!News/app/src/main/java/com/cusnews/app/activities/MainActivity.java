@@ -54,6 +54,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.HeaderViewListAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -81,6 +82,7 @@ import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
 import com.cusnews.utils.Utils;
 import com.cusnews.widgets.DynamicShareActionProvider;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
+import com.squareup.picasso.Picasso;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -150,8 +152,19 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Listener while registering push-feature.
 	 */
 	private BroadcastReceiver mRegistrationBroadcastReceiver;
+	/**
+	 * Column count of grid-mode.
+	 */
 	private static final int GRID_SPAN = 3;
 
+	/**
+	 * Display-name of user on Google.
+	 */
+	private TextView mAccountTv;
+	/**
+	 * User-photo on Google.
+	 */
+	private ImageView mThumbIv;
 	/**
 	 * Calculate height of actionbar.
 	 */
@@ -247,11 +260,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		switch (requestCode) {
 		case ConnectGoogleActivity.REQ:
 			if (resultCode == RESULT_OK) {
-				if (!Prefs.getInstance().askedPush()) {
-					askPush();
-				}
-				TabLabelManager.getInstance().init(this, true);
-				getData();
+				loadAllData();
 			} else {
 				ActivityCompat.finishAffinity(this);
 			}
@@ -284,6 +293,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
+		mThumbIv = (ImageView) findViewById(R.id.thumb_iv);
+		mAccountTv = (TextView) findViewById(R.id.account_tv);
 
 		//Init adapter.
 		ViewType vt = Prefs.getInstance().getViewType();
@@ -506,9 +517,26 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if(prefs.isEULAOnceConfirmed() && TextUtils.isEmpty(prefs.getGoogleId())) {
 			ConnectGoogleActivity.showInstance(this);
 		} else if(prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty(prefs.getGoogleId())) {
-			getData();
-			TabLabelManager.getInstance().init(this, true);
+			loadAllData();
 		}
+	}
+
+	/**
+	 * Get all data inc. feeds, labels, user's profile etc.
+	 */
+	private void loadAllData() {
+		Prefs prefs = Prefs.getInstance();
+		if (!Prefs.getInstance().askedPush()) {
+			askPush();
+		}
+		getData();
+		TabLabelManager.getInstance().init(this, true);
+		Picasso picasso = Picasso.with(App.Instance);
+		if (!TextUtils.isEmpty(prefs.getGoogleThumbUrl())) {
+			picasso.load(com.chopping.utils.Utils.uriStr2URI(prefs.getGoogleThumbUrl()).toASCIIString())
+					.into(mThumbIv);
+		}
+		mAccountTv.setText(prefs.getGoogleDisplyName());
 	}
 
 	private int mSelectedIndex;

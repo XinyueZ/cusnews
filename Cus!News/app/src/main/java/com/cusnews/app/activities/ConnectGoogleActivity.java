@@ -91,25 +91,27 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 		mGoogleApiClient = new GoogleApiClient.Builder(App.Instance, new GoogleApiClient.ConnectionCallbacks() {
 			@Override
 			public void onConnected(Bundle bundle) {
-				String account = Plus.AccountApi.getAccountName(mGoogleApiClient);
+//				String account = Plus.AccountApi.getAccountName(mGoogleApiClient);
 //				LL.d("G-Account:" + account);
 				Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(
 						new ResultCallback<LoadPeopleResult>() {
 							@Override
 							public void onResult(LoadPeopleResult loadPeopleResult) {
 								if (loadPeopleResult.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
+									Prefs prefs = Prefs.getInstance();
 									Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
 									if (person != null) {
 										Picasso picasso = Picasso.with(App.Instance);
 										if (person.getImage() != null && person.getImage().hasUrl()) {
 											picasso.load(Utils.uriStr2URI(person.getImage().getUrl()).toASCIIString())
 													.into(mBinding.thumbIv);
+											prefs.setGoogleThumbUrl(person.getImage().getUrl());
 										}
 										mBinding.helloTv.setText(getString(R.string.lbl_hello,
 												person.getDisplayName()));
 
-										Prefs.getInstance().setGoogleId(person.getId());
-//										LL.d("G-Id:" + person.getId());
+										prefs.setGoogleId(person.getId());
+										prefs.setGoogleDisplyName(person.getDisplayName());
 
 										mBinding.loginPb.setVisibility(View.GONE);
 										mBinding.closeBtn.setVisibility(View.VISIBLE);

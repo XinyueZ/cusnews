@@ -187,10 +187,11 @@
             android:layout_gravity="start"
             android:background="@color/common_white"
             android:fitsSystemWindows="true"
+            android:theme="@style/NavDrawerItem"
             app:itemIconTint="@color/primary_accent"
-            app:menu="@menu/drawer_view"
             app:itemTextColor="@color/primary_accent"
-            android:theme="@style/NavDrawerItem"/>
+            app:menu="@menu/drawer_view"
+            app:headerLayout="@layout/nav_header"/>
 
         <ScrollView
             android:layout_width="match_parent"
