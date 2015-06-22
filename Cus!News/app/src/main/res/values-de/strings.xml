@@ -29,7 +29,7 @@
     <string name="lbl_unsubscribe_fail">Fehler bei Storno von [%1$s], bitte wiederholen.</string>
     <string name="lbl_no_push_opened">Bitte die Push-Benachrichtigung einschalten…</string>
     <string name="lbl_data_source">API(Datenquelle):</string>
-    <string name="lbl_ask_push">Möchtest Du die Push-Benachrichtigungen von einigen Themen einschalten?</string>
+    <string name="lbl_ask_push">Möchtest Du die Push-Benachrichtigungen von einigen Themen einschalten?\n\nDu kannst die Themen auswählen oder pre [DIY] personalisieren.</string>
     <string name="lbl_push_list">Themen zu benachrichtigen</string>
     <string name="lbl_sync_same_label">Du hast schon den Tab [%1$s].</string>
 

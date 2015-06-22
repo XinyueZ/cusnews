@@ -988,7 +988,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		//		}, null);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNegativeButton(R.string.btn_no,
+		builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNeutralButton(R.string.btn_diy,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						com.chopping.utils.Utils.showShortToast(MainActivity.this, "DIY begin");
+					}
+				}).setNegativeButton(R.string.btn_no,
 				null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
