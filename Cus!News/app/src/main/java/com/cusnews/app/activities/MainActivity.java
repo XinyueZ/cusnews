@@ -486,11 +486,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 									newTabLabel = new TabLabel(item.getTitle().toString().trim(),
 											Prefs.getInstance().getGoogleId());
 
-									Tab newTab = TabLabelManager.getInstance().addNewRemoteTab(newTabLabel,
+									TabLabelManager.getInstance().addNewRemoteTab(newTabLabel,
 											MainActivity.this, mBinding.coordinatorLayout);
-									if (newTab != null) {
-										newTab.select();
-									}
 								}
 							});
 				}

@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -61,6 +62,7 @@ public class TabLabelManager {
 	 */
 	private static TabLabelManager sInstance = new TabLabelManager();
 
+	private Handler mHandler = new Handler();
 	/**
 	 * @return The instance of singleton pattern.
 	 */
@@ -146,7 +148,13 @@ public class TabLabelManager {
 				return null;
 			}
 		}
-		Tab tab = helper.addTab(newTabLabel);
+		final Tab tab = helper.addTab(newTabLabel);
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				tab.select();
+			}
+		}, 300);
 		mCachedTabLabels.add(newTabLabel);
 		addNewRemoteTabInternal(newTabLabel, viewForSnack);
 		return tab;
