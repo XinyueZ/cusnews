@@ -5,15 +5,17 @@ import cn.bmob.v3.BmobObject;
 /**
  * Push-token that saved on backend.
  */
-public final class PushToken extends BmobObject  {
+public final class PushToken extends BmobObject {
 	private String mGoogleId;
+	private String mDeviceId;
 	private String mPushToken;
 	private String mCustomizedTopic1;
 	private String mCustomizedTopic2;
 	private String mCustomizedTopic3;
 
-	public PushToken(String googleId, String pushToken) {
+	public PushToken(String googleId, String deviceId, String pushToken) {
 		mGoogleId = googleId;
+		mDeviceId = deviceId;
 		mPushToken = pushToken;
 	}
 
@@ -22,6 +24,10 @@ public final class PushToken extends BmobObject  {
 
 	public String getGoogleId() {
 		return mGoogleId;
+	}
+
+	public String getDeviceId() {
+		return mDeviceId;
 	}
 
 	public String getPushToken() {

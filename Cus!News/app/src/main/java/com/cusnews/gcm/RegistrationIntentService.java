@@ -17,6 +17,7 @@
 package com.cusnews.gcm;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.text.TextUtils;
 import com.cusnews.R;
 import com.cusnews.app.App;
 import com.cusnews.ds.PushToken;
+import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -58,7 +60,13 @@ public class RegistrationIntentService extends IntentService {
         }
 
 		if(!TextUtils.isEmpty(prefs.getPushToken())) {
-			PushToken newPushToken = new PushToken(prefs.getGoogleId(), prefs.getPushToken());
+            String deviceId = "0000000000";
+            try {
+                deviceId  = DeviceUniqueUtil.getDeviceIdent(getApplicationContext());
+            } catch (NoSuchAlgorithmException e) {
+
+            }
+            PushToken newPushToken = new PushToken(prefs.getGoogleId(),deviceId , prefs.getPushToken());
 			newPushToken.save(this, new SaveListener() {
 				@Override
 				public void onSuccess() {

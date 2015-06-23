@@ -16,6 +16,7 @@
 
 package com.cusnews.gcm;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import android.app.IntentService;
@@ -25,6 +26,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.cusnews.R;
 import com.cusnews.ds.PushToken;
 import com.cusnews.ds.TopicsFactory;
+import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.iid.InstanceID;
 
@@ -57,9 +59,15 @@ public class UnregistrationIntentService extends IntentService {
 
         Intent unregistrationComplete = new Intent(UNREGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(unregistrationComplete);
+        String deviceId = "0000000000";
+        try {
+            deviceId  = DeviceUniqueUtil.getDeviceIdent(getApplicationContext());
+        } catch (NoSuchAlgorithmException e) {
 
+        }
 		BmobQuery<PushToken> query = new BmobQuery<>();
 		query.addWhereEqualTo("mGoogleId", prefs.getGoogleId());
+        query.addWhereEqualTo("mDeviceId", deviceId);
 		query.findObjects(this, new FindListener<PushToken>() {
 			@Override
 			public void onSuccess(List<PushToken> list) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cus!News</string>
+    <string name="app_name">WhatsUp</string>
     <string name="application_name">Cus!News</string>
     <string name="lbl_hello">你好 %1$s!</string>
     <string name="lbl_retry">再试</string>
