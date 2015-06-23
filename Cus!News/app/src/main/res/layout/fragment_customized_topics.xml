@@ -8,17 +8,19 @@
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/topics_fl"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
 
         <com.cusnews.widgets.FontTextView
+            android:id="@+id/title_tv"
             style="@style/Text.Normal.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -27,14 +29,17 @@
 
 
         <LinearLayout
+            android:id="@+id/one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/title_tv"
             android:orientation="horizontal">
 
             <com.cusnews.widgets.FontTextView
                 style="@style/Text.Normal.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -44,18 +49,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:hint="@string/lbl_subscribe"
+                android:textColorHint="@color/indigo_300" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/two"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/one"
             android:orientation="horizontal">
 
             <com.cusnews.widgets.FontTextView
                 style="@style/Text.Normal.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -65,18 +75,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:hint="@string/lbl_subscribe"
+                android:textColorHint="@color/indigo_300" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/three"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/two"
             android:orientation="horizontal">
 
             <com.cusnews.widgets.FontTextView
                 style="@style/Text.Normal.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -86,7 +101,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:hint="@string/lbl_subscribe"
+                android:textColorHint="@color/indigo_300" />
         </LinearLayout>
 
 
@@ -95,6 +112,8 @@
             style="@style/MaterialRippleLayout"
             android:layout_width="80dp"
             android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -110,5 +129,5 @@
                 android:text="@string/btn_ok"
                 android:textColor="@color/primary_color" />
         </com.cusnews.widgets.MaterialRippleLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
