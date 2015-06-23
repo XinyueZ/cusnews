@@ -16,14 +16,20 @@
 
 package com.cusnews.gcm;
 
+import java.util.List;
+
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.cusnews.R;
+import com.cusnews.ds.PushToken;
 import com.cusnews.ds.TopicsFactory;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.iid.InstanceID;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 
 public class UnregistrationIntentService extends IntentService {
     public static final String UNREGISTRATION_COMPLETE = "unregistrationComplete";
@@ -35,21 +41,38 @@ public class UnregistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+		Prefs prefs =  Prefs.getInstance();
         try {
             synchronized (TAG) {
                 InstanceID instanceID = InstanceID.getInstance(this);
                 instanceID.deleteInstanceID();
-                Prefs.getInstance().setPushToken(null);
-
-
+				prefs.setPushToken(null);
                 //Unsubscribe all.
                 TopicsFactory.clear();
             }
         } catch (Exception e) {
             com.chopping.utils.Utils.showLongToast(this, R.string.lbl_unregister_push_failed);
         }
+
+
         Intent unregistrationComplete = new Intent(UNREGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(unregistrationComplete);
+
+		BmobQuery<PushToken> query = new BmobQuery<>();
+		query.addWhereEqualTo("mGoogleId", prefs.getGoogleId());
+		query.findObjects(this, new FindListener<PushToken>() {
+			@Override
+			public void onSuccess(List<PushToken> list) {
+				PushToken token = list.get(0);
+				if(token != null) {
+					token.delete(UnregistrationIntentService.this);
+				}
+			}
+
+			@Override
+			public void onError(int i, String s) {
+			}
+		});
     }
 
 

@@ -71,7 +71,6 @@ public class RegistrationIntentService extends IntentService {
 				public void onFailure(int i, String s) {
 					Prefs prefs = Prefs.getInstance();
 					prefs.setPushToken(null);
-					prefs.setPushTokenObjectId(null);
 					Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
 					LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(
 							registrationComplete);
