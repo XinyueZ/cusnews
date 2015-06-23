@@ -87,12 +87,12 @@
         <activity
             android:name=".app.activities.TopicListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
 
         <activity
             android:name=".app.activities.CustomizedTopicsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
 
         <activity
             android:name=".app.activities.ConnectGoogleActivity"

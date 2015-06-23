@@ -32,5 +32,11 @@
             android:key="key.push.topics.selection"
             android:layout="@layout/setting_item"
             android:title="@string/setting_push_selection" />
+
+        <Preference
+            android:defaultValue="false"
+            android:key="key.push.topics.diy"
+            android:layout="@layout/setting_item"
+            android:title="@string/setting_div" />
     </PreferenceCategory>
 </PreferenceScreen>

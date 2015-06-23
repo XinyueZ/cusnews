@@ -60,7 +60,6 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/exit_btn"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

@@ -91,4 +91,5 @@
     <string name="setting_push_internet">网络</string>
     <string name="setting_push_google">谷歌</string>
     <string name="setting_push_apple">苹果公司</string>
+    <string name="setting_div">推送个性化主题</string>
 </resources>

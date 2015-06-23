@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".app.fragments.CustomizedTopicsFragment">
 
     <data class="CustomizedTopicsBinding">
+
+        <import type="com.cusnews.ds.PushToken" />
+
+
+        <variable
+            name="pushToken"
+            type="PushToken" />
 
 
     </data>
@@ -29,7 +37,7 @@
 
 
         <LinearLayout
-            android:id="@+id/one"
+            android:id="@+id/one_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_tv"
@@ -46,19 +54,22 @@
                 android:text="@string/lbl_topic_1" />
 
             <EditText
+                android:id="@+id/one_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:text="@{pushToken.customizedTopic1}"
                 android:textColorHint="@color/indigo_300" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/two"
+            android:id="@+id/two_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/one"
+            android:layout_below="@+id/one_vg"
             android:orientation="horizontal">
 
             <com.cusnews.widgets.FontTextView
@@ -72,19 +83,22 @@
                 android:text="@string/lbl_topic_2" />
 
             <EditText
+                android:id="@+id/two_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:text="@{pushToken.customizedTopic2}"
                 android:textColorHint="@color/indigo_300" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/three"
+            android:id="@+id/three_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/two"
+            android:layout_below="@+id/two_vg"
             android:orientation="horizontal">
 
             <com.cusnews.widgets.FontTextView
@@ -98,17 +112,20 @@
                 android:text="@string/lbl_topic_3" />
 
             <EditText
+                android:id="@+id/three_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:text="@{pushToken.customizedTopic3}"
                 android:textColorHint="@color/indigo_300" />
         </LinearLayout>
 
 
         <com.cusnews.widgets.MaterialRippleLayout
-            android:id="@+id/close_btn"
+            android:id="@+id/close_vg"
             style="@style/MaterialRippleLayout"
             android:layout_width="80dp"
             android:layout_height="40dp"
@@ -121,13 +138,29 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@color/common_transparent">
 
-            <com.cusnews.widgets.FontTextView
-                style="@style/Text.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/btn_ok"
-                android:textColor="@color/primary_color" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.pnikosis.materialishprogress.ProgressWheel
+                    android:id="@+id/save_pb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="invisible"
+                    app:matProg_barColor="@color/primary_color"
+                    app:matProg_fillRadius="true"
+                    app:matProg_progressIndeterminate="true" />
+
+                <com.cusnews.widgets.FontTextView
+                    android:id="@+id/close_btn"
+                    style="@style/Text.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_ok"
+                    android:textColor="@color/primary_color" />
+            </FrameLayout>
         </com.cusnews.widgets.MaterialRippleLayout>
     </RelativeLayout>
 </layout>

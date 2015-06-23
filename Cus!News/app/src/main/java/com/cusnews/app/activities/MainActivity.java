@@ -166,6 +166,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * User-photo on Google.
 	 */
 	private ImageView mThumbIv;
+	/**
+	 * {@code true} if the app starts customize topics.
+	 */
+	private boolean mCustomizedTopicsSetting;
 
 	/**
 	 * Calculate height of actionbar.
@@ -284,7 +288,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				} else {
 					//TODO Again to register for error.
 				}
-				TopicListActivity.showInstance(MainActivity.this);
+				if (mCustomizedTopicsSetting) {
+					CustomizedTopicsActivity.showInstance(MainActivity.this);
+				} else {
+					TopicListActivity.showInstance(MainActivity.this);
+				}
 			}
 		};
 
@@ -545,6 +553,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mAccountTv.setText(prefs.getGoogleDisplyName());
 	}
 
+	/**
+	 * Index of current selected tab.
+	 */
 	private int mSelectedIndex;
 	/**
 	 * Handling {@link Tab} selections.
@@ -994,7 +1005,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						CustomizedTopicsActivity.showInstance(MainActivity.this);
+						mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
+						mPb.setCancelable(true);
+						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+						startService(intent);
+						mCustomizedTopicsSetting = true;
 					}
 				}).setNegativeButton(R.string.btn_no, null).setPositiveButton(R.string.btn_yes,
 				new DialogInterface.OnClickListener() {
@@ -1004,6 +1019,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 						mPb.setCancelable(true);
 						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
 						startService(intent);
+						mCustomizedTopicsSetting = false;
 					}
 				}).create().show();
 	}

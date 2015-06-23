@@ -58,6 +58,10 @@ public final class Prefs extends BasicPrefs {
 	 * The selections of topics to push, it is the list of api-names sep by ",", see {@link com.cusnews.ds.Topic}.
 	 */
 	public static final String KEY_PUSH_TOPICS_SELECTIONS = "key.push.topics.selection";
+	/**
+	 * Customize push-topics.
+	 */
+	public static final String KEY_PUSH_TOPICS_DIY = "key.push.topics.diy";
 	//--------------
 	//Different push-newsletters
 	public static final String KEY_PUSH_NEWS = "key.push.news";

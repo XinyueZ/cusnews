@@ -200,6 +200,18 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				return true;
 			}
 		});
+		Preference diy = findPreference(Prefs.KEY_PUSH_TOPICS_DIY);
+		diy.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+					CustomizedTopicsActivity.showInstance(SettingActivity.this);
+				} else {
+					Snackbar.make(findViewById(android.R.id.list), R.string.lbl_no_push_opened, Snackbar.LENGTH_LONG).show();
+				}
+				return true;
+			}
+		});
 
 
 		((MarginLayoutParams) findViewById(android.R.id.list).getLayoutParams()).topMargin =
