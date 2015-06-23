@@ -280,6 +280,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			public void onReceive(Context context, Intent intent) {
 				if (!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
 					dismissPb();
+				} else {
+					//TODO Again to register for error.
 				}
 				TopicListActivity.showInstance(MainActivity.this);
 			}

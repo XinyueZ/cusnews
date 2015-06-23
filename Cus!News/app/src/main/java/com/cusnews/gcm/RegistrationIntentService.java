@@ -21,13 +21,17 @@ import java.io.IOException;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 
 import com.cusnews.R;
 import com.cusnews.app.App;
+import com.cusnews.ds.PushToken;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+
+import cn.bmob.v3.listener.SaveListener;
 
 public class RegistrationIntentService extends IntentService {
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
@@ -40,19 +44,43 @@ public class RegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Prefs prefs = Prefs.getInstance();
         try {
             synchronized (TAG) {
                 InstanceID instanceID = InstanceID.getInstance(this);
                 String token = instanceID.getToken(App.Instance.getSenderId(),
                         GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                Prefs.getInstance().setPushToken(token);
-            }
+                prefs.setPushToken(token);
+			}
         } catch (Exception e) {
-            Prefs.getInstance().setPushToken(null);
+            prefs.setPushToken(null);
             com.chopping.utils.Utils.showLongToast(this, R.string.lbl_register_push_failed);
         }
-        Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+
+		if(!TextUtils.isEmpty(prefs.getPushToken())) {
+			PushToken newPushToken = new PushToken(prefs.getGoogleId(), prefs.getPushToken());
+			newPushToken.save(this, new SaveListener() {
+				@Override
+				public void onSuccess() {
+					Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
+					LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(
+							registrationComplete);
+				}
+
+				@Override
+				public void onFailure(int i, String s) {
+					Prefs prefs = Prefs.getInstance();
+					prefs.setPushToken(null);
+					prefs.setPushTokenObjectId(null);
+					Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
+					LocalBroadcastManager.getInstance(RegistrationIntentService.this).sendBroadcast(
+							registrationComplete);
+				}
+			});
+		} else {
+			Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
+			LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+		}
     }
 
 

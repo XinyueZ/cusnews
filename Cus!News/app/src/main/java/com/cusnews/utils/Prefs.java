@@ -89,6 +89,10 @@ public final class Prefs extends BasicPrefs {
 	 */
 	private static final String KEY_GOOGLE_THUMB_URL = "key.google.thumb.url";
 	/**
+	 * The object-id for the {@link com.cusnews.ds.PushToken} when it saved on backend.
+	 */
+	private static final String KEY_PUSH_TOKEN_OBJ_ID = "key.push.token.obj.id";
+	/**
 	 * Home-page of API-provider.
 	 */
 	private static final String FAROO_HOME = "faroo_home";
@@ -307,14 +311,14 @@ public final class Prefs extends BasicPrefs {
 	 * @param keyName
 	 * 		See.
 	 * 		<pre>
-	 * 								<code>
-	 * 								public static final String KEY_PUSH_NEWS = "key.push.news";
-	 * 								public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
-	 * 								public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
-	 * 								public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
-	 * 								public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
-	 * 								</code>
-	 * 						</pre>
+	 * 										<code>
+	 * 										public static final String KEY_PUSH_NEWS = "key.push.news";
+	 * 										public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
+	 * 										public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
+	 * 										public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
+	 * 										public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
+	 * 										</code>
+	 * 								</pre>
 	 *
 	 * @return {@code true} if the push named by {@code keyName}  is subscribed.
 	 */
@@ -329,14 +333,14 @@ public final class Prefs extends BasicPrefs {
 	 * @param keyName
 	 * 		See.
 	 * 		<pre>
-	 * 								<code>
-	 * 								public static final String KEY_PUSH_NEWS = "key.push.news";
-	 * 								public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
-	 * 								public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
-	 * 								public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
-	 * 								public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
-	 * 								</code>
-	 * 						</pre>
+	 * 										<code>
+	 * 										public static final String KEY_PUSH_NEWS = "key.push.news";
+	 * 										public static final String KEY_PUSH_FOOTBALL = "key.push.football";by {@code keyName}
+	 * 										public static final String KEY_PUSH_INTERNET = "key.push.internet";by {@code keyName}
+	 * 										public static final String KEY_PUSH_GOOGLE = "key.push.google";by {@code keyName}
+	 * 										public static final String KEY_PUSH_APPLE = "key.push.apple";by {@code keyName}
+	 * 										</code>
+	 * 								</pre>
 	 */
 	public void setPush(String keyName, boolean value) {
 		setBoolean(keyName, value);
@@ -436,5 +440,19 @@ public final class Prefs extends BasicPrefs {
 	 */
 	public String getGoogleThumbUrl() {
 		return getString(KEY_GOOGLE_THUMB_URL, null);
+	}
+
+	/**
+	 * The object-id for the {@link com.cusnews.ds.PushToken} when it saved on backend.
+	 */
+	public String getPushTokenObjectId() {
+		return getString(KEY_PUSH_TOKEN_OBJ_ID, null);
+	}
+
+	/**
+	 * The object-id for the {@link com.cusnews.ds.PushToken} when it saved on backend.
+	 */
+	public void setPushTokenObjectId(String objId) {
+		setString(KEY_PUSH_TOKEN_OBJ_ID, objId);
 	}
 }

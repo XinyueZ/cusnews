@@ -72,8 +72,6 @@ public final class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapte
 		final Topic topic = getData().get(position);
 		holder.mBinding.setVariable(BR.topic, topic);
 		holder.mBinding.executePendingBindings();
-
-		//TODO Must be optimized late.
 	}
 
 
