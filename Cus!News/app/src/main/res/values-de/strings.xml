@@ -32,6 +32,7 @@
     <string name="lbl_ask_push">Möchtest Du die Push-Benachrichtigungen von einigen Themen einschalten?\n\nDu kannst die Themen auswählen oder pre [DIY] personalisieren.</string>
     <string name="lbl_push_list">Themen zu benachrichtigen</string>
     <string name="lbl_sync_same_label">Du hast schon den Tab [%1$s].</string>
+    <string name="lbl_customized_push">Du kannst max.3 Themen zu Push-Benachrichtigen personalisieren.</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>

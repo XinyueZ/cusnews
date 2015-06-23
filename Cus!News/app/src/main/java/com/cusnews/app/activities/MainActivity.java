@@ -166,6 +166,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * User-photo on Google.
 	 */
 	private ImageView mThumbIv;
+
 	/**
 	 * Calculate height of actionbar.
 	 */
@@ -495,8 +496,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 									newTabLabel = new TabLabel(item.getTitle().toString().trim(),
 											Prefs.getInstance().getGoogleId());
 
-									TabLabelManager.getInstance().addNewRemoteTab(newTabLabel,
-											MainActivity.this, mBinding.coordinatorLayout);
+									TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
+											mBinding.coordinatorLayout);
 								}
 							});
 				}
@@ -520,9 +521,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		});
 
 
-		if(prefs.isEULAOnceConfirmed() && TextUtils.isEmpty(prefs.getGoogleId())) {
+		if (prefs.isEULAOnceConfirmed() && TextUtils.isEmpty(prefs.getGoogleId())) {
 			ConnectGoogleActivity.showInstance(this);
-		} else if(prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty(prefs.getGoogleId())) {
+		} else if (prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty(prefs.getGoogleId())) {
 			loadAllData();
 		}
 	}
@@ -539,8 +540,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		TabLabelManager.getInstance().init(this, true);
 		Picasso picasso = Picasso.with(App.Instance);
 		if (!TextUtils.isEmpty(prefs.getGoogleThumbUrl())) {
-			picasso.load(com.chopping.utils.Utils.uriStr2URI(prefs.getGoogleThumbUrl()).toASCIIString())
-					.into(mThumbIv);
+			picasso.load(com.chopping.utils.Utils.uriStr2URI(prefs.getGoogleThumbUrl()).toASCIIString()).into(mThumbIv);
 		}
 		mAccountTv.setText(prefs.getGoogleDisplyName());
 	}
@@ -994,18 +994,18 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						com.chopping.utils.Utils.showShortToast(MainActivity.this, "DIY begin");
+						CustomizedTopicsActivity.showInstance(MainActivity.this);
 					}
-				}).setNegativeButton(R.string.btn_no,
-				null).setPositiveButton(R.string.btn_yes, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
-				mPb.setCancelable(true);
-				Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-				startService(intent);
-			}
-		}).create().show();
+				}).setNegativeButton(R.string.btn_no, null).setPositiveButton(R.string.btn_yes,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
+						mPb.setCancelable(true);
+						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+						startService(intent);
+					}
+				}).create().show();
 	}
 
 	/**
@@ -1042,7 +1042,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void exitAccount() {
 		mDrawerLayout.closeDrawers();
 		Prefs prefs = Prefs.getInstance();
-		if(!TextUtils.isEmpty(prefs.getPushToken())) {
+		if (!TextUtils.isEmpty(prefs.getPushToken())) {
 			Intent intent = new Intent(this, UnregistrationIntentService.class);
 			startService(intent);
 		}

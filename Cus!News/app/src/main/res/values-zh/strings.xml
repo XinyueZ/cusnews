@@ -33,6 +33,7 @@
     <string name="lbl_ask_push">你是否愿意注册一些咨询的推送？\n\n你将能够从一些预选的主题中选择推送的信息，或者直接使用[DIY]来个性化你自己的主题。</string>
     <string name="lbl_push_list">推送主题</string>
     <string name="lbl_sync_same_label">[%1$s] 已经作为标签存在了。</string>
+    <string name="lbl_customized_push">一共可以推送3个个性化主题。</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>

@@ -90,6 +90,11 @@
             android:theme="@style/Theme.AppCompat.Dialog" />
 
         <activity
+            android:name=".app.activities.CustomizedTopicsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+
+        <activity
             android:name=".app.activities.ConnectGoogleActivity"
             android:screenOrientation="portrait" />
 
