@@ -1,9 +1,14 @@
 # WhatsUp(Cus!News)
 WhatsUp is a free news client powered by [Faroo](http://www.faroo.com/).
+
 WhatsUp is lightweight.
+
 WhatsUp supports push-notifications.
+
 WhatsUp supports customized push-notifications.
+
 WhatsUp based on Google GAE.
+
 WhatsUp based on [bmob](http://www.bmob.cn)
 
 ####Ready for release, now in last test.
