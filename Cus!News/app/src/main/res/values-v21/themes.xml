@@ -10,6 +10,10 @@
         <item name="android:statusBarColor">@color/common_transparent</item>
     </style>
 
+    <style name="AppTheme.FirstPage"  >
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
+
 
     <style name="SettingsTheme" parent="SettingsThemeBase">
         <item name="android:statusBarColor">@color/primary_dark_color</item>

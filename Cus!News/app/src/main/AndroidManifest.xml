@@ -96,7 +96,8 @@
 
         <activity
             android:name=".app.activities.ConnectGoogleActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FirstPage" />
 
         <!--Include the AdActivity configChanges and theme. -->
         <activity

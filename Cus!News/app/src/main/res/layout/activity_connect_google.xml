@@ -24,25 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/primary_color">
-
-                <com.pnikosis.materialishprogress.ProgressWheel
-                    android:id="@+id/login_pb"
-                    android:layout_width="98dp"
-                    android:layout_height="98dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    app:matProg_barColor="@color/yellow"
-                    app:matProg_fillRadius="true"
-                    app:matProg_progressIndeterminate="true" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/thumb_iv"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_launcher" />
-            </FrameLayout>
+                android:background="@drawable/store_slogen" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -55,6 +37,29 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.pnikosis.materialishprogress.ProgressWheel
+                            android:id="@+id/login_pb"
+                            android:layout_width="82dp"
+                            android:layout_height="82dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            app:matProg_barColor="@color/yellow"
+                            app:matProg_fillRadius="true"
+                            app:matProg_progressIndeterminate="true" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/thumb_iv"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_launcher" />
+
+                    </FrameLayout>
 
                     <com.cusnews.widgets.FontTextView
                         android:id="@+id/hello_tv"
@@ -79,15 +84,15 @@
                         android:id="@+id/close_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/common_transparent"
-                        android:contentDescription="@string/btn_begin"
-                        android:src="@drawable/ic_next"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:visibility="invisible"/>
+                        android:background="@color/common_transparent"
+                        android:contentDescription="@string/btn_begin"
+                        android:src="@drawable/ic_next"
+                        android:visibility="invisible" />
                 </LinearLayout>
 
             </FrameLayout>
