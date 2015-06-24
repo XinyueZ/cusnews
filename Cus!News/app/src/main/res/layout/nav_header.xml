@@ -26,12 +26,27 @@
         android:padding="@dimen/activity_vertical_margin"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/thumb_iv"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:src="@drawable/ic_launcher" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/thumb_iv"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_gravity="start|center_vertical"
+                android:src="@drawable/ic_launcher" />
+
+            <ImageButton
+                android:id="@+id/exit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:background="@color/common_transparent"
+                android:src="@drawable/ic_exit" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,13 +66,4 @@
     </LinearLayout>
 
 
-
-    <ImageButton
-        android:id="@+id/exit_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/common_transparent"
-        android:layout_gravity="right|top"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:src="@drawable/ic_exit" />
 </FrameLayout>
