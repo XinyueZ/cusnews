@@ -116,7 +116,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 											prefs.setGoogleThumbUrl(person.getImage().getUrl());
 										}
 										ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
-										ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(1).alpha(1).setDuration(
+										ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(1).setDuration(
 												500).start();
 
 
@@ -167,7 +167,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 				mBinding.loginPb.setVisibility(View.VISIBLE);
 				mBinding.helloTv.setText(R.string.lbl_connect_google);
 				ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
-				ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(0.3f).alpha(0.3f).setDuration(500).start();
+				ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(0.3f).setDuration(500).start();
 				loginGPlus();
 			}
 		});

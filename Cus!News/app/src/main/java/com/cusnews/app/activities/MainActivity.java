@@ -31,6 +31,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.SimpleDrawerListener;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -83,6 +84,8 @@ import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
 import com.cusnews.utils.Utils;
 import com.cusnews.widgets.DynamicShareActionProvider;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.squareup.picasso.Picasso;
 
 import de.greenrobot.event.EventBus;
@@ -166,6 +169,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * User-photo on Google.
 	 */
 	private ImageView mThumbIv;
+	/**
+	 * Exit clickable view.
+	 */
+	private View mExitV;
 	/**
 	 * {@code true} if the app starts customize topics.
 	 */
@@ -317,13 +324,20 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 		mThumbIv = (ImageView) findViewById(R.id.thumb_iv);
+		ViewHelper.setAlpha(mThumbIv, 0f);
+		ViewHelper.setScaleX(mThumbIv, 0f);
+		ViewHelper.setScaleY(mThumbIv, 0f);
 		mAccountTv = (TextView) findViewById(R.id.account_tv);
-		findViewById(R.id.exit_btn).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				exitAccount();
-			}
+		mExitV = findViewById(R.id.exit_btn);
+		mExitV.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						exitAccount();
+					}
 		});
+		ViewHelper.setAlpha(mExitV, 0f);
+		ViewHelper.setScaleX(mExitV, 0f);
+		ViewHelper.setScaleY(mExitV, 0f);
 
 		//Init adapter.
 		ViewType vt = Prefs.getInstance().getViewType();
@@ -395,7 +409,16 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		setupDrawerContent(mBinding.navView);
-
+		mDrawerLayout.setDrawerListener(new SimpleDrawerListener() {
+			@Override
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
+				ViewPropertyAnimator.animate(mThumbIv).cancel();
+				ViewPropertyAnimator.animate(mThumbIv).alpha(1f).scaleX(1f).scaleY(1).setDuration(500).start();
+				ViewPropertyAnimator.animate(mExitV).cancel();
+				ViewPropertyAnimator.animate(mExitV).alpha(1f).scaleX(1f).scaleY(1).setDuration(800).start();
+			}
+		});
 
 
 		//Init "fab", "del" for all tabs, save-button for labels.
