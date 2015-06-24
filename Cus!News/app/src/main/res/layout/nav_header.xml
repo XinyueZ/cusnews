@@ -50,19 +50,14 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        style="@style/MaterialRippleLayout"
+
+
+    <ImageButton
+        android:id="@+id/exit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
         android:background="@color/common_transparent"
-        android:layout_margin="@dimen/activity_vertical_margin">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/exit_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_exit" />
-    </FrameLayout>
+        android:layout_gravity="right|top"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:src="@drawable/ic_exit" />
 </FrameLayout>

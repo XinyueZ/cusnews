@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">WhatsUp</string>
-    <string name="application_name">WhatsUp</string>
     <string name="lbl_hello">Hallo %1$s!</string>
     <string name="lbl_retry">Wiederholen</string>
     <string name="lbl_loading_error">Fehler bei der Ladung!</string>
