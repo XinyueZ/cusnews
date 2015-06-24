@@ -397,12 +397,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		setupDrawerContent(mBinding.navView);
 
 
-		//Init tabs.
-		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
-		if (mBinding.tabs.getTabCount() == 1) {
-			mBinding.tabs.setVisibility(View.GONE);
-		}
 
 		//Init "fab", "del" for all tabs, save-button for labels.
 		mBinding.addTabV.hide();
@@ -556,12 +550,19 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			askPush();
 		}
 		getData();
-		TabLabelManager.getInstance().init(this, true);
 		Picasso picasso = Picasso.with(App.Instance);
 		if (!TextUtils.isEmpty(prefs.getGoogleThumbUrl())) {
 			picasso.load(com.chopping.utils.Utils.uriStr2URI(prefs.getGoogleThumbUrl()).toASCIIString()).into(mThumbIv);
 		}
 		mAccountTv.setText(prefs.getGoogleDisplyName());
+
+		//Init tabs.
+		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
+		if (mBinding.tabs.getTabCount() <= 1) {
+			mBinding.tabs.setVisibility(View.GONE);
+		}
+		TabLabelManager.getInstance().init(this, mBinding.tabs.getTabCount() <= 0);
 	}
 
 	/**
