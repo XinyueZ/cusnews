@@ -125,6 +125,9 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 				if (list.size() > 0) {
 					mBinding.setVariable(BR.pushToken, list.get(0));
 				}
+
+				mBinding.closeBtn.setVisibility(View.VISIBLE);
+				mBinding.savePb.setVisibility(View.INVISIBLE);
 			}
 
 			@Override
@@ -132,6 +135,9 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 				mBinding.oneEt.setEnabled(true);
 				mBinding.twoEt.setEnabled(true);
 				mBinding.threeEt.setEnabled(true);
+
+				mBinding.closeBtn.setVisibility(View.VISIBLE);
+				mBinding.savePb.setVisibility(View.INVISIBLE);
 			}
 		});
 	}

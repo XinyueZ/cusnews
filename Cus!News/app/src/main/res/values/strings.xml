@@ -38,6 +38,7 @@
     <string name="lbl_topic_1">1.</string>
     <string name="lbl_topic_2">2.</string>
     <string name="lbl_topic_3">3.</string>
+    <string name="lbl_connect_google">Connecting on Google…</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 

@@ -285,13 +285,24 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			public void onReceive(Context context, Intent intent) {
 				if (!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
 					dismissPb();
+					if (mCustomizedTopicsSetting) {
+						CustomizedTopicsActivity.showInstance(MainActivity.this);
+					} else {
+						TopicListActivity.showInstance(MainActivity.this);
+					}
 				} else {
-					//TODO Again to register for error.
-				}
-				if (mCustomizedTopicsSetting) {
-					CustomizedTopicsActivity.showInstance(MainActivity.this);
-				} else {
-					TopicListActivity.showInstance(MainActivity.this);
+					//Register push-token not success and try-again.
+					dismissPb();
+					Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_register_push_failed,
+							Snackbar.LENGTH_LONG).setAction(R.string.lbl_retry, new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
+							mPb.setCancelable(true);
+							Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+							startService(intent);
+						}
+					}).show();
 				}
 			}
 		};
@@ -1005,6 +1016,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						dismissPb();
 						mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
 						mPb.setCancelable(true);
 						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
@@ -1015,6 +1027,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						dismissPb();
 						mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
 						mPb.setCancelable(true);
 						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);

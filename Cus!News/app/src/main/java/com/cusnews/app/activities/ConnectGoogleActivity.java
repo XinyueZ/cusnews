@@ -155,6 +155,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 			public void onClick(View v) {
 				mBinding.googleLoginBtn.setVisibility(View.GONE);
 				mBinding.loginPb.setVisibility(View.VISIBLE);
+				mBinding.helloTv.setText(R.string.lbl_connect_google);
 				loginGPlus();
 			}
 		});

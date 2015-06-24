@@ -23,7 +23,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.cusnews.R;
 import com.cusnews.ds.PushToken;
 import com.cusnews.ds.TopicsFactory;
 import com.cusnews.utils.DeviceUniqueUtil;
@@ -53,7 +52,6 @@ public class UnregistrationIntentService extends IntentService {
                 TopicsFactory.clear();
             }
         } catch (Exception e) {
-            com.chopping.utils.Utils.showLongToast(this, R.string.lbl_unregister_push_failed);
         }
 
 

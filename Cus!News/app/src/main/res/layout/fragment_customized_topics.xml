@@ -146,8 +146,8 @@
                     android:id="@+id/save_pb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="invisible"
+                    android:layout_gravity="center"
+                    android:visibility="visible"
                     app:matProg_barColor="@color/primary_color"
                     app:matProg_fillRadius="true"
                     app:matProg_progressIndeterminate="true" />
@@ -158,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/btn_ok"
+                    android:text="@string/btn_ok"   android:visibility="invisible"
                     android:textColor="@color/primary_color" />
             </FrameLayout>
         </com.cusnews.widgets.MaterialRippleLayout>

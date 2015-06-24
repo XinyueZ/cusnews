@@ -154,7 +154,17 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 				if(!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
 					dismissPb();
 				}else {
-					//TODO Again to register for error.
+					dismissPb();
+					Snackbar.make(findViewById(android.R.id.list), R.string.lbl_register_push_failed,
+							Snackbar.LENGTH_LONG).setAction(R.string.lbl_retry, new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							mPb = ProgressDialog.show(SettingActivity.this, null, getString(R.string.lbl_registering));
+							mPb.setCancelable(true);
+							Intent intent = new Intent(SettingActivity.this, RegistrationIntentService.class);
+							startService(intent);
+						}
+					}).show();
 				}
 			}
 		};
@@ -166,7 +176,17 @@ public final class SettingActivity extends PreferenceActivity implements Prefere
 					dismissPb();
 					mSelection.setSummary(Prefs.getInstance().getPushSelections());
 				}else {
-					//TODO Again to unregister for error.
+					dismissPb();
+					Snackbar.make(findViewById(android.R.id.list), R.string.lbl_unregister_push_failed,
+							Snackbar.LENGTH_LONG).setAction(R.string.lbl_retry, new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							mPb = ProgressDialog.show(SettingActivity.this, null, getString(R.string.lbl_unregistered));
+							mPb.setCancelable(true);
+							Intent intent = new Intent(SettingActivity.this, UnregistrationIntentService.class);
+							startService(intent);
+						}
+					}).show();
 				}
 			}
 		};
