@@ -64,6 +64,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 	 */
 	private static int REQUEST_CODE_RESOLVE_ERR = 0x98;
 
+	private boolean mStop;
 	/**
 	 * Show single instance of {@link ConnectGoogleActivity}
 	 *
@@ -79,6 +80,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mStop = false;
 		ViewType vt = Prefs.getInstance().getViewType();
 		switch (vt) {
 		case GRID:
@@ -102,34 +104,35 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 						new ResultCallback<LoadPeopleResult>() {
 							@Override
 							public void onResult(LoadPeopleResult loadPeopleResult) {
-								if (loadPeopleResult.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
-									Prefs prefs = Prefs.getInstance();
-									Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-									if (person != null) {
-										prefs.setGoogleId(person.getId());
-										prefs.setGoogleDisplyName(person.getDisplayName());
+								if(!mStop) {
+									if (loadPeopleResult.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
+										Prefs prefs = Prefs.getInstance();
+										Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+										if (person != null) {
+											prefs.setGoogleId(person.getId());
+											prefs.setGoogleDisplyName(person.getDisplayName());
 
-										Picasso picasso = Picasso.with(App.Instance);
-										if (person.getImage() != null && person.getImage().hasUrl()) {
-											picasso.load(Utils.uriStr2URI(person.getImage().getUrl()).toASCIIString())
-													.into(mBinding.thumbIv);
-											prefs.setGoogleThumbUrl(person.getImage().getUrl());
+											Picasso picasso = Picasso.with(App.Instance);
+											if (person.getImage() != null && person.getImage().hasUrl()) {
+												picasso.load(Utils.uriStr2URI(person.getImage().getUrl())
+														.toASCIIString()).into(mBinding.thumbIv);
+												prefs.setGoogleThumbUrl(person.getImage().getUrl());
+											}
+											ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
+											ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(1).setDuration(500)
+													.start();
+
+
+											mBinding.helloTv.setText(getString(R.string.lbl_hello, person.getDisplayName()));
+											mBinding.loginPb.setVisibility(View.GONE);
+											mBinding.closeBtn.setVisibility(View.VISIBLE);
+											Animation shake = AnimationUtils.loadAnimation(App.Instance, R.anim.shake);
+											mBinding.closeBtn.startAnimation(shake);
 										}
-										ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
-										ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(1).setDuration(
-												500).start();
-
-
-										mBinding.helloTv.setText(getString(R.string.lbl_hello,
-												person.getDisplayName()));
-										mBinding.loginPb.setVisibility(View.GONE);
-										mBinding.closeBtn.setVisibility(View.VISIBLE);
-										Animation shake = AnimationUtils.loadAnimation(App.Instance, R.anim.shake);
-										mBinding.closeBtn.startAnimation(shake);
+									} else {
+										com.chopping.utils.Utils.showShortToast(App.Instance,
+												"no person, status: " + loadPeopleResult.getStatus());
 									}
-								} else {
-									com.chopping.utils.Utils.showShortToast(App.Instance,
-											"no person, status: " + loadPeopleResult.getStatus());
 								}
 							}
 						});
@@ -220,5 +223,11 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 				mGoogleApiClient.connect();
 			}
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mStop = true;
 	}
 }
