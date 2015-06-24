@@ -254,4 +254,10 @@ public class TabLabelManager {
 		});
 	}
 
+	/**
+	 * Clean all tabs.
+	 */
+	public void clean() {
+		mCachedTabLabels.clear();
+	}
 }

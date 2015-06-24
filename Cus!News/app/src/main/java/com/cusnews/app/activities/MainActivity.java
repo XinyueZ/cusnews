@@ -1081,5 +1081,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		prefs.setGoogleThumbUrl(null);
 		prefs.setGoogleDisplyName(null);
 		ConnectGoogleActivity.showInstance(this);
+
+		mBinding.tabs.removeAllTabs();
+		TabLabelManager.getInstance().clean();
 	}
 }
