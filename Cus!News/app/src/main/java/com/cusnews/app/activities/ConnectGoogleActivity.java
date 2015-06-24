@@ -12,6 +12,8 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.chopping.utils.Utils;
 import com.cusnews.R;
@@ -28,6 +30,7 @@ import com.google.android.gms.plus.People.LoadPeopleResult;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.Plus.PlusOptions;
 import com.google.android.gms.plus.model.people.Person;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -89,6 +92,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 		mBinding.googleLoginBtn.setSize(SignInButton.SIZE_WIDE);
+		mBinding.helloTv.setText(getString(R.string.lbl_welcome, getString(R.string.application_name)));
 		mGoogleApiClient = new GoogleApiClient.Builder(App.Instance, new GoogleApiClient.ConnectionCallbacks() {
 			@Override
 			public void onConnected(Bundle bundle) {
@@ -102,20 +106,26 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 									Prefs prefs = Prefs.getInstance();
 									Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
 									if (person != null) {
+										prefs.setGoogleId(person.getId());
+										prefs.setGoogleDisplyName(person.getDisplayName());
+
 										Picasso picasso = Picasso.with(App.Instance);
 										if (person.getImage() != null && person.getImage().hasUrl()) {
 											picasso.load(Utils.uriStr2URI(person.getImage().getUrl()).toASCIIString())
 													.into(mBinding.thumbIv);
 											prefs.setGoogleThumbUrl(person.getImage().getUrl());
 										}
+										ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
+										ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(1).alpha(1).setDuration(
+												500).start();
+
+
 										mBinding.helloTv.setText(getString(R.string.lbl_hello,
 												person.getDisplayName()));
-
-										prefs.setGoogleId(person.getId());
-										prefs.setGoogleDisplyName(person.getDisplayName());
-
 										mBinding.loginPb.setVisibility(View.GONE);
 										mBinding.closeBtn.setVisibility(View.VISIBLE);
+										Animation shake = AnimationUtils.loadAnimation(App.Instance, R.anim.shake);
+										mBinding.closeBtn.startAnimation(shake);
 									}
 								} else {
 									com.chopping.utils.Utils.showShortToast(App.Instance,
@@ -156,6 +166,8 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 				mBinding.googleLoginBtn.setVisibility(View.GONE);
 				mBinding.loginPb.setVisibility(View.VISIBLE);
 				mBinding.helloTv.setText(R.string.lbl_connect_google);
+				ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
+				ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(0.3f).alpha(0.3f).setDuration(500).start();
 				loginGPlus();
 			}
 		});

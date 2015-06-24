@@ -26,6 +26,15 @@
                 android:layout_weight="1"
                 android:background="@color/primary_color">
 
+                <com.pnikosis.materialishprogress.ProgressWheel
+                    android:id="@+id/login_pb"
+                    android:layout_width="98dp"
+                    android:layout_height="98dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:matProg_barColor="@color/yellow"
+                    app:matProg_fillRadius="true"
+                    app:matProg_progressIndeterminate="true" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/thumb_iv"
@@ -50,9 +59,14 @@
                     <com.cusnews.widgets.FontTextView
                         android:id="@+id/hello_tv"
                         style="@style/Text.Normal"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:gravity="center_horizontal" />
 
                     <com.google.android.gms.common.SignInButton
                         android:id="@+id/google_login_btn"
@@ -60,37 +74,20 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal" />
 
-                    <com.pnikosis.materialishprogress.ProgressWheel
-                        android:id="@+id/login_pb"
+                    <ImageButton
+
+                        android:id="@+id/close_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:visibility="gone"
-                        app:matProg_barColor="@color/primary_color"
-                        app:matProg_fillRadius="true"
-                        app:matProg_progressIndeterminate="true" />
-
-                    <com.cusnews.widgets.MaterialRippleLayout
-                        android:id="@+id/close_btn"
-                        style="@style/MaterialRippleLayout"
-                        android:layout_width="130dp"
-                        android:layout_height="40dp"
+                        android:background="@color/common_transparent"
+                        android:contentDescription="@string/btn_begin"
+                        android:src="@drawable/ic_next"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:background="@color/primary_dark_color"
-                        android:visibility="gone">
-
-                        <com.cusnews.widgets.FontTextView
-                            style="@style/Text.Bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/btn_begin"
-                            android:textColor="@color/common_white" />
-                    </com.cusnews.widgets.MaterialRippleLayout>
+                        android:visibility="invisible"/>
                 </LinearLayout>
 
             </FrameLayout>

@@ -32,6 +32,7 @@
     <string name="lbl_sync_same_label">Du hast schon den Tab [%1$s].</string>
     <string name="lbl_customized_push">Du kannst max.3 Themen zu Push-Benachrichtigen personalisieren.</string>
     <string name="lbl_connect_google">Verbindung an Google…</string>
+    <string name="lbl_welcome">Willkommen bei %1$s!</string>
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>
