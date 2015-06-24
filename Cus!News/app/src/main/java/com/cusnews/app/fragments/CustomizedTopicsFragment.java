@@ -22,6 +22,7 @@ import com.cusnews.databinding.CustomizedTopicsBinding;
 import com.cusnews.ds.PushToken;
 import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
+import com.cusnews.utils.Utils;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -58,8 +59,15 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 		mBinding.closeVg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (!Utils.validateKeyword(mBinding.oneEt) || !Utils.validateKeyword(mBinding.twoEt) ||
+						!Utils.validateKeyword(mBinding.threeEt) || !Utils.validateKeyword(mBinding.fourEt) ||
+						!Utils.validateKeyword(mBinding.fiveEt)) {
+					return;
+				}
+
 				mBinding.closeBtn.setVisibility(View.INVISIBLE);
 				mBinding.savePb.setVisibility(View.VISIBLE);
+
 
 				mBinding.oneEt.setEnabled(false);
 				mBinding.twoEt.setEnabled(false);

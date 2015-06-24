@@ -33,6 +33,8 @@
     <string name="lbl_customized_push">Du kannst max.5 Themen zu Push-Benachrichtigen personalisieren.</string>
     <string name="lbl_connect_google">Verbindung an Google…</string>
     <string name="lbl_welcome">Willkommen bei %1$s!</string>
+    <string name="lbl_exclude_chars">Die folgenden Zeichen sind nicht in der Abfrage erlaubt: / = ( ) : ;</string>
+
 
     <string name="action_visit_faroo">Faroo Blog</string>
     <string name="action_settings">Einstellungen</string>

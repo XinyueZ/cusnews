@@ -426,20 +426,20 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.saveAddedTabBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(Utils.validateKeyword(mBinding.newTabLabelTv)) {
+					if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
+						TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
+								Prefs.getInstance().getGoogleId());
+						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this, mBinding.coordinatorLayout);
+						mBinding.addTabV.hide();
+						mBinding.newTabLabelTv.setText("");
+						mBinding.addTabOpLl.setVisibility(View.GONE);
+						mBinding.newTabLabelTv.setVisibility(View.GONE);
+					}
 
-				if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
-					TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
-							Prefs.getInstance().getGoogleId());
-					TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
-							mBinding.coordinatorLayout);
-					mBinding.addTabV.hide();
-					mBinding.newTabLabelTv.setText("");
-					mBinding.addTabOpLl.setVisibility(View.GONE);
-					mBinding.newTabLabelTv.setVisibility(View.GONE);
+					mBinding.fab.show();
+					Utils.closeKeyboard(mBinding.newTabLabelTv);
 				}
-
-				mBinding.fab.show();
-				Utils.closeKeyboard(mBinding.newTabLabelTv);
 			}
 		});
 		mBinding.closeAddTabBtn.setOnClickListener(new OnClickListener() {
@@ -920,10 +920,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	protected void handleIntent(Intent intent) {
 		mKeyword = intent.getStringExtra(SearchManager.QUERY);
-		if (!TextUtils.isEmpty(mKeyword)) {
+		if (!TextUtils.isEmpty(mKeyword) && Utils.validateStr(App.Instance, mKeyword)) {
 			mKeyword = mKeyword.trim();
-		}
-		if (!TextUtils.isEmpty(mKeyword)) {
 			mSearchView.setQueryHint(Html.fromHtml("<font color = #ffffff>" + mKeyword + "</font>"));
 
 			mKeyword = intent.getStringExtra(SearchManager.QUERY);

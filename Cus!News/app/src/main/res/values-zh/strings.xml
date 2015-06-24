@@ -34,6 +34,7 @@
     <string name="lbl_customized_push">一共可以推送5个个性化主题。</string>
     <string name="lbl_connect_google">正在连接谷歌后台…</string>
     <string name="lbl_welcome">欢迎使用 %1$s，独立，轻量级新闻应用!</string>
+    <string name="lbl_exclude_chars">这些字符是不能使用的 / = ( ) : ;</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>

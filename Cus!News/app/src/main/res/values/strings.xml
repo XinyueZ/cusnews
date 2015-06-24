@@ -42,6 +42,7 @@
     <string name="lbl_topic_5">5.</string>
     <string name="lbl_connect_google">Connecting on Google…</string>
     <string name="lbl_welcome">Welcome to %1$s\na free and lightweight news application!</string>
+    <string name="lbl_exclude_chars">The following characters are not allowed within the query / = ( ) : ;</string>
 
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
