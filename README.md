@@ -46,7 +46,7 @@ The push-backend based on Google GAE, programmed by [golang](http://www.golang.o
 See project [faroo-push](https://github.com/XinyueZ/faroo-push) which provides push-functions for client. 
 
 ```java
-			The MIT License (MIT)
+				The MIT License (MIT)
 
 			Copyright (c) 2015 Chris Xinyue Zhao
 
