@@ -124,6 +124,66 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/four_vg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/three_vg"
+            android:orientation="horizontal">
+
+            <com.cusnews.widgets.FontTextView
+                style="@style/Text.Normal.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/lbl_topic_4" />
+
+            <EditText
+                android:id="@+id/four_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:enabled="false"
+                android:hint="@string/lbl_subscribe"
+                android:text="@{pushToken.customizedTopic4}"
+                android:textColorHint="@color/indigo_300" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/five_vg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/four_vg"
+            android:orientation="horizontal">
+
+            <com.cusnews.widgets.FontTextView
+                style="@style/Text.Normal.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/lbl_topic_5" />
+
+            <EditText
+                android:id="@+id/five_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:enabled="false"
+                android:hint="@string/lbl_subscribe"
+                android:text="@{pushToken.customizedTopic5}"
+                android:textColorHint="@color/indigo_300" />
+        </LinearLayout>
+
+
         <com.cusnews.widgets.MaterialRippleLayout
             android:id="@+id/close_vg"
             style="@style/MaterialRippleLayout"

@@ -60,6 +60,12 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 			public void onClick(View v) {
 				mBinding.closeBtn.setVisibility(View.INVISIBLE);
 				mBinding.savePb.setVisibility(View.VISIBLE);
+
+				mBinding.oneEt.setEnabled(false);
+				mBinding.twoEt.setEnabled(false);
+				mBinding.threeEt.setEnabled(false);
+				mBinding.fourEt.setEnabled(false);
+				mBinding.fiveEt.setEnabled(false);
 				
 				String deviceId = "0000000000";
 				try {
@@ -79,6 +85,8 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 							pushToken.setCustomizedTopic1(mBinding.oneEt.getText().toString());
 							pushToken.setCustomizedTopic2(mBinding.twoEt.getText().toString());
 							pushToken.setCustomizedTopic3(mBinding.threeEt.getText().toString());
+							pushToken.setCustomizedTopic4(mBinding.fourEt.getText().toString());
+							pushToken.setCustomizedTopic5(mBinding.fiveEt.getText().toString());
 							pushToken.update(App.Instance, pushToken.getObjectId(), new UpdateListener() {
 								@Override
 								public void onSuccess() {
@@ -93,6 +101,12 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 									mBinding.closeBtn.setText(R.string.btn_retry);
 									mBinding.closeBtn.setVisibility(View.VISIBLE);
 									mBinding.savePb.setVisibility(View.INVISIBLE);
+
+									mBinding.oneEt.setEnabled(true);
+									mBinding.twoEt.setEnabled(true);
+									mBinding.threeEt.setEnabled(true);
+									mBinding.fourEt.setEnabled(true);
+									mBinding.fiveEt.setEnabled(true);
 								}
 							});
 						}
@@ -103,6 +117,12 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 						mBinding.closeBtn.setText(R.string.btn_retry);
 						mBinding.closeBtn.setVisibility(View.VISIBLE);
 						mBinding.savePb.setVisibility(View.INVISIBLE);
+
+						mBinding.oneEt.setEnabled(true);
+						mBinding.twoEt.setEnabled(true);
+						mBinding.threeEt.setEnabled(true);
+						mBinding.fourEt.setEnabled(true);
+						mBinding.fiveEt.setEnabled(true);
 					}
 				});
 			}
@@ -124,6 +144,8 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 				mBinding.oneEt.setEnabled(true);
 				mBinding.twoEt.setEnabled(true);
 				mBinding.threeEt.setEnabled(true);
+				mBinding.fourEt.setEnabled(true);
+				mBinding.fiveEt.setEnabled(true);
 				if (list.size() > 0) {
 					mBinding.setVariable(BR.pushToken, list.get(0));
 				}
@@ -137,6 +159,8 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 				mBinding.oneEt.setEnabled(true);
 				mBinding.twoEt.setEnabled(true);
 				mBinding.threeEt.setEnabled(true);
+				mBinding.fourEt.setEnabled(true);
+				mBinding.fiveEt.setEnabled(true);
 
 				mBinding.closeBtn.setVisibility(View.VISIBLE);
 				mBinding.savePb.setVisibility(View.INVISIBLE);

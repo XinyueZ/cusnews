@@ -12,6 +12,8 @@ public final class PushToken extends BmobObject {
 	private String mCustomizedTopic1;
 	private String mCustomizedTopic2;
 	private String mCustomizedTopic3;
+	private String mCustomizedTopic4;
+	private String mCustomizedTopic5;
 	private String mLanguage;
 
 	public PushToken(String googleId, String deviceId, String pushToken,   String language) {
@@ -62,5 +64,21 @@ public final class PushToken extends BmobObject {
 
 	public void setCustomizedTopic3(String customizedTopic3) {
 		mCustomizedTopic3 = customizedTopic3;
+	}
+
+	public String getCustomizedTopic4() {
+		return mCustomizedTopic4;
+	}
+
+	public void setCustomizedTopic4(String customizedTopic4) {
+		mCustomizedTopic4 = customizedTopic4;
+	}
+
+	public String getCustomizedTopic5() {
+		return mCustomizedTopic5;
+	}
+
+	public void setCustomizedTopic5(String customizedTopic5) {
+		mCustomizedTopic5 = customizedTopic5;
 	}
 }
