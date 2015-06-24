@@ -709,7 +709,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				return true;
 			}
 		});
-
+		mBinding.tabs.addTab(tab, 1);
 		if (mBinding.tabs.getTabCount() > 1) {
 			mBinding.tabs.setVisibility(View.VISIBLE);
 		}
