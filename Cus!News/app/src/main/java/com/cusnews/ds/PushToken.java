@@ -12,11 +12,13 @@ public final class PushToken extends BmobObject {
 	private String mCustomizedTopic1;
 	private String mCustomizedTopic2;
 	private String mCustomizedTopic3;
+	private String mLanguage;
 
-	public PushToken(String googleId, String deviceId, String pushToken) {
+	public PushToken(String googleId, String deviceId, String pushToken,   String language) {
 		mGoogleId = googleId;
 		mDeviceId = deviceId;
 		mPushToken = pushToken;
+		mLanguage = language;
 	}
 
 	public PushToken() {
@@ -32,6 +34,10 @@ public final class PushToken extends BmobObject {
 
 	public String getPushToken() {
 		return mPushToken;
+	}
+
+	public String getLanguage() {
+		return mLanguage;
 	}
 
 	public String getCustomizedTopic1() {

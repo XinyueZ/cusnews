@@ -69,7 +69,7 @@ public class RegistrationIntentService extends IntentService {
 			} catch (NoSuchAlgorithmException e) {
 
 			}
-			PushToken newPushToken = new PushToken(prefs.getGoogleId(), deviceId, prefs.getPushToken());
+			PushToken newPushToken = new PushToken(prefs.getGoogleId(), deviceId, prefs.getPushToken(), prefs.getLanguage());
 			final String finalDeviceId = deviceId;
 			newPushToken.save(this, new SaveListener() {
 				@Override

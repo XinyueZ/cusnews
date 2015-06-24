@@ -90,6 +90,7 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 
 								@Override
 								public void onFailure(int i, String s) {
+									mBinding.closeBtn.setText(R.string.btn_retry);
 									mBinding.closeBtn.setVisibility(View.VISIBLE);
 									mBinding.savePb.setVisibility(View.INVISIBLE);
 								}
@@ -99,6 +100,7 @@ public final class CustomizedTopicsFragment extends DialogFragment {
 
 					@Override
 					public void onError(int i, String s) {
+						mBinding.closeBtn.setText(R.string.btn_retry);
 						mBinding.closeBtn.setVisibility(View.VISIBLE);
 						mBinding.savePb.setVisibility(View.INVISIBLE);
 					}
