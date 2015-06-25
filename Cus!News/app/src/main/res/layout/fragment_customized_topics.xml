@@ -36,152 +36,163 @@
             android:text="@string/lbl_customized_push" />
 
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/one_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_tv"
             android:orientation="horizontal">
 
-            <com.cusnews.widgets.FontTextView
-                style="@style/Text.Normal.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/lbl_topic_1" />
 
             <EditText
                 android:id="@+id/one_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:maxLength="30"
                 android:text="@{pushToken.customizedTopic1}"
                 android:textColorHint="@color/indigo_300" />
-        </LinearLayout>
 
-        <LinearLayout
+            <ImageButton
+                android:id="@+id/trends_one_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/common_transparent"
+                android:src="@drawable/ic_trends_selection"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/two_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/one_vg"
             android:orientation="horizontal">
 
-            <com.cusnews.widgets.FontTextView
-                style="@style/Text.Normal.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/lbl_topic_2" />
 
             <EditText
                 android:id="@+id/two_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:maxLength="30"
                 android:text="@{pushToken.customizedTopic2}"
                 android:textColorHint="@color/indigo_300" />
-        </LinearLayout>
 
-        <LinearLayout
+            <ImageButton
+                android:id="@+id/trends_two_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/common_transparent"
+                android:src="@drawable/ic_trends_selection"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/three_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/two_vg"
             android:orientation="horizontal">
 
-            <com.cusnews.widgets.FontTextView
-                style="@style/Text.Normal.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/lbl_topic_3" />
 
             <EditText
                 android:id="@+id/three_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:maxLength="30"
                 android:text="@{pushToken.customizedTopic3}"
                 android:textColorHint="@color/indigo_300" />
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/trends_three_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/common_transparent"
+                android:src="@drawable/ic_trends_selection"
+                android:visibility="invisible" />
+        </FrameLayout>
 
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/four_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/three_vg"
             android:orientation="horizontal">
 
-            <com.cusnews.widgets.FontTextView
-                style="@style/Text.Normal.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/lbl_topic_4" />
 
             <EditText
                 android:id="@+id/four_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:maxLength="30"
                 android:text="@{pushToken.customizedTopic4}"
                 android:textColorHint="@color/indigo_300" />
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/trends_four_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/common_transparent"
+                android:src="@drawable/ic_trends_selection"
+                android:visibility="invisible" />
+        </FrameLayout>
 
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/five_vg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/four_vg"
             android:orientation="horizontal">
 
-            <com.cusnews.widgets.FontTextView
-                style="@style/Text.Normal.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/lbl_topic_5" />
 
             <EditText
                 android:id="@+id/five_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:enabled="false"
                 android:hint="@string/lbl_subscribe"
+                android:maxLength="30"
                 android:text="@{pushToken.customizedTopic5}"
                 android:textColorHint="@color/indigo_300" />
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/trends_five_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/common_transparent"
+                android:src="@drawable/ic_trends_selection"
+                android:visibility="invisible" />
+
+        </FrameLayout>
 
 
         <com.cusnews.widgets.MaterialRippleLayout
@@ -216,8 +227,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/btn_ok"   android:visibility="invisible"
-                    android:textColor="@color/primary_color" />
+                    android:text="@string/btn_ok"
+                    android:textColor="@color/primary_color"
+                    android:visibility="invisible" />
             </FrameLayout>
         </com.cusnews.widgets.MaterialRippleLayout>
     </RelativeLayout>

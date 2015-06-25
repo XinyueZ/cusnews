@@ -86,5 +86,5 @@
     <string name="setting_push_internet">IT</string>
     <string name="setting_push_google">Google Inc.</string>
     <string name="setting_push_apple">Apple Inc.</string>
-    <string name="setting_diy">Push Personalisieren</string>
+    <string name="setting_diy">Push personalisieren</string>
 </resources>
