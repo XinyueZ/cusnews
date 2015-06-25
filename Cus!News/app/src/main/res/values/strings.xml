@@ -47,6 +47,7 @@
     <string name="lbl_empty_bookmarks">Your bookmark-list ist currently empty.\nPull me down and refresh.</string>
     <string name="lbl_load_bookmarks_error">There\'re some problems while loading bookmark-list.\nPull me down and loading again.</string>
 
+
     <string name="suggestion_auth" translatable="false">com.cusnews.app.SearchSuggestionProvider</string>
 
 
@@ -65,6 +66,7 @@
     <string name="action_more_apps">More Apps</string>
     <string name="action_trends">Trends</string>
     <string name="action_bookmarks">Bookmarks</string>
+    <string name="action_push">Push</string>
 
     <!--For DynamicShareActionProvider-->
 
@@ -127,5 +129,10 @@
     <string name="setting_push_internet">IT</string>
     <string name="setting_push_google">Google Inc.</string>
     <string name="setting_push_apple">Apple Inc.</string>
-    <string name="setting_div">Push DIY</string>
+    <string name="setting_diy">Push DIY</string>
+
+    <string-array name="setting_pushs">
+        <item>@string/setting_push_selection</item>
+        <item>@string/setting_diy</item>
+    </string-array>
 </resources>

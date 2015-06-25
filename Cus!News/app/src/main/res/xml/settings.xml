@@ -37,6 +37,6 @@
             android:defaultValue="false"
             android:key="key.push.topics.diy"
             android:layout="@layout/setting_item"
-            android:title="@string/setting_div" />
+            android:title="@string/setting_diy" />
     </PreferenceCategory>
 </PreferenceScreen>

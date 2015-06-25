@@ -19,20 +19,32 @@
             android:id="@+id/action_faroo_home"
             android:icon="@drawable/ic_faroo_home"
             android:title="@string/action_visit_faroo" />
+
         <item
-            android:id="@+id/action_setting"
-            android:icon="@drawable/ic_action_settings"
-            android:title="@string/action_settings" />
+            android:id="@+id/action_push"
+            android:icon="@drawable/ic_push_setting"
+            android:title="@string/action_push" />
+
 
         <item
             android:id="@+id/action_bookmarks"
             android:icon="@drawable/ic_bookmarked"
             android:title="@string/action_bookmarks" />
 
+
         <item
             android:id="@+id/action_more_apps"
             android:icon="@drawable/ic_apps"
             android:title="@string/action_more_apps" />
+
+
+        <item
+            android:id="@+id/action_setting"
+            android:icon="@drawable/ic_action_settings"
+            android:title="@string/action_settings" />
+
+
+
     </group>
 
     <item

@@ -479,7 +479,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-//				TabLabelManager.getInstance().init(MainActivity.this, false);
+				//				TabLabelManager.getInstance().init(MainActivity.this, false);
 				getData();
 			}
 		});
@@ -820,7 +820,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 	@Override
 	public void onBackPressed() {
-		if(mBookmarkSpl.isOpen()) {
+		if (mBookmarkSpl.isOpen()) {
 			mBookmarkSpl.closePane();
 		} else if (!mBinding.del.isHidden()) {
 			mBinding.del.hide();
@@ -1075,6 +1075,35 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					break;
 				case R.id.action_bookmarks:
 					mBookmarkSpl.openPane();
+					break;
+				case R.id.action_push:
+					if (TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+						askPush();
+					} else {
+						showDialogFragment(new DialogFragment() {
+							@Override
+							public Dialog onCreateDialog(Bundle savedInstanceState) {
+								// Use the Builder class for convenient dialog construction
+								AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+								builder.setTitle(R.string.action_push).setSingleChoiceItems(R.array.setting_pushs, -1,
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												switch (which) {
+												case 0:
+													TopicListActivity.showInstance(MainActivity.this);
+													break;
+												case 1:
+													CustomizedTopicsActivity.showInstance(MainActivity.this);
+													break;
+												}
+												dialog.dismiss();
+											}
+										});
+								return builder.create();
+							}
+						}, null);
+					}
 					break;
 				}
 				return true;
