@@ -149,11 +149,15 @@ public final class BookmarksFragment extends CusNewsFragment {
 
 	@Override
 	public void onResume() {
-		if (mBinding.getBookmarksAdapter() != null) {
-			mBinding.getBookmarksAdapter().notifyDataSetChanged();
-			if(mBinding.getBookmarksAdapter().getItemCount() == 0) {
-				mBinding.bookmarksTv.setVisibility(View.VISIBLE);
-				mBinding.bookmarksTv.setText(R.string.lbl_empty_bookmarks);
+		if(!BookmarksManager.getInstance().isInit() ) {
+			BookmarksManager.getInstance().init();
+		} else {
+			if (mBinding.getBookmarksAdapter() != null) {
+				mBinding.getBookmarksAdapter().notifyDataSetChanged();
+				if (mBinding.getBookmarksAdapter().getItemCount() == 0) {
+					mBinding.bookmarksTv.setVisibility(View.VISIBLE);
+					mBinding.bookmarksTv.setText(R.string.lbl_empty_bookmarks);
+				}
 			}
 		}
 		super.onResume();
