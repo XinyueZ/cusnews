@@ -36,6 +36,8 @@
     <string name="lbl_connect_google">正在连接谷歌后台…</string>
     <string name="lbl_welcome">欢迎使用 %1$s，独立，轻量级新闻应用!</string>
     <string name="lbl_exclude_chars">这些字符是不能使用的 / = ( ) : ;</string>
+    <string name="lbl_empty_bookmarks">当前你的收藏夹是空的，\n通过下拉来更新。</string>
+    <string name="lbl_load_bookmarks_error">在获取收藏夹时候出现了一些问题，\n通过下拉来重新加载。</string>
 
     <string name="action_visit_faroo">Faroo博客</string>
     <string name="action_settings">设置</string>

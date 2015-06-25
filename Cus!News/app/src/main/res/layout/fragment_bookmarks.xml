@@ -36,6 +36,15 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
+            <com.cusnews.widgets.FontTextView
+                android:id="@+id/bookmarks_tv"
+                style="@style/Text.Normal.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/lbl_empty_bookmarks"/>
+
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/bookmarks_srl"
                 android:layout_width="match_parent"
@@ -48,6 +57,8 @@
                     android:scrollbars="none"
                     app:bookmarksAdapter="@{bookmarksAdapter}" />
             </android.support.v4.widget.SwipeRefreshLayout>
+
+
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

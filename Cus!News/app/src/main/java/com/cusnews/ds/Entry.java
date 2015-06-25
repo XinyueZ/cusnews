@@ -10,27 +10,27 @@ import cn.bmob.v3.BmobObject;
 
 public   class Entry  extends BmobObject implements Serializable {
 	@SerializedName("title")
-	private final String mTitle;
+	private   String mTitle;
 	@SerializedName("kwic")
-	private final String mKwic;
+	private   String mKwic;
 	@SerializedName("content")
-	private final String mContent;
+	private   String mContent;
 	@SerializedName("url")
-	private final String mUrl;
+	private   String mUrl;
 	@SerializedName("iurl")
-	private final String mImageUrl;
+	private   String mImageUrl;
 	@SerializedName("domain")
-	private final String mDomain;
+	private   String mDomain;
 	@SerializedName("author")
-	private final String mAuthor;
+	private   String mAuthor;
 	@SerializedName("news")
-	private final boolean mNews;
+	private   boolean mNews;
 	@SerializedName("votes")
-	private final String mVotes;
+	private   String mVotes;
 	@SerializedName("date")
-	private final long mDate;
+	private   long mDate;
 	@SerializedName("related")
-	private final List<Entry> mRelated;
+	private   List<Entry> mRelated;
 
 	public Entry(String title, String kwic, String content, String url, String imageUrl, String domain, String author,
 			boolean news, String votes, long date, List<Entry> related) {
@@ -46,6 +46,8 @@ public   class Entry  extends BmobObject implements Serializable {
 		mDate = date;
 		mRelated = related;
 	}
+
+	public Entry(){}
 
 	public String getTitle() {
 		return mTitle;

@@ -6,13 +6,13 @@ import java.util.List;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.cusnews.R;
 import com.cusnews.app.App;
 import com.cusnews.bus.BookmarksInitEvent;
+import com.cusnews.bus.BookmarksLoadingErrorEvent;
 import com.cusnews.ds.Bookmark;
 import com.cusnews.ds.Entry;
 import com.software.shell.fab.ActionButton;
@@ -85,8 +85,8 @@ public class BookmarksManager {
 
 			@Override
 			public void onError(int i, String s) {
-				mInit = true;
-				EventBus.getDefault().post(new BookmarksInitEvent());
+				mInit = false;
+				EventBus.getDefault().post(new BookmarksLoadingErrorEvent());
 			}
 		});
 	}
@@ -142,36 +142,47 @@ public class BookmarksManager {
 		}
 		mCachedBookmarks.add(newBookmark);
 		btn.setImageResource(R.drawable.ic_bookmarked);
-		addNewBookmarkInternal(newBookmark, viewForSnack);
+		btn.setEnabled(false);
+		addNewBookmarkInternal(newBookmark, btn, viewForSnack);
 	}
 
 	/**
 	 * Add new {@link Bookmark} to backend.
 	 * @param newBookmark A new {@link Bookmark}.
+	 * @param btn {@link ActionButton} the button to fire the adding.
 	 * @param viewForSnack {@link View} anchor for showing {@link Snackbar} messages.
 	 */
-	private void addNewBookmarkInternal(final Bookmark newBookmark, View viewForSnack) {
+	private void addNewBookmarkInternal(final Bookmark newBookmark, final ActionButton btn, View viewForSnack) {
 		final WeakReference<View> anchor = new WeakReference<>(viewForSnack);
+		final WeakReference<ActionButton> actionBtn = new WeakReference<>(btn);
 		newBookmark.save(App.Instance, new SaveListener() {
 			@Override
 			public void onSuccess() {
 				View anchorV = anchor.get();
+				View btn = actionBtn.get();
 				if (anchorV != null) {
 					Snackbar.make(anchorV, R.string.lbl_sync_success, Snackbar.LENGTH_SHORT).show();
+				}
+				if(btn!= null) {
+					btn.setEnabled(true);
 				}
 			}
 
 			@Override
 			public void onFailure(int i, String s) {
 				View anchorV = anchor.get();
+				View btn = actionBtn.get();
 				if (anchorV != null) {
 					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG).setAction(R.string.btn_retry,
 							new OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									addNewBookmarkInternal(newBookmark, anchor.get());
+									addNewBookmarkInternal(newBookmark, actionBtn.get(), anchor.get());
 								}
 							}).show();
+				}
+				if(btn!= null) {
+					btn.setEnabled(true);
 				}
 			}
 		});
@@ -185,10 +196,11 @@ public class BookmarksManager {
 	 */
 	public void removeRemoteBookmark(Bookmark bookmark, ActionButton btn, View viewForSnack) {
 		for (Bookmark cached : mCachedBookmarks) {
-			if (TextUtils.equals(cached.getObjectId(), bookmark.getObjectId())) {
+			if (cached.equals(bookmark)) {
 				mCachedBookmarks.remove(cached);
 				btn.setImageResource(R.drawable.ic_not_bookmarked);
-				removeBookmarkInternal(bookmark, viewForSnack);
+				btn.setEnabled(false);
+				removeBookmarkInternal(bookmark, btn, viewForSnack);
 				break;
 			}
 		}
@@ -197,30 +209,40 @@ public class BookmarksManager {
 	/**
 	 * Remove a {@link Bookmark} from backend.
 	 * @param bookmark An old {@link Bookmark}.
+	 *                  @param btn {@link ActionButton} the button to fire the removing.
 	 * @param viewForSnack {@link View} anchor for showing {@link Snackbar} messages.
 	 */
-	private void removeBookmarkInternal(final Bookmark bookmark, View viewForSnack) {
+	private void removeBookmarkInternal(final Bookmark bookmark, ActionButton btn, View viewForSnack) {
 		final WeakReference<View> anchor = new WeakReference<>(viewForSnack);
+		final WeakReference<ActionButton> actionBtn = new WeakReference<>(btn);
 		bookmark.delete(App.Instance, new DeleteListener() {
 			@Override
 			public void onSuccess() {
 				View anchorV = anchor.get();
+				View btn = actionBtn.get();
 				if (anchorV != null) {
 					Snackbar.make(anchorV, R.string.lbl_sync_success, Snackbar.LENGTH_SHORT).show();
+				}
+				if(btn!= null) {
+					btn.setEnabled(true);
 				}
 			}
 
 			@Override
 			public void onFailure(int i, String s) {
 				View anchorV = anchor.get();
+				View btn = actionBtn.get();
 				if (anchorV != null) {
 					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG).setAction(R.string.btn_retry,
 							new OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									removeBookmarkInternal(bookmark, anchor.get());
+									removeBookmarkInternal(bookmark, actionBtn.get(), anchor.get());
 								}
 							}).show();
+				}
+				if(btn!= null) {
+					btn.setEnabled(true);
 				}
 			}
 		});

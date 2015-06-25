@@ -178,7 +178,9 @@ public final class DetailActivity extends CusNewsActivity {
 					Entry entry = (Entry) getIntent().getSerializableExtra(EXTRAS_ENTRY);
 					Bookmark bookmark = BookmarksManager.getInstance().findBookmarked(entry);
 					if (bookmark != null) {
-						BookmarksManager.getInstance().removeRemoteBookmark(bookmark, (ActionButton) v, findViewById(
+						Bookmark delBookmark = new Bookmark(entry);
+						delBookmark.setObjectId(bookmark.getObjectId());
+						BookmarksManager.getInstance().removeRemoteBookmark(delBookmark, (ActionButton) v, findViewById(
 								R.id.error_content));
 					} else {
 						BookmarksManager.getInstance().addNewRemoteBookmark(new Bookmark(

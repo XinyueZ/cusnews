@@ -336,7 +336,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		Event {@link com.cusnews.bus.CloseBookmarksEvent}.
 	 */
 	public void onEvent(CloseBookmarksEvent e) {
-		if (  mBookmarkSpl.isOpen()) {
+		if (mBookmarkSpl.isOpen()) {
 			mBookmarkSpl.closePane();
 		}
 	}
@@ -361,6 +361,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		super.onCreate(savedInstanceState);
 		Prefs prefs = Prefs.getInstance();
 		calcActionBarHeight();
+		//Bookmark
+		getSupportFragmentManager().beginTransaction().replace(R.id.bookmark_list_container_fl,
+				BookmarksFragment.newInstance(this)).commit();
+
 		//Listener on registering push-feature.
 		mRegistrationBroadcastReceiver = new BroadcastReceiver() {
 			@Override
@@ -475,6 +479,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
+//				TabLabelManager.getInstance().init(MainActivity.this, false);
 				getData();
 			}
 		});
@@ -666,8 +671,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (mBinding.tabs.getTabCount() <= 1) {
 			mBinding.tabs.setVisibility(View.GONE);
 		}
-		getSupportFragmentManager().beginTransaction().replace(R.id.bookmark_list_container_fl, BookmarksFragment.newInstance(
-				this)).commit();
 		TabLabelManager.getInstance().init(this, mBinding.tabs.getTabCount() <= 0);
 		BookmarksManager.getInstance().init();
 	}
@@ -817,7 +820,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 	@Override
 	public void onBackPressed() {
-		if (!mBinding.del.isHidden()) {
+		if(mBookmarkSpl.isOpen()) {
+			mBookmarkSpl.closePane();
+		} else if (!mBinding.del.isHidden()) {
 			mBinding.del.hide();
 		} else {
 			if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT) || mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
