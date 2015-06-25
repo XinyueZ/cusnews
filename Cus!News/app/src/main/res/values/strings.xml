@@ -18,7 +18,8 @@
     <string name="lbl_play_service">This application needs Google Play Service, you must install it first.</string>
     <string name="lbl_changed_language">Because you\'ve changed content-language, you\'d better restart application to reload new content and all subscribed push-topics have already been unsubscribed automatically.</string>
     <string name="lbl_app_reload">The application should be restarted, would you like?</string>
-    <string name="lbl_sync_fail">Synchronization is fail, please retry.</string>
+    <string name="lbl_sync_success">Synchronized…</string>
+    <string name="lbl_sync_fail">Synchronization failed, please retry.</string>
     <string name="lbl_sync_label_added">Synchronized adding [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronized removing tab.</string>
     <string name="lbl_sync_same_label">You\'ve already same tab [%1$s].</string>
@@ -61,6 +62,7 @@
     <string name="action_forward">Forward</string>
     <string name="action_more_apps">More Apps</string>
     <string name="action_trends">Trends</string>
+    <string name="action_bookmarks">Bookmarks</string>
 
     <!--For DynamicShareActionProvider-->
 

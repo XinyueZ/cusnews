@@ -14,6 +14,7 @@
     <string name="lbl_share_download_app">%1$s herunterladen\n%2$s</string>
     <string name="lbl_changed_language">Die App solltest einmal neu gestartet werden, da die Feeds-Sprache schon gewechselt geworden ist. Zudem sind alle abonnierte Push-Benachrichtigungen schon automatisch storniert.</string>
     <string name="lbl_app_reload">Die App sollte besser neugestartet werden, möchtest Du das machen?</string>
+    <string name="lbl_sync_success">Synchronisierte…</string>
     <string name="lbl_sync_fail">Fehler bei dem Synchronisation, bitte wiederholen.</string>
     <string name="lbl_sync_label_added">Synchronisiere den neuen Tab [%1$s].</string>
     <string name="lbl_sync_label_removed">Synchronisiere…</string>
@@ -49,6 +50,7 @@
     <string name="action_forward">Weiter</string>
     <string name="action_more_apps">Weitere Apps</string>
     <string name="action_trends">Trends</string>
+    <string name="action_bookmarks">Lesezeichen</string>
 
     <!--For DynamicShareActionProvider-->
     <string name="no_app_to_share">Keine App %s gefunden!</string>

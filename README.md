@@ -1,49 +1,61 @@
 # WhatsUp(Cus!News)
-WhatsUp is a free news client powered by [Faroo](http://www.faroo.com/).
 
-WhatsUp is lightweight.
+App supports English, Chinese, German content.
 
-WhatsUp supports push-notifications.
+App supports push-notifications with buildIn topics(updated pro App-Update).
 
-WhatsUp supports customized push-notifications.
+App supports customizing different push-topics.
 
-WhatsUp based on Google GAE.
+App supports saving bookmarks in cloud.
 
-WhatsUp based on [bmob](http://www.bmob.cn)
+App supports three view-modes and compatible with tablet.
 
-####Ready for release, now in last test.
+App supports non-image-mode.
+
+App based on Google GAE.
+
+App based on [bmob](http://www.bmob.cn).
+
+App based [Faroo API](http://www.faroo.com/hp/api/api.html#description).
+
+Related project [faroo-push](https://github.com/XinyueZ/faroo-push) which provides push-functions for client including WhatsUp.
+
+######Release-ready, last debug.
 [![https://play.google.com/store/apps/details?id=com.cusnews](https://dl.dropbox.com/s/phrg0387osr3riz/images.jpeg)](https://play.google.com/store/apps/details?id=com.cusnews)
 
 
-# About
+# Tech
 Use [Faroo API](http://www.faroo.com/hp/api/api.html#description) to fetch news feeds.
 
-Also to demostrate new Google's [design-library](http://developer.android.com/intl/zh-cn/tools/support-library/features.html#design). But I discard its own [FAB](http://developer.android.com/intl/zh-cn/reference/android/support/design/widget/FloatingActionButton.html) instead by [fab project](https://github.com/shell-software/fab) .
+Also to demonstrate new Google's [design-library](http://developer.android.com/intl/zh-cn/tools/support-library/features.html#design). But I discard its own [FAB](http://developer.android.com/intl/zh-cn/reference/android/support/design/widget/FloatingActionButton.html) instead by [fab project](https://github.com/shell-software/fab) .
 
 New [data-binding](https://developer.android.com/intl/zh-cn/tools/data-binding/guide.html) infrastruct will also be included.
 
 New GCM features like group, topics will be built to subscribe different daily news update.
 
+Cloud on [bmob](http://www.bmob.cn)
+
 # API
 Enter lot keys in key.properties under resources directory(live, dev flavors).
-Don't publish keys to public when fork the project to avoid abuse indeed. 
+Don't publish keys to public when fork the project to avoid abuse indeed.
 
 An example of key.properties under resources.
 
 ```java
 appkey=YciwC32TOr
-bmobkey=25e18a1ae36 
+bmobkey=25e18a1ae36
 senderId=5345345345
 ````
 1. appkey: The api-key from [faroo.com](http://www.faroo.com).
 2. bmobkey: The application-id from [bmob.com](http://www.bmob.cn).
 3. senderId: The push-backend on [GAE](http://developer.google.com).
 
-Notics:
+Notices:
 
-The backend-db is [bmob](http://www.bmob.cn). 
+The backend-db is [bmob](http://www.bmob.cn).
+
 The push-backend based on Google GAE, programmed by [golang](http://www.golang.org).
-See project [faroo-push](https://github.com/XinyueZ/faroo-push) which provides push-functions for client. 
+
 
 ```java
 				The MIT License (MIT)
@@ -67,4 +79,4 @@ See project [faroo-push](https://github.com/XinyueZ/faroo-push) which provides p
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
-´´´
+```

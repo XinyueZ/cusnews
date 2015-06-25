@@ -23,6 +23,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:detailPagerAdapter="@{detailPagerAdapter}" />
+
+
+        <com.software.shell.fab.ActionButton
+            android:id="@+id/bookmark_btn"
+            style="@style/FAB"
+            android:visibility="invisible"
+            android:layout_gravity="end|bottom"
+            app:button_color="@color/fab_material_green_500"
+            app:button_colorPressed="@color/fab_material_green_900"
+            app:hide_animation="@anim/fab_jump_to_down"
+            app:image="@drawable/ic_not_bookmarked"
+            app:rippleEffect_enabled="true"
+            app:shadowResponsiveEffect_enabled="true"
+            app:shadow_radius="@dimen/common_high_elevation"
+            app:show_animation="@anim/fab_jump_from_down"
+            app:type="DEFAULT" />
     </FrameLayout>
 
 </layout>

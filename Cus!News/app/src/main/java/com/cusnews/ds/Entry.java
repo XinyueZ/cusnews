@@ -6,7 +6,9 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Entry   implements Serializable {
+import cn.bmob.v3.BmobObject;
+
+public   class Entry  extends BmobObject implements Serializable {
 	@SerializedName("title")
 	private final String mTitle;
 	@SerializedName("kwic")

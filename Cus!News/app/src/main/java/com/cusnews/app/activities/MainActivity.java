@@ -32,7 +32,9 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.SimpleDrawerListener;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,7 +69,9 @@ import com.cusnews.app.SearchSuggestionProvider;
 import com.cusnews.app.adapters.EntriesAdapter;
 import com.cusnews.app.fragments.AboutDialogFragment;
 import com.cusnews.app.fragments.AppListImpFragment;
+import com.cusnews.app.fragments.BookmarksFragment;
 import com.cusnews.bus.ChangeViewTypeEvent;
+import com.cusnews.bus.CloseBookmarksEvent;
 import com.cusnews.bus.EULAConfirmedEvent;
 import com.cusnews.bus.EULARejectEvent;
 import com.cusnews.bus.OpenEntryEvent;
@@ -78,6 +82,7 @@ import com.cusnews.ds.TabLabel;
 import com.cusnews.ds.Trends;
 import com.cusnews.gcm.RegistrationIntentService;
 import com.cusnews.gcm.UnregistrationIntentService;
+import com.cusnews.utils.BookmarksManager;
 import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
@@ -159,7 +164,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * Column count of grid-mode.
 	 */
-	private static final int GRID_SPAN = 3;
+	public static final int GRID_SPAN = 3;
 
 	/**
 	 * Display-name of user on Google.
@@ -177,6 +182,63 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * {@code true} if the app starts customize topics.
 	 */
 	private boolean mCustomizedTopicsSetting;
+	//Begin [Bookmark-list]
+	private SlidingPaneHelper mSlidingPaneHelper;
+	private SlidingPaneLayout mBookmarkSpl;
+	//End [Bookmark-list]
+
+	/**
+	 * Action bar helper for use on ICS and newer devices.
+	 */
+	private static class SlidingPaneHelper {
+		ActionBar mActionBar;
+
+		SlidingPaneHelper(ActionBar actionBar) {
+			mActionBar = actionBar;
+		}
+
+		public void init() {
+			mActionBar.setDisplayHomeAsUpEnabled(true);
+			mActionBar.setHomeButtonEnabled(true);
+		}
+
+		public void onPanelClosed() {
+			mActionBar.setDisplayHomeAsUpEnabled(true);
+			mActionBar.setHomeButtonEnabled(true);
+			mActionBar.setTitle(R.string.application_name);
+		}
+
+		public void onPanelOpened() {
+			mActionBar.setHomeButtonEnabled(true);
+			mActionBar.setDisplayHomeAsUpEnabled(true);
+			if (!mActionBar.isShowing()) {
+				mActionBar.show();
+			}
+		}
+
+	}
+
+	/**
+	 * This panel slide listener updates the action bar accordingly for each panel state.
+	 */
+	private static class SliderListener extends SlidingPaneLayout.SimplePanelSlideListener {
+		SlidingPaneHelper mSlidingPaneHelper;
+
+		SliderListener(SlidingPaneHelper slidingPaneHelper) {
+			mSlidingPaneHelper = slidingPaneHelper;
+		}
+
+		@Override
+		public void onPanelOpened(View panel) {
+			mSlidingPaneHelper.onPanelOpened();
+		}
+
+		@Override
+		public void onPanelClosed(View panel) {
+			mSlidingPaneHelper.onPanelClosed();
+		}
+	}
+
 
 	/**
 	 * Calculate height of actionbar.
@@ -265,6 +327,19 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void onEvent(EULAConfirmedEvent e) {
 		ConnectGoogleActivity.showInstance(this);
 	}
+
+
+	/**
+	 * Handler for {@link com.cusnews.bus.CloseBookmarksEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.CloseBookmarksEvent}.
+	 */
+	public void onEvent(CloseBookmarksEvent e) {
+		if (  mBookmarkSpl.isOpen()) {
+			mBookmarkSpl.closePane();
+		}
+	}
 	//------------------------------------------------
 
 
@@ -300,16 +375,17 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				} else {
 					//Register push-token not success and try-again.
 					dismissPb();
-					Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_register_push_failed,
-							Snackbar.LENGTH_LONG).setAction(R.string.lbl_retry, new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
-							mPb.setCancelable(true);
-							Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-							startService(intent);
-						}
-					}).show();
+					Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_register_push_failed, Snackbar.LENGTH_LONG)
+							.setAction(R.string.lbl_retry, new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									mPb = ProgressDialog.show(MainActivity.this, null, getString(
+											R.string.lbl_registering));
+									mPb.setCancelable(true);
+									Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+									startService(intent);
+								}
+							}).show();
 				}
 			}
 		};
@@ -330,10 +406,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mAccountTv = (TextView) findViewById(R.id.account_tv);
 		mExitV = findViewById(R.id.exit_btn);
 		mExitV.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						exitAccount();
-					}
+			@Override
+			public void onClick(View v) {
+				exitAccount();
+			}
 		});
 		ViewHelper.setAlpha(mExitV, 0f);
 		ViewHelper.setScaleX(mExitV, 0f);
@@ -403,10 +479,14 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 		});
 
-		//Init actionbar & navi-bar(drawer).
+		//Init actionbar & navi-bar(drawer), bookmark-list slid
 		setSupportActionBar(mBinding.toolbar);
 		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		mSlidingPaneHelper = new SlidingPaneHelper(getSupportActionBar());
+		mBookmarkSpl = (SlidingPaneLayout) findViewById(R.id.sliding_pane_layout);
+		mBookmarkSpl.setPanelSlideListener(new SliderListener(mSlidingPaneHelper));
+		mSlidingPaneHelper.init();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		setupDrawerContent(mBinding.navView);
 		mDrawerLayout.setDrawerListener(new SimpleDrawerListener() {
@@ -426,11 +506,12 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mBinding.saveAddedTabBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(Utils.validateKeyword(mBinding.newTabLabelTv)) {
+				if (Utils.validateKeyword(mBinding.newTabLabelTv)) {
 					if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
 						TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
 								Prefs.getInstance().getGoogleId());
-						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this, mBinding.coordinatorLayout);
+						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
+								mBinding.coordinatorLayout);
 						mBinding.addTabV.hide();
 						mBinding.newTabLabelTv.setText("");
 						mBinding.addTabOpLl.setVisibility(View.GONE);
@@ -585,7 +666,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (mBinding.tabs.getTabCount() <= 1) {
 			mBinding.tabs.setVisibility(View.GONE);
 		}
+		getSupportFragmentManager().beginTransaction().replace(R.id.bookmark_list_container_fl, BookmarksFragment.newInstance(
+				this)).commit();
 		TabLabelManager.getInstance().init(this, mBinding.tabs.getTabCount() <= 0);
+		BookmarksManager.getInstance().init();
 	}
 
 	/**
@@ -887,6 +971,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home && mBookmarkSpl.isOpen()) {
+			mBookmarkSpl.closePane();
+			return true;
+		}
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			mDrawerLayout.openDrawer(GravityCompat.START);
@@ -979,6 +1067,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 					break;
 				case R.id.action_more_apps:
 					mDrawerLayout.openDrawer(Gravity.RIGHT);
+					break;
+				case R.id.action_bookmarks:
+					mBookmarkSpl.openPane();
 					break;
 				}
 				return true;
@@ -1105,5 +1196,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		mBinding.tabs.removeAllTabs();
 		TabLabelManager.getInstance().clean();
+		BookmarksManager.getInstance().clean();
 	}
 }

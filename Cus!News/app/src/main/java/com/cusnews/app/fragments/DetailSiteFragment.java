@@ -15,15 +15,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cusnews.BR;
 import com.cusnews.R;
+import com.cusnews.bus.DetailScrollUpEvent;
+import com.cusnews.bus.DetailScrollDownEvent;
 import com.cusnews.databinding.DetailSiteBinding;
 import com.cusnews.ds.Entry;
 import com.cusnews.widgets.WebViewEx.OnWebViewExScrolledListener;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Show basic information of a news.
@@ -96,6 +101,9 @@ public final class DetailSiteFragment extends CusNewsFragment {
 		settings.setSupportZoom(true);
 		settings.setBuiltInZoomControls(false);
 		settings.setDomStorageEnabled(true);
+		settings.setRenderPriority(RenderPriority.HIGH);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
 		mBinding.detailWv.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
@@ -142,9 +150,11 @@ public final class DetailSiteFragment extends CusNewsFragment {
 				if (!isUp) {
 					ViewPropertyAnimator.animate(mBinding.forwardBtn).scaleX(1).scaleY(1).setDuration(200).start();
 					ViewPropertyAnimator.animate(mBinding.backwardBtn).scaleX(1).scaleY(1).setDuration(200).start();
+					EventBus.getDefault().post(new DetailScrollUpEvent());
 				} else {
 					ViewPropertyAnimator.animate(mBinding.forwardBtn).scaleX(0).scaleY(0).setDuration(200).start();
 					ViewPropertyAnimator.animate(mBinding.backwardBtn).scaleX(0).scaleY(0).setDuration(200).start();
+					EventBus.getDefault().post(new DetailScrollDownEvent());
 				}
 			}
 

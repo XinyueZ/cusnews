@@ -8,19 +8,29 @@ import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.cusnews.R;
 import com.cusnews.app.App;
 import com.cusnews.app.adapters.DetailPagerAdapter;
+import com.cusnews.bus.BookmarksInitEvent;
+import com.cusnews.bus.DetailScrollDownEvent;
+import com.cusnews.bus.DetailScrollUpEvent;
 import com.cusnews.bus.OpenRelatedEvent;
 import com.cusnews.databinding.ActivityDetailBinding;
+import com.cusnews.ds.Bookmark;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.BookmarksManager;
 import com.cusnews.utils.Prefs;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.software.shell.fab.ActionButton;
 
 /**
  * Detail news. Contains a general detail view and a {@link android.webkit.WebView}.
@@ -57,6 +67,39 @@ public final class DetailActivity extends CusNewsActivity {
 		DetailActivity.showInstance(this, e.getEntry(), e.getKeyword());
 	}
 
+	/**
+	 * Handler for {@link com.cusnews.bus.DetailScrollDownEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.DetailScrollDownEvent}.
+	 */
+	public void onEvent(DetailScrollDownEvent e) {
+		if (!mBinding.bookmarkBtn.isHidden()) {
+			mBinding.bookmarkBtn.hide();
+		}
+	}
+
+	/**
+	 * Handler for {@link com.cusnews.bus.DetailScrollUpEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.DetailScrollUpEvent}.
+	 */
+	public void onEvent(DetailScrollUpEvent e) {
+		if (mBinding.bookmarkBtn.isHidden()) {
+			mBinding.bookmarkBtn.show();
+		}
+	}
+
+	/**
+	 * Handler for {@link com.cusnews.bus.BookmarksInitEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.BookmarksInitEvent}.
+	 */
+	public void onEvent(BookmarksInitEvent e) {
+		mBinding.bookmarkBtn.show();
+	}
 	//------------------------------------------------
 
 	/**
@@ -85,40 +128,70 @@ public final class DetailActivity extends CusNewsActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ViewType vt = Prefs.getInstance().getViewType();
-		switch (vt) {
-		case GRID:
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			break;
-		default:
-			//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
-		}
-		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
-		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
-		setData();
+		if (TextUtils.isEmpty(Prefs.getInstance().getGoogleId())) {
+			//Not login, must do it again.
+			ConnectGoogleActivity.showInstance(this);
+			ActivityCompat.finishAfterTransition(this);
+		} else {
+			ViewType vt = Prefs.getInstance().getViewType();
+			switch (vt) {
+			case GRID:
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				break;
+			default:
+				//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
+			}
+			mBinding = DataBindingUtil.setContentView(this, LAYOUT);
+			setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
+			setData();
 
 
-		int curTime = App.Instance.getAdsShownTimes();
-		int adsTimes = 7;
-		if (curTime % adsTimes == 0) {
-			// Create an ad.
-			mInterstitialAd = new InterstitialAd(this);
-			mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
-			// Create ad request.
-			AdRequest adRequest = new AdRequest.Builder().build();
-			// Begin loading your interstitial.
-			mInterstitialAd.setAdListener(new AdListener() {
+			int curTime = App.Instance.getAdsShownTimes();
+			int adsTimes = 7;
+			if (curTime % adsTimes == 0) {
+				// Create an ad.
+				mInterstitialAd = new InterstitialAd(this);
+				mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+				// Create ad request.
+				AdRequest adRequest = new AdRequest.Builder().build();
+				// Begin loading your interstitial.
+				mInterstitialAd.setAdListener(new AdListener() {
+					@Override
+					public void onAdLoaded() {
+						super.onAdLoaded();
+						displayInterstitial();
+					}
+				});
+				mInterstitialAd.loadAd(adRequest);
+			}
+			curTime++;
+			App.Instance.setAdsShownTimes(curTime);
+
+			//Bookmark-btn
+			if (BookmarksManager.getInstance().isInit()) {
+				mBinding.bookmarkBtn.show();
+			}
+			mBinding.bookmarkBtn.setOnClickListener(new OnClickListener() {
 				@Override
-				public void onAdLoaded() {
-					super.onAdLoaded();
-					displayInterstitial();
+				public void onClick(View v) {
+					Entry entry = (Entry) getIntent().getSerializableExtra(EXTRAS_ENTRY);
+					Bookmark bookmark = BookmarksManager.getInstance().findBookmarked(entry);
+					if (bookmark != null) {
+						BookmarksManager.getInstance().removeRemoteBookmark(bookmark, (ActionButton) v, findViewById(
+								R.id.error_content));
+					} else {
+						BookmarksManager.getInstance().addNewRemoteBookmark(new Bookmark(
+								Prefs.getInstance().getGoogleId(), entry), (ActionButton) v, findViewById(
+								R.id.error_content));
+					}
 				}
 			});
-			mInterstitialAd.loadAd(adRequest);
+			Entry entry = (Entry) getIntent().getSerializableExtra(EXTRAS_ENTRY);
+			if (BookmarksManager.getInstance().isBookmarked(entry)) {
+				mBinding.bookmarkBtn.setImageResource(R.drawable.ic_bookmarked);
+			}
 		}
-		curTime++;
-		App.Instance.setAdsShownTimes(curTime);
 	}
 
 	/**
@@ -145,5 +218,14 @@ public final class DetailActivity extends CusNewsActivity {
 		super.onNewIntent(intent);
 		setIntent(intent);
 		setData();
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (mBinding.detailPager.getCurrentItem() == 1) {
+			mBinding.detailPager.setCurrentItem(0, true);
+		} else {
+			super.onBackPressed();
+		}
 	}
 }

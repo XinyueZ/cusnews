@@ -1,5 +1,6 @@
 package com.cusnews.app.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,6 +17,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -78,6 +80,7 @@ public final class WebViewActivity extends  CusNewsActivity{
 		cxt.startActivity(intent);
 	}
 
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -120,10 +123,12 @@ public final class WebViewActivity extends  CusNewsActivity{
 		settings.setJavaScriptEnabled(true);
 		settings.setLoadsImagesAutomatically(true);
 		settings.setJavaScriptCanOpenWindowsAutomatically(true);
-		settings.setCacheMode(WebSettings.LOAD_NORMAL);
 		settings.setSupportZoom(true);
 		settings.setBuiltInZoomControls(false);
 		settings.setDomStorageEnabled(true);
+		settings.setRenderPriority(RenderPriority.HIGH);
+		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
 		mWebView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
