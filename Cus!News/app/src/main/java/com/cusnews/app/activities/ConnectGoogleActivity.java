@@ -191,6 +191,14 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 		if (requestCode == REQUEST_CODE_RESOLVE_ERR && responseCode == RESULT_OK) {
 			mConnectionResult = null;
 			mGoogleApiClient.connect();
+		} else if (requestCode == REQUEST_CODE_RESOLVE_ERR && responseCode == RESULT_CANCELED ) {
+			mConnectionResult = null;
+			mBinding.helloTv.setText(getString(R.string.lbl_welcome, getString(R.string.application_name)));
+			mBinding.loginPb.setVisibility(View.GONE);
+			ViewPropertyAnimator.animate(mBinding.thumbIv).cancel();
+			ViewPropertyAnimator.animate(mBinding.thumbIv).alpha(1).setDuration(500)
+					.start();
+			mBinding.googleLoginBtn.setVisibility(View.VISIBLE);
 		}
 	}
 
