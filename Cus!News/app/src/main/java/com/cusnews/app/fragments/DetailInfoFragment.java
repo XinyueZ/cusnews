@@ -106,7 +106,7 @@ public final class DetailInfoFragment extends CusNewsFragment {
 		super.onViewCreated(view, savedInstanceState);
 		final Entry entry = (Entry) getArguments().getSerializable(EXTRAS_ENTRY);
 		if (entry != null) {
-			DetailInfoBinding binding = DataBindingUtil.bind(view.findViewById(R.id.coordinator_layout));
+			final DetailInfoBinding binding = DataBindingUtil.bind(view.findViewById(R.id.coordinator_layout));
 			binding.setEntry(entry);
 			binding.setQuery(getArguments().getString(EXTRAS_QUERY));
 
@@ -139,10 +139,18 @@ public final class DetailInfoFragment extends CusNewsFragment {
 			binding.collapsingToolbar.setTitle(entry.getDomain());
 
 			//Init ImageView
-			ViewCompat.setElevation(binding.thumbIv, getResources().getDimensionPixelSize(R.dimen.common_elevation));
 			DisplayMetrics metrics = new DisplayMetrics();
 			DisplayManagerCompat.getInstance(App.Instance).getDisplay(0).getMetrics(metrics);
 			binding.thumbIv.getLayoutParams().height = metrics.heightPixels / 2;
+			ViewCompat.setElevation(binding.thumbRl, getResources().getDimensionPixelSize(R.dimen.common_elevation));
+
+			binding.thumbRl.hide();
+			binding.thumbRl.post(new Runnable() {
+				@Override
+				public void run() {
+					binding.thumbRl.show(1500);
+				}
+			});
 		}
 	}
 }

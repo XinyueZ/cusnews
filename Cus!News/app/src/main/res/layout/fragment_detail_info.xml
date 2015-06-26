@@ -42,16 +42,22 @@
                 app:expandedTitleMarginStart="@dimen/activity_horizontal_margin"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <ImageView
-                    android:id="@+id/thumb_iv"
+                <com.cusnews.widgets.RevealLayout
+                    android:id="@+id/thumb_rl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?android:attr/windowBackground"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    app:imageUrl="@{entry.imageUrl}"
-                    app:layout_collapseMode="parallax" />
+                    android:layout_gravity="bottom"
+                    app:layout_collapseMode="parallax">
 
+                    <ImageView
+                        android:id="@+id/thumb_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/windowBackground"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{entry.imageUrl}" />
+                </com.cusnews.widgets.RevealLayout>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
