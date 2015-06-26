@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public final class ConnectGoogleActivity extends CusNewsActivity {
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
 		mBinding.googleLoginBtn.setSize(SignInButton.SIZE_WIDE);
 		mBinding.helloTv.setText(getString(R.string.lbl_welcome, getString(R.string.application_name)));
+		ViewCompat.setElevation(mBinding.sloganVg, getResources().getDimension(R.dimen.common_elevation));
 		mGoogleApiClient = new GoogleApiClient.Builder(App.Instance, new GoogleApiClient.ConnectionCallbacks() {
 			@Override
 			public void onConnected(Bundle bundle) {

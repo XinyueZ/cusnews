@@ -21,10 +21,11 @@
             android:weightSum="3">
 
             <FrameLayout
+                android:id="@+id/slogan_vg"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/store_slogen" />
+                android:background="@drawable/store_slogan" />
 
             <FrameLayout
                 android:layout_width="match_parent"
