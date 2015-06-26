@@ -65,8 +65,8 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="@color/common_white">
+            android:background="@color/common_white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,14 +104,27 @@
                             android:paddingBottom="@dimen/activity_vertical_margin"
                             android:text="@{entry.kwic}" />
 
-
-                        <com.cusnews.widgets.FontTextView
-                            style="@style/Text.Normal"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/activity_vertical_margin"
-                            app:entryContent="@{entry}" />
+                            android:layout_height="wrap_content">
 
+                            <com.cusnews.widgets.FontTextView
+                                style="@style/Text.Normal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/activity_vertical_margin"
+                                app:entryContent="@{entry}" />
+
+                            <com.pnikosis.materialishprogress.ProgressWheel
+                                android:id="@+id/load_pb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:visibility="visible"
+                                app:matProg_barColor="@color/primary_color"
+                                app:matProg_fillRadius="true"
+                                app:matProg_progressIndeterminate="true" />
+                        </FrameLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -119,7 +132,6 @@
                             android:layout_gravity="end"
                             android:orientation="horizontal"
                             android:visibility="@{android.text.TextUtils.isEmpty(entry.author) ? View.GONE : View.VISIBLE}">
-
 
 
                             <com.cusnews.widgets.FontTextView

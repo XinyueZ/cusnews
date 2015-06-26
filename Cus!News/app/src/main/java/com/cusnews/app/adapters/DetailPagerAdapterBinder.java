@@ -6,7 +6,9 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -48,9 +50,30 @@ public final class DetailPagerAdapterBinder {
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("entryContent")
 	public static void setEntryContent(TextView tv, Entry entry) {
+		final WeakReference<TextView> textViewWeakReference = new WeakReference<>(tv);
 		if (!TextUtils.isEmpty(entry.getContent())) {
 			tv.setVisibility(View.VISIBLE);
-			tv.setText(Jsoup.parse(entry.getContent()).text());
+			AsyncTaskCompat.executeParallel(new AsyncTask<Entry, Void, String>() {
+				@Override
+				protected String doInBackground(Entry... params) {
+					Entry entry = params[0];
+					//try {
+						return Jsoup.parse(entry.getContent()).text();
+					//} catch (Exception e) {
+					//	return Jsoup.parse(new URL(entry.getUrl()), 1000 * 30).body().children().text();
+					//}
+				}
+
+				@Override
+				protected void onPostExecute(String s) {
+					super.onPostExecute(s);
+					if (textViewWeakReference.get() != null) {
+						textViewWeakReference.get().setText(s);
+						((View) textViewWeakReference.get().getParent()).findViewById(R.id.load_pb).setVisibility(
+								View.GONE);
+					}
+				}
+			}, entry);
 		} else {
 			tv.setVisibility(View.GONE);
 		}
@@ -58,8 +81,8 @@ public final class DetailPagerAdapterBinder {
 
 
 	@SuppressWarnings("unchecked")
-	@BindingAdapter( { "bind:related", "bind:query" } )
-	public static void setRelated(  ViewGroup vg, final Entry entry, final String query) {
+	@BindingAdapter({ "bind:related", "bind:query" })
+	public static void setRelated(ViewGroup vg, final Entry entry, final String query) {
 		final WeakReference<ViewGroup> vgWrapper = new WeakReference<ViewGroup>(vg);
 		if (entry.getRelated() != null && entry.getRelated().size() > 0) {
 			Context cxt = vg.getContext();
@@ -78,34 +101,36 @@ public final class DetailPagerAdapterBinder {
 				});
 			}
 		} else {
-			Api.getEntries(query, 1, Prefs.getInstance().getLanguage(), "web", App.Instance.getApiKey(), new Callback<Entries>() {
-				@Override
-				public void success(Entries entries, Response response) {
-					if (entries.getStart() <= entries.getCount() && vgWrapper.get() != null) {
-						ViewGroup vg = vgWrapper.get();
-						Context cxt = vg.getContext();
-						LayoutInflater inflater = (LayoutInflater) cxt.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-						View relatedV;
-						for (final Entry moreRelated : entries.getList()) {
-							relatedV = inflater.inflate(R.layout.item_related_entry, vg, false);
-							ViewDataBinding binding = DataBindingUtil.bind(relatedV);
-							binding.setVariable(BR.entry, moreRelated);
-							vg.addView(relatedV);
-							relatedV.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									EventBus.getDefault().post(new OpenRelatedEvent(moreRelated, query));
+			Api.getEntries(query, 1, Prefs.getInstance().getLanguage(), "web", App.Instance.getApiKey(),
+					new Callback<Entries>() {
+						@Override
+						public void success(Entries entries, Response response) {
+							if (entries.getStart() <= entries.getCount() && vgWrapper.get() != null) {
+								ViewGroup vg = vgWrapper.get();
+								Context cxt = vg.getContext();
+								LayoutInflater inflater = (LayoutInflater) cxt.getSystemService(
+										Context.LAYOUT_INFLATER_SERVICE);
+								View relatedV;
+								for (final Entry moreRelated : entries.getList()) {
+									relatedV = inflater.inflate(R.layout.item_related_entry, vg, false);
+									ViewDataBinding binding = DataBindingUtil.bind(relatedV);
+									binding.setVariable(BR.entry, moreRelated);
+									vg.addView(relatedV);
+									relatedV.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											EventBus.getDefault().post(new OpenRelatedEvent(moreRelated, query));
+										}
+									});
 								}
-							});
+							}
 						}
-					}
-				}
 
-				@Override
-				public void failure(RetrofitError error) {
-					//TODO Ignore failure at loading related news.
-				}
-			});
+						@Override
+						public void failure(RetrofitError error) {
+							//TODO Ignore failure at loading related news.
+						}
+					});
 		}
 	}
 
