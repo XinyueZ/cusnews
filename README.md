@@ -20,7 +20,7 @@ App based [Faroo API](http://www.faroo.com/hp/api/api.html#description).
 
 Related project [faroo-push](https://github.com/XinyueZ/faroo-push) which provides push-functions for client including WhatsUp.
 
-######Release-ready, last debug.
+######Released.
 [![https://play.google.com/store/apps/details?id=com.cusnews](https://dl.dropbox.com/s/phrg0387osr3riz/images.jpeg)](https://play.google.com/store/apps/details?id=com.cusnews)
 
 
