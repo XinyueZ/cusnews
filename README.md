@@ -35,6 +35,8 @@ New GCM features like group, topics will be built to subscribe different daily n
 
 Cloud on [bmob](http://www.bmob.cn)
 
+The help of dependence of [jsoup](http://www.jsoup.org) to filter out html-tags.
+
 # API
 Enter lot keys in key.properties under resources directory(live, dev flavors).
 Don't publish keys to public when fork the project to avoid abuse indeed.
