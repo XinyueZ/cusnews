@@ -75,7 +75,7 @@ public final class DetailPagerAdapterBinder {
 				}
 			}, entry);
 		} else {
-			tv.setVisibility(View.GONE);
+			((View) tv.getParent()).setVisibility(View.GONE);
 		}
 	}
 
