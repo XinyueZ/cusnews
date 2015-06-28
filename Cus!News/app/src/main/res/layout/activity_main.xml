@@ -213,19 +213,10 @@
             android:background="@color/common_white"
             android:fitsSystemWindows="true">
 
-
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/app_list_fl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/app_list_fl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-            </LinearLayout>
+                android:layout_height="wrap_content" />
         </ScrollView>
     </android.support.v4.widget.DrawerLayout>
 </layout>
