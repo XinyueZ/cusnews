@@ -796,7 +796,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 				return true;
 			}
 		});
-		mBinding.tabs.addTab(tab, 1);
+		if(mBinding.tabs.getTabCount() > 0) {
+			mBinding.tabs.addTab(tab, 1);
+		} else {
+			mBinding.tabs.addTab(tab);
+		}
 		if (mBinding.tabs.getTabCount() > 1) {
 			mBinding.tabs.setVisibility(View.VISIBLE);
 		}
@@ -1097,9 +1101,9 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 													CustomizedTopicsActivity.showInstance(MainActivity.this);
 													break;
 												}
-												dialog.dismiss();
+//												dialog.dismiss();
 											}
-										});
+										}).setNegativeButton(R.string.btn_ok, null);
 								return builder.create();
 							}
 						}, null);
