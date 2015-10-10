@@ -9,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -142,7 +141,7 @@ public final class DetailInfoFragment extends CusNewsFragment {
 			DisplayMetrics metrics = new DisplayMetrics();
 			DisplayManagerCompat.getInstance(App.Instance).getDisplay(0).getMetrics(metrics);
 			binding.thumbIv.getLayoutParams().height = metrics.heightPixels / 2;
-			ViewCompat.setElevation(binding.thumbRl, getResources().getDimensionPixelSize(R.dimen.common_elevation));
+
 
 			binding.thumbRl.hide();
 			binding.thumbRl.post(new Runnable() {

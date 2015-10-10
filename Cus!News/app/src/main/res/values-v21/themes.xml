@@ -7,8 +7,8 @@
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <!--<item name="android:statusBarColor">@color/common_transparent</item>
-        for bug https://code.google.com/p/android/issues/detail?id=175069-->
+        <item name="android:statusBarColor">@color/common_transparent</item>
+
     </style>
 
     <style name="AppTheme.FirstPage"  >

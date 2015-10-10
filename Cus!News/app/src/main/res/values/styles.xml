@@ -12,10 +12,8 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
-        <item name="android:elevation">@dimen/common_high_elevation</item>
         <item name="android:popupTheme">@style/ToolbarTheme</item>
         <item name="popupTheme">@style/ToolbarTheme</item>
-        <item name="elevation">@dimen/common_high_elevation</item>
 
     </style>
 
