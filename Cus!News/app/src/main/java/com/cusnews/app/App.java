@@ -38,12 +38,15 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.chopping.net.TaskHelper;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.ndk.CrashlyticsNdk;
 import com.cusnews.R;
 import com.cusnews.api.Api;
 import com.cusnews.utils.Prefs;
 import com.tinyurl4j.data.Response;
 
 import cn.bmob.v3.Bmob;
+import io.fabric.sdk.android.Fabric;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
@@ -75,6 +78,7 @@ public final class App extends MultiDexApplication {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
 		Instance = this;
 
 //		Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(

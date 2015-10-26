@@ -163,6 +163,9 @@
         <service
             android:name=".gcm.UnsubscribeIntentService"
             android:exported="false" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0bf5835ac1569fe382ff64839c0be3d3ed9396b9" />
     </application>
 
 </manifest>

@@ -1,5 +1,20 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 def buildNumber = 'bld' + (System.env.BUILD_NUMBER ?: 'SNAPSHOT')
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'com.android.databinding'
 
 android {
@@ -60,12 +75,12 @@ dependencies {
     compile project(':volley_cz')
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.github.shell-software:fab:1.1.1'
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.android.support:cardview-v7:23.0.1'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:cardview-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.jsoup:jsoup:1.8.2'
-    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.google.android.gms:play-services:8.1.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
@@ -73,6 +88,13 @@ dependencies {
     compile 'com.pnikosis:materialish-progress:1.5'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'cn.bmob.android:bmob-sdk:3.4.3'
+    compile 'com.facebook.android:facebook-android-sdk:3.22.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:crashlytics-ndk:1.1.1@aar') {
+        transitive = true;
+    }
 }
 
 // Rename final apks
@@ -82,4 +104,10 @@ android.applicationVariants.all {  variant ->
                 output.outputFile.parent, output.outputFile.name.replace("_Android", "")
                 .replace(".apk", "-${android.defaultConfig.versionName}${buildNumber}.apk"))
     }
+}
+
+crashlytics {
+    enableNdk true
+    androidNdkOut 'src/main/obj'
+    androidNdkLibsOut 'src/main/libs'
 }

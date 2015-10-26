@@ -201,7 +201,6 @@
             android:background="@color/common_white"
             android:fitsSystemWindows="true"
             android:theme="@style/NavDrawerItem"
-            app:headerLayout="@layout/nav_header"
             app:itemIconTint="@color/primary_accent"
             app:itemTextColor="@color/primary_accent"
             app:menu="@menu/drawer_view" />

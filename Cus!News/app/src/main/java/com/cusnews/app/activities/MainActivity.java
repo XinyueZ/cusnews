@@ -403,12 +403,14 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
 		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
-		mThumbIv = (ImageView) findViewById(R.id.thumb_iv);
+		View header = getLayoutInflater().inflate(R.layout.nav_header, mBinding.navView, false);
+		mBinding.navView.addHeaderView(header);
+		mThumbIv = (ImageView)header.findViewById(R.id.thumb_iv);
 		ViewHelper.setAlpha(mThumbIv, 0f);
 		ViewHelper.setScaleX(mThumbIv, 0f);
 		ViewHelper.setScaleY(mThumbIv, 0f);
-		mAccountTv = (TextView) findViewById(R.id.account_tv);
-		mExitV = findViewById(R.id.exit_btn);
+		mAccountTv = (TextView) header.findViewById(R.id.account_tv);
+		mExitV = header.findViewById(R.id.exit_btn);
 		mExitV.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
