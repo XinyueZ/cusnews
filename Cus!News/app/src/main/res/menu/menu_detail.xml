@@ -5,5 +5,5 @@
         android:title="@string/action_share"
         android:icon="@drawable/ic_action_social_share"
         app:showAsAction="always"
-        app:actionProviderClass="com.cusnews.widgets.DynamicShareActionProvider"/>
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
 </menu>

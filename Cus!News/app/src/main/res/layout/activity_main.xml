@@ -151,7 +151,7 @@
                                 android:layout_gravity="left|top"
                                 android:inputType="text"
                                 android:lines="1"
-                                android:maxLength="10"
+                                android:maxLength="50"
                                 android:maxLines="1"
                                 android:minLines="1" />
                         </LinearLayout>

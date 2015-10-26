@@ -9,7 +9,7 @@
     <string name="lbl_remove_tab">你想去除[%1$s]标签吗?</string>
     <string name="lbl_share_entry_title">%1$s:%2$s</string>
     <string name="lbl_share_entry_content">%1$s\n\n看看吧\n%2$s\n\n%3$s</string>
-    <string name="lbl_share_app_title">你好，关照下</string>
+    <string name="lbl_share_app_title">来自WhatsUp的新闻</string>
     <string name="lbl_share_app_content">你好啊！\n\n我是%1$s，是一个新的，自由的，独立的，清爽型新闻应用。\n\n%2$s</string>
     <string name="lbl_share_download_app">下载 %1$s\n%2$s</string>
     <string name="lbl_play_service">本应用需要谷歌服务，必须先安装然后使用。</string>
@@ -56,10 +56,6 @@
     <string name="action_bookmarks">收藏夹</string>
     <string name="action_push">推送</string>
 
-    <!--For DynamicShareActionProvider-->
-    <string name="no_app_to_share">没找到分享 %s 的应用!</string>
-    <string name="no_share_type">没有确定分享类别！</string>
-    <string name="error_occurred">报错！</string>
 
     <string name="btn_confirm">确认</string>
     <string name="btn_yes">是的</string>

@@ -75,7 +75,6 @@ import com.cusnews.bus.CloseBookmarksEvent;
 import com.cusnews.bus.EULAConfirmedEvent;
 import com.cusnews.bus.EULARejectEvent;
 import com.cusnews.bus.OpenEntryEvent;
-import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
 import com.cusnews.ds.TabLabel;
@@ -87,13 +86,11 @@ import com.cusnews.utils.Prefs;
 import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
 import com.cusnews.utils.Utils;
-import com.cusnews.widgets.DynamicShareActionProvider;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.squareup.picasso.Picasso;
 
-import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -104,6 +101,10 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Main layout for this component.
 	 */
 	private static final int LAYOUT = R.layout.activity_main;
+	/**
+	 * The menu to this view.
+	 */
+	private static final int MENU = R.menu.menu_main;
 	/**
 	 * Height of action-bar general.
 	 */
@@ -239,122 +240,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 	}
 
-
-	/**
-	 * Calculate height of actionbar.
-	 */
-	protected void calcActionBarHeight() {
-		int[] abSzAttr;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			abSzAttr = new int[] { android.R.attr.actionBarSize };
-		} else {
-			abSzAttr = new int[] { R.attr.actionBarSize };
-		}
-		TypedArray a = obtainStyledAttributes(abSzAttr);
-		mActionBarHeight = a.getDimensionPixelSize(0, -1);
-	}
-
-
-	private int mVisibleItemCount;
-	private int mPastVisibleItems;
-	private int mTotalItemCount;
-	private boolean mLoading = true;
-
-
-	//------------------------------------------------
-	//Subscribes, event-handlers
-	//------------------------------------------------
-
-	/**
-	 * Handler for {@link com.chopping.bus.CloseDrawerEvent }.
-	 *
-	 * @param e
-	 * 		Event {@link com.chopping.bus.CloseDrawerEvent}.
-	 */
-	public void onEvent(CloseDrawerEvent e) {
-		mDrawerLayout.closeDrawer(Gravity.RIGHT);
-	}
-
-	/**
-	 * Handler for {@link com.cusnews.bus.ChangeViewTypeEvent}.
-	 *
-	 * @param e
-	 * 		Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
-	 */
-	public void onEvent(ChangeViewTypeEvent e) {
-		switch (e.getViewType()) {
-		case GRID:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN));
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			break;
-		default:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
-		}
-		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType(), mBinding.getEntriesAdapter().getData());
-		mBinding.setEntriesAdapter(newAdp);
-	}
-
-
-	/**
-	 * Handler for {@link com.cusnews.bus.OpenEntryEvent}.
-	 *
-	 * @param e
-	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
-	 */
-	public void onEvent(OpenEntryEvent e) {
-		DetailActivity.showInstance(this, e.getEntry(), mKeyword);
-	}
-
-
-	/**
-	 * Handler for {@link  EULARejectEvent}.
-	 *
-	 * @param e
-	 * 		Event {@link  EULARejectEvent}.
-	 */
-	public void onEvent(EULARejectEvent e) {
-		ActivityCompat.finishAfterTransition(this);
-	}
-
-	/**
-	 * Handler for {@link EULAConfirmedEvent}
-	 *
-	 * @param e
-	 * 		Event {@link  EULAConfirmedEvent}.
-	 */
-	public void onEvent(EULAConfirmedEvent e) {
-		ConnectGoogleActivity.showInstance(this);
-	}
-
-
-	/**
-	 * Handler for {@link com.cusnews.bus.CloseBookmarksEvent}.
-	 *
-	 * @param e
-	 * 		Event {@link com.cusnews.bus.CloseBookmarksEvent}.
-	 */
-	public void onEvent(CloseBookmarksEvent e) {
-		if (mBookmarkSpl.isOpen()) {
-			mBookmarkSpl.closePane();
-		}
-	}
-	//------------------------------------------------
-
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case ConnectGoogleActivity.REQ:
-			if (resultCode == RESULT_OK) {
-				loadAllData();
-			} else {
-				ActivityCompat.finishAffinity(this);
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -551,7 +436,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 		});
 		mBinding.del.hide();
-		if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+		if (Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
 			mBinding.del.setOnDragListener(new OnDragListener() {
 				@Override
 				public boolean onDrag(View v, DragEvent event) {
@@ -650,6 +535,141 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		} else if (prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty(prefs.getGoogleId())) {
 			loadAllData();
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(
+				RegistrationIntentService.REGISTRATION_COMPLETE));
+	}
+
+	@Override
+	protected void onPause() {
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		dismissPb();
+		super.onDestroy();
+	}
+
+	/**
+	 * Calculate height of actionbar.
+	 */
+	protected void calcActionBarHeight() {
+		int[] abSzAttr;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			abSzAttr = new int[] { android.R.attr.actionBarSize };
+		} else {
+			abSzAttr = new int[] { R.attr.actionBarSize };
+		}
+		TypedArray a = obtainStyledAttributes(abSzAttr);
+		mActionBarHeight = a.getDimensionPixelSize(0, -1);
+	}
+
+
+	private int mVisibleItemCount;
+	private int mPastVisibleItems;
+	private int mTotalItemCount;
+	private boolean mLoading = true;
+
+
+	//------------------------------------------------
+	//Subscribes, event-handlers
+	//------------------------------------------------
+
+	/**
+	 * Handler for {@link com.chopping.bus.CloseDrawerEvent }.
+	 *
+	 * @param e
+	 * 		Event {@link com.chopping.bus.CloseDrawerEvent}.
+	 */
+	public void onEvent(CloseDrawerEvent e) {
+		mDrawerLayout.closeDrawer(Gravity.RIGHT);
+	}
+
+	/**
+	 * Handler for {@link com.cusnews.bus.ChangeViewTypeEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
+	 */
+	public void onEvent(ChangeViewTypeEvent e) {
+		switch (e.getViewType()) {
+		case GRID:
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN));
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			break;
+		default:
+			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			break;
+		}
+		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType(), mBinding.getEntriesAdapter().getData());
+		mBinding.setEntriesAdapter(newAdp);
+	}
+
+
+	/**
+	 * Handler for {@link com.cusnews.bus.OpenEntryEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
+	 */
+	public void onEvent(OpenEntryEvent e) {
+		DetailActivity.showInstance(this, e.getEntry(), mKeyword);
+	}
+
+
+	/**
+	 * Handler for {@link  EULARejectEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link  EULARejectEvent}.
+	 */
+	public void onEvent(EULARejectEvent e) {
+		ActivityCompat.finishAfterTransition(this);
+	}
+
+	/**
+	 * Handler for {@link EULAConfirmedEvent}
+	 *
+	 * @param e
+	 * 		Event {@link  EULAConfirmedEvent}.
+	 */
+	public void onEvent(EULAConfirmedEvent e) {
+		ConnectGoogleActivity.showInstance(this);
+	}
+
+
+	/**
+	 * Handler for {@link com.cusnews.bus.CloseBookmarksEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link com.cusnews.bus.CloseBookmarksEvent}.
+	 */
+	public void onEvent(CloseBookmarksEvent e) {
+		if (mBookmarkSpl.isOpen()) {
+			mBookmarkSpl.closePane();
+		}
+	}
+	//------------------------------------------------
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case ConnectGoogleActivity.REQ:
+			if (resultCode == RESULT_OK) {
+				loadAllData();
+			} else {
+				ActivityCompat.finishAffinity(this);
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	/**
@@ -905,7 +925,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_main, menu);
+		getMenuInflater().inflate(MENU, menu);
 
 		//Search
 		mSearchMenu = menu.findItem(R.id.action_search);
@@ -936,28 +956,24 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		if (!Prefs.getInstance().showAllImages()) {
 			menu.findItem(R.id.action_view_type).setVisible(false);
 		}
-		return true;
+
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
-
 	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
-		//Share application.
-		MenuItem menuAppShare = menu.findItem(R.id.action_share);
-		DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat.getActionProvider(
-				menuAppShare);
-		shareLaterProvider.setShareDataType("text/plain");
-		shareLaterProvider.setOnShareLaterListener(new DynamicShareActionProvider.OnShareLaterListener() {
-			@Override
-			public void onShareClick(final Intent shareIntent) {
-				String subject = getString(R.string.lbl_share_app_title);
-				String text = getString(R.string.lbl_share_app_content, getString(R.string.application_name),
-						Prefs.getInstance().getAppDownloadInfo());
-				shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-				shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-				EventBus.getDefault().post(new ShareEvent(shareIntent));
-			}
-		});
+	public boolean onPrepareOptionsMenu(Menu menu) {
+
+		MenuItem menuShare = menu.findItem(R.id.action_share);
+		android.support.v7.widget.ShareActionProvider provider =
+				(android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(menuShare);
+
+		String subject = getString(R.string.lbl_share_app_title);
+		String text = getString(R.string.lbl_share_app_content, getString(R.string.application_name),
+				Prefs.getInstance().getAppDownloadInfo());
+
+		provider.setShareIntent(com.chopping.utils.Utils.getDefaultShareIntent(provider, subject, text));
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -1199,25 +1215,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 	}
 
-	@Override
-	protected void onDestroy() {
-		dismissPb();
-		super.onDestroy();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(
-				RegistrationIntentService.REGISTRATION_COMPLETE));
-	}
-
-	@Override
-	protected void onPause() {
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-		super.onPause();
-	}
-
 	/**
 	 * Exit current account, here unregister all push-elements etc.
 	 */
@@ -1238,4 +1235,5 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		TabLabelManager.getInstance().clean();
 		BookmarksManager.getInstance().clean();
 	}
+
 }

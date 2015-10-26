@@ -44,10 +44,7 @@ public final class DetailActivity extends CusNewsActivity {
 	 * Main layout for this component.
 	 */
 	private static final int LAYOUT = R.layout.activity_detail;
-	/**
-	 * A tinyurl to the {@link Entry}.
-	 */
-	private String mSharedEntryUrl;
+
 
 	/**
 	 * The interstitial ad.

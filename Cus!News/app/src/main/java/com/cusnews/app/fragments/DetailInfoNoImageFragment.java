@@ -1,7 +1,6 @@
 package com.cusnews.app.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,16 +13,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.chopping.utils.Utils;
 import com.cusnews.R;
-import com.cusnews.bus.ShareEvent;
 import com.cusnews.databinding.DetailInfoNoImageBinding;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
-import com.cusnews.widgets.DynamicShareActionProvider;
 import com.tinyurl4j.Api;
 import com.tinyurl4j.data.Response;
 
-import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
@@ -44,6 +41,8 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 	 */
 	private String mSharedEntryUrl;
 
+
+	private DetailInfoNoImageBinding mBinding;
 	/**
 	 * Initialize an {@link  DetailInfoNoImageFragment}.
 	 *
@@ -76,11 +75,13 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 				@Override
 				public void success(Response response, retrofit.client.Response response2) {
 					mSharedEntryUrl = response.getResult();
+					createShareProvider(  entry);
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
 					mSharedEntryUrl = entry.getUrl();
+					createShareProvider(  entry);
 				}
 			});
 		}
@@ -102,40 +103,40 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 		super.onViewCreated(view, savedInstanceState);
 		final Entry entry = (Entry) getArguments().getSerializable(EXTRAS_ENTRY);
 		if (entry != null) {
-			DetailInfoNoImageBinding binding = DataBindingUtil.bind(view.findViewById(R.id.coordinator_layout));
-			binding.setEntry(entry);
-			binding.setQuery(getArguments().getString(EXTRAS_QUERY));
+			mBinding = DataBindingUtil.bind(view.findViewById(R.id.coordinator_layout));
+			mBinding.setEntry(entry);
+			mBinding.setQuery(getArguments().getString(EXTRAS_QUERY));
 
 			//Status-bar should be not transparent when no-image-mode is on.
 			//binding.coordinatorLayout.setStatusBarBackgroundResource(R.color.primary_dark_color);
 
 			//Init actionbar
-			binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-			binding.toolbar.setNavigationOnClickListener(new OnClickListener() {
+			mBinding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+			mBinding.toolbar.setNavigationOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					ActivityCompat.finishAfterTransition(getActivity());
 				}
 			});
-			binding.toolbar.inflateMenu(R.menu.menu_detail);
-			MenuItem shareMi = binding.toolbar.getMenu().findItem(R.id.action_share);
-			DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat
-					.getActionProvider(shareMi);
-			shareLaterProvider.setShareDataType("text/plain");
-			shareLaterProvider.setOnShareLaterListener(new DynamicShareActionProvider.OnShareLaterListener() {
-				@Override
-				public void onShareClick(final Intent shareIntent) {
-					String subject = getString(R.string.lbl_share_entry_title, getString(R.string.application_name),
-							entry.getTitle());
-					String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
-							Prefs.getInstance().getAppDownloadInfo());
-					shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-					shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-					EventBus.getDefault().post(new ShareEvent(shareIntent));
-				}
-			});
-			binding.toolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
-			binding.toolbar.setTitle(entry.getDomain());
+
+
+
+			mBinding.toolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
+			mBinding.toolbar.setTitle(entry.getDomain());
 		}
+	}
+
+	private void createShareProvider(Entry entry) {
+		mBinding.toolbar.inflateMenu(R.menu.menu_detail);
+		MenuItem menuShare = mBinding.toolbar.getMenu().findItem(R.id.action_share);
+		android.support.v7.widget.ShareActionProvider provider =
+				(android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(menuShare);
+
+		String subject = getString(R.string.lbl_share_entry_title, getString(R.string.application_name),
+				entry.getTitle());
+		String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
+				Prefs.getInstance().getAppDownloadInfo());
+
+		provider.setShareIntent(Utils.getDefaultShareIntent(provider, subject, text));
 	}
 }
