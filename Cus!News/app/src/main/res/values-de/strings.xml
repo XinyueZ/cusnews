@@ -46,7 +46,8 @@
     <string name="action_view_type_grid">Grid</string>
     <string name="action_top">Nach oben</string>
     <string name="action_search">Suche</string>
-    <string name="action_share">Teile</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_fb">Auf Facebook</string>
     <string name="action_backward">Zurück</string>
     <string name="action_forward">Weiter</string>
     <string name="action_more_apps">Weitere Apps</string>

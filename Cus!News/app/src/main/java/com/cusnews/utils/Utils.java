@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -41,21 +40,7 @@ public final class Utils {
 	}
 
 
-	/**
-	 * Standard sharing app for sharing on actionbar.
-	 */
-	public static Intent getDefaultShareIntent(android.support.v7.widget.ShareActionProvider provider, String subject,
-			String body) {
-		if (provider != null) {
-			Intent i = new Intent(Intent.ACTION_SEND);
-			i.setType("text/plain");
-			i.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-			i.putExtra(android.content.Intent.EXTRA_TEXT, body);
-			provider.setShareIntent(i);
-			return i;
-		}
-		return null;
-	}
+
 
 	/**
 	 * Helper to close keyboard.

@@ -14,7 +14,6 @@ import com.chopping.activities.BaseActivity;
 import com.chopping.application.BasicPrefs;
 import com.cusnews.R;
 import com.cusnews.app.fragments.AboutDialogFragment.EulaConfirmationDialog;
-import com.cusnews.bus.ShareEvent;
 import com.cusnews.utils.Prefs;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -28,16 +27,7 @@ public class CusNewsActivity extends BaseActivity {
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
-
-
-	/**
-	 * Handler for {@link com.cusnews.bus.ShareEvent}.
-	 *
-	 * @param e
-	 * 		Event {@link com.cusnews.bus.ShareEvent}.
-	 */
-	public void onEvent(final ShareEvent e) {
-		startActivity(e.getIntent());
+	public void onEvent(final Object e) {
 	}
 	//------------------------------------------------
 

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import com.cusnews.R;
 import com.cusnews.databinding.DetailInfoNoImageBinding;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
+import com.facebook.FacebookException;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.tinyurl4j.Api;
 import com.tinyurl4j.data.Response;
 
@@ -43,24 +47,6 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 
 
 	private DetailInfoNoImageBinding mBinding;
-	/**
-	 * Initialize an {@link  DetailInfoNoImageFragment}.
-	 *
-	 * @param context
-	 * 		A {@link Context} object.
-	 * @param entry
-	 * 		A news {@link Entry}.
-	 * @param query
-	 * 		The query to the {@code entry}.
-	 *
-	 * @return An instance of {@link DetailInfoNoImageFragment}.
-	 */
-	public static DetailInfoNoImageFragment newInstance(Context context, Entry entry, @Nullable String query) {
-		Bundle args = new Bundle();
-		args.putSerializable(EXTRAS_ENTRY, entry);
-		args.putSerializable(EXTRAS_QUERY, query);
-		return (DetailInfoNoImageFragment) Fragment.instantiate(context, DetailInfoNoImageFragment.class.getName(), args);
-	}
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,22 +61,16 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 				@Override
 				public void success(Response response, retrofit.client.Response response2) {
 					mSharedEntryUrl = response.getResult();
-					createShareProvider(  entry);
+					createShare(entry);
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
 					mSharedEntryUrl = entry.getUrl();
-					createShareProvider(  entry);
+					createShare(entry);
 				}
 			});
 		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString("tinyurl", mSharedEntryUrl);
 	}
 
 	@Override
@@ -120,13 +100,38 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 			});
 
 
-
 			mBinding.toolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
 			mBinding.toolbar.setTitle(entry.getDomain());
 		}
 	}
 
-	private void createShareProvider(Entry entry) {
+	/**
+	 * Initialize an {@link  DetailInfoNoImageFragment}.
+	 *
+	 * @param context
+	 * 		A {@link Context} object.
+	 * @param entry
+	 * 		A news {@link Entry}.
+	 * @param query
+	 * 		The query to the {@code entry}.
+	 *
+	 * @return An instance of {@link DetailInfoNoImageFragment}.
+	 */
+	public static DetailInfoNoImageFragment newInstance(Context context, Entry entry, @Nullable String query) {
+		Bundle args = new Bundle();
+		args.putSerializable(EXTRAS_ENTRY, entry);
+		args.putSerializable(EXTRAS_QUERY, query);
+		return (DetailInfoNoImageFragment) Fragment.instantiate(context, DetailInfoNoImageFragment.class.getName(),
+				args);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("tinyurl", mSharedEntryUrl);
+	}
+
+	private void createShare(Entry entry) {
 		mBinding.toolbar.inflateMenu(R.menu.menu_detail);
 		MenuItem menuShare = mBinding.toolbar.getMenu().findItem(R.id.action_share);
 		android.support.v7.widget.ShareActionProvider provider =
@@ -138,5 +143,28 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 				Prefs.getInstance().getAppDownloadInfo());
 
 		provider.setShareIntent(Utils.getDefaultShareIntent(provider, subject, text));
+
+		createFBShare(subject, text);
+	}
+
+	private void createFBShare(final String subject, final String text) {
+		MenuItem menuItem = mBinding.toolbar.getMenu().findItem(R.id.action_fb);
+		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Bundle postParams = new Bundle();
+				final WebDialog fbDlg = new WebDialog.FeedDialogBuilder(getActivity(), getString(
+						R.string.applicationId), postParams).setCaption(subject).setDescription(text).setLink(
+						mSharedEntryUrl).build();
+				fbDlg.setOnCompleteListener(new OnCompleteListener() {
+					@Override
+					public void onComplete(Bundle bundle, FacebookException e) {
+						fbDlg.dismiss();
+					}
+				});
+				fbDlg.show();
+				return true;
+			}
+		});
 	}
 }
