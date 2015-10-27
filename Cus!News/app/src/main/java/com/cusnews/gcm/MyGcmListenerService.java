@@ -82,37 +82,41 @@ public class MyGcmListenerService extends GcmListenerService {
 		final PendingIntent contentIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent,
 				PendingIntent.FLAG_ONE_SHOT);
 
+		long id = System.currentTimeMillis();
 		//Action to share this entry: normal sharing or facebook.
 		Intent shareIntent = new Intent(this, NotificationShareService.class);
+		shareIntent.putExtra(NotificationShareService.EXTRAS_ID, id);
 		shareIntent.putExtra(NotificationShareService.EXTRAS_TYPE, NotificationShareService.TYPE_NORMAL);
 		shareIntent.putExtra(NotificationShareService.EXTRAS_SHARED_ENTRY, entry);
 		Intent facebookIntent = new Intent(this, NotificationShareService.class);
+		facebookIntent.putExtra(NotificationShareService.EXTRAS_ID, id);
 		facebookIntent.putExtra(NotificationShareService.EXTRAS_TYPE, NotificationShareService.TYPE_FACEBOOK);
 		facebookIntent.putExtra(NotificationShareService.EXTRAS_SHARED_ENTRY, entry);
 		PendingIntent sharePi = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), shareIntent,
 				PendingIntent.FLAG_ONE_SHOT);
-		PendingIntent facebookPi = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), facebookIntent, PendingIntent.FLAG_ONE_SHOT);
+		PendingIntent facebookPi = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), facebookIntent,
+				PendingIntent.FLAG_ONE_SHOT);
 
 
 		//Show notification, when not OK it shows only without image.
 		if (!TextUtils.isEmpty(image)) {
 			Picasso picasso = Picasso.with(this);
 			try {
-				notify(title, desc, image, contentIntent, picasso, sharePi, facebookPi);
+				notify(id,title, desc, image, contentIntent, picasso, sharePi, facebookPi);
 			} catch (NullPointerException | IOException | OutOfMemoryError e) {
-				fallbackNotify(title, desc, contentIntent,sharePi,facebookPi);
+				fallbackNotify(id,title, desc, contentIntent,sharePi,facebookPi);
 			}
 
 		} else {
-			fallbackNotify(title, desc, contentIntent,sharePi,facebookPi);
+			fallbackNotify(id,title, desc, contentIntent,sharePi,facebookPi);
 		}
 	}
 
-	private void notify(String title, String desc, String image, PendingIntent contentIntent, Picasso picasso, PendingIntent sharePi,PendingIntent facebookPi) throws
+	private void notify(long id, String title, String desc, String image, PendingIntent contentIntent, Picasso picasso, PendingIntent sharePi,PendingIntent facebookPi) throws
 			IOException, OutOfMemoryError {
 
 		Bitmap bitmap = picasso.load(Utils.uriStr2URI(image).toASCIIString()).get();
-		mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(System.currentTimeMillis()).setSmallIcon(
+		mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(id).setSmallIcon(
 				R.drawable.ic_push_notify).setTicker(title).setContentTitle(title).setContentText(desc).setStyle(
 				new BigPictureStyle().bigPicture(bitmap).setBigContentTitle(title)).setAutoCancel(true).setLargeIcon(
 				bitmap)
@@ -129,16 +133,16 @@ public class MyGcmListenerService extends GcmListenerService {
 		}
 		mNotifyBuilder.setLights(getResources().getColor(R.color.primary_color), 1000, 1000);
 
-		mNotificationManager.notify((int) System.currentTimeMillis(), mNotifyBuilder.build());
+		mNotificationManager.notify((int) id, mNotifyBuilder.build());
 	}
 
-	private void fallbackNotify(String title, String desc, PendingIntent contentIntent, PendingIntent sharePi,PendingIntent facebookPi) {
-		mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(System.currentTimeMillis()).setSmallIcon(
+	private void fallbackNotify(long id, String title, String desc, PendingIntent contentIntent, PendingIntent sharePi,PendingIntent facebookPi) {
+		mNotifyBuilder = new NotificationCompat.Builder(this).setWhen(id).setSmallIcon(
 				R.drawable.ic_push_notify).setTicker(title).setContentTitle(title).setContentText(desc).setStyle(
 				new BigTextStyle().bigText(desc).setBigContentTitle(title)).setAutoCancel(true)
 				.addAction(R.drawable.ic_action_social_share, getString(R.string.action_share), sharePi)
 				.addAction(R.drawable.ic_stat_f, getString(R.string.action_fb), facebookPi);
 		mNotifyBuilder.setContentIntent(contentIntent);
-		mNotificationManager.notify((int) System.currentTimeMillis(), mNotifyBuilder.build());
+		mNotificationManager.notify((int)id, mNotifyBuilder.build());
 	}
 }

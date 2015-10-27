@@ -1,6 +1,8 @@
 package com.cusnews.gcm;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +22,7 @@ import retrofit.RetrofitError;
 
 public class NotificationShareService extends Activity {
 	public static final String EXTRAS_TYPE = NotificationShareService.class.getName() + ".EXTRAS.type";
+	public static final String EXTRAS_ID = NotificationShareService.class.getName() + ".EXTRAS.id";
 	public static final int TYPE_NORMAL = 0;
 	public static final int TYPE_FACEBOOK = 1;
 	public static final String EXTRAS_SHARED_ENTRY = NotificationShareService.class.getName() + ".EXTRAS.entry";
@@ -32,8 +35,9 @@ public class NotificationShareService extends Activity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(_savedInstanceState);
+		((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel((int) getIntent().getLongExtra(
+				EXTRAS_ID, 0));
 		onHandleIntent(getIntent());
-
 	}
 
 	private void onHandleIntent(final Intent intent) {
@@ -60,8 +64,8 @@ public class NotificationShareService extends Activity {
 		case TYPE_FACEBOOK:
 			Bundle postParams = new Bundle();
 			final WebDialog fbDlg = new WebDialog.FeedDialogBuilder(NotificationShareService.this, getString(
-					R.string.applicationId), postParams).setCaption(entry.getTitle()).setDescription( entry.getKwic()).setLink(
-					mSharedEntryUrl).build();
+					R.string.applicationId), postParams).setCaption(entry.getTitle()).setDescription(entry.getKwic())
+					.setLink(mSharedEntryUrl).build();
 			fbDlg.setOnCompleteListener(new OnCompleteListener() {
 				@Override
 				public void onComplete(Bundle bundle, FacebookException e) {
@@ -77,7 +81,7 @@ public class NotificationShareService extends Activity {
 			String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
 					Prefs.getInstance().getAppDownloadInfo());
 			Intent i = com.chopping.utils.Utils.getShareInformation(subject, text);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 			startActivity(i);
 			ActivityCompat.finishAfterTransition(NotificationShareService.this);
 			break;
