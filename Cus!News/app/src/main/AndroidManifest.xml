@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.cusnews"
+<manifest package="com.cusnews"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,8 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -20,16 +17,16 @@
     <permission
         android:name="com.cusnews.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.cusnews.gcm.permission.C2D_MESSAGE" />
 
+    <uses-permission android:name="com.cusnews.gcm.permission.C2D_MESSAGE" />
 
     <application
         android:name=".app.App"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
         tools:replace="android:label">
 
         <!-- This meta-data tag is required to use Google Play Services. -->
@@ -56,57 +53,51 @@
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".activities.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
-
         <activity
             android:name=".app.activities.DetailActivity"
             android:label="@string/application_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".app.activities.WebViewActivity"
             android:label="@string/application_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/SettingsTheme" />
-
-
         <activity
             android:name=".app.activities.SettingActivity"
             android:label="@string/action_settings"
             android:screenOrientation="portrait"
             android:theme="@style/SettingsTheme" />
-
         <activity
             android:name=".app.activities.TopicListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-
         <activity
             android:name=".app.activities.CustomizedTopicsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
-
         <activity
             android:name=".app.activities.ConnectGoogleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FirstPage" />
 
-        <!--Include the AdActivity configChanges and theme. -->
+        <!-- Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
 
-        <!--Event handler for changing system packages.-->
+        <!-- Event handler for changing system packages. -->
         <receiver
             android:name="com.chopping.application.InstalledAppReceiver"
             android:enabled="true"
@@ -118,7 +109,6 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-
 
         <!-- [START gcm_receiver] -->
         <receiver
@@ -133,6 +123,7 @@
             </intent-filter>
         </receiver>
         <!-- [END gcm_receiver] -->
+
 
         <!-- [START gcm_listener] -->
         <service
@@ -163,9 +154,15 @@
         <service
             android:name=".gcm.UnsubscribeIntentService"
             android:exported="false" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="0bf5835ac1569fe382ff64839c0be3d3ed9396b9" />
+
+        <activity
+            android:name=".gcm.NotificationShareService"
+            android:noHistory="true"
+            android:excludeFromRecents="true" />
     </application>
 
 </manifest>

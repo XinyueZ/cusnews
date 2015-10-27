@@ -144,17 +144,18 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 
 		provider.setShareIntent(Utils.getDefaultShareIntent(provider, subject, text));
 
-		createFBShare(subject, text);
+		createFBShare(entry);
 	}
 
-	private void createFBShare(final String subject, final String text) {
+
+	private void createFBShare(final Entry entry) {
 		MenuItem menuItem = mBinding.toolbar.getMenu().findItem(R.id.action_fb);
 		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				Bundle postParams = new Bundle();
 				final WebDialog fbDlg = new WebDialog.FeedDialogBuilder(getActivity(), getString(
-						R.string.applicationId), postParams).setCaption(subject).setDescription(text).setLink(
+						R.string.applicationId), postParams).setCaption(entry.getTitle()).setDescription( entry.getKwic()).setLink(
 						mSharedEntryUrl).build();
 				fbDlg.setOnCompleteListener(new OnCompleteListener() {
 					@Override
