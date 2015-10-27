@@ -93,9 +93,9 @@ public class MyGcmListenerService extends GcmListenerService {
 		facebookIntent.putExtra(NotificationShareService.EXTRAS_TYPE, NotificationShareService.TYPE_FACEBOOK);
 		facebookIntent.putExtra(NotificationShareService.EXTRAS_SHARED_ENTRY, entry);
 		PendingIntent sharePi = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), shareIntent,
-				PendingIntent.FLAG_ONE_SHOT);
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		PendingIntent facebookPi = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), facebookIntent,
-				PendingIntent.FLAG_ONE_SHOT);
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
 
 		//Show notification, when not OK it shows only without image.
