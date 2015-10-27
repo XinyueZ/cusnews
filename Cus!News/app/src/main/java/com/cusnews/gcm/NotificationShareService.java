@@ -55,10 +55,7 @@ public class NotificationShareService extends Activity {
 
 	private void share(Intent intent) {
 		Entry entry = (Entry) intent.getSerializableExtra(EXTRAS_SHARED_ENTRY);
-		String subject = getString(R.string.lbl_share_entry_title, getString(R.string.application_name),
-				entry.getTitle());
-		String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
-				Prefs.getInstance().getAppDownloadInfo());
+
 		switch (intent.getIntExtra(EXTRAS_TYPE, TYPE_NORMAL)) {
 		case TYPE_FACEBOOK:
 			Bundle postParams = new Bundle();
@@ -75,6 +72,10 @@ public class NotificationShareService extends Activity {
 			fbDlg.show();
 			break;
 		default:
+			String subject = getString(R.string.lbl_share_entry_title, getString(R.string.application_name),
+					entry.getTitle());
+			String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
+					Prefs.getInstance().getAppDownloadInfo());
 			Intent i = com.chopping.utils.Utils.getShareInformation(subject, text);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 			startActivity(i);
