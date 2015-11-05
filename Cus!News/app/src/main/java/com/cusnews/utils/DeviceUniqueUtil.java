@@ -51,6 +51,11 @@ public class DeviceUniqueUtil {
 			TelephonyManager tm = (TelephonyManager) _cxt.getSystemService(Context.TELEPHONY_SERVICE);
 			// gets the imei (GSM) or MEID/ESN (CDMA)
 			String imei = tm.getDeviceId();
+			try {
+				imei = tm.getDeviceId();
+			} catch (SecurityException e) {
+				//Ignore...
+			}
 			if (null != imei && imei.length() > 0 && Long.parseLong(imei) > 0) { // 000000000000000 for emulator
 				readableId = imei;
 			} else {

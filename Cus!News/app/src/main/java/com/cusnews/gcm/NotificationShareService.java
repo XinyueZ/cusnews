@@ -35,6 +35,7 @@ public class NotificationShareService extends Activity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(_savedInstanceState);
+		setContentView(R.layout.service_notification_share);
 		((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel((int) getIntent().getLongExtra(
 				EXTRAS_ID, 0));
 		onHandleIntent(getIntent());

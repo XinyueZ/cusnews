@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WhatsUp</string>
+    <string name="app_name">WhatsUp News</string>
     <string name="application_name">WhatsUp</string>
     <string name="lbl_hello">Hello %1$s!</string>
     <string name="lbl_retry">Retry</string>

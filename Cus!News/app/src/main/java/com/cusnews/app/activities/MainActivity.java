@@ -1081,7 +1081,6 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(MenuItem menuItem) {
-				menuItem.setChecked(true);
 				mDrawerLayout.closeDrawer(Gravity.LEFT);
 
 				switch (menuItem.getItemId()) {
