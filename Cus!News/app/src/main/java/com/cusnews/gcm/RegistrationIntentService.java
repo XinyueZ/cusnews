@@ -13,7 +13,6 @@
 
 package com.cusnews.gcm;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -26,7 +25,6 @@ import com.cusnews.app.App;
 import com.cusnews.ds.PushToken;
 import com.cusnews.utils.DeviceUniqueUtil;
 import com.cusnews.utils.Prefs;
-import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
@@ -126,19 +124,6 @@ public class RegistrationIntentService extends IntentService {
 	}
 
 
-	/**
-	 * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
-	 *
-	 * @param token GCM token
-	 * @throws IOException if unable to reach the GCM PubSub service
-	 */
-	// [START subscribe_topics]
-	private void subscribeTopics(String token) throws IOException {
-		for (String topic : TOPICS) {
-			GcmPubSub pubSub = GcmPubSub.getInstance(this);
-			pubSub.subscribe(token, "/topics/" + topic, null);
-		}
-	}
-	// [END subscribe_topics]
+
 
 }

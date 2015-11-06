@@ -1,8 +1,6 @@
 package com.cusnews.gcm;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -36,8 +34,7 @@ public class NotificationShareService extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.service_notification_share);
-		((NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE)).cancel((int) getIntent().getLongExtra(
-				EXTRAS_ID, 0));
+
 		onHandleIntent(getIntent());
 	}
 
