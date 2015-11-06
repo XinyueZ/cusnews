@@ -9,6 +9,10 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/common_transparent</item>
 
+        <item name="android:timePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:datePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
+
     </style>
 
     <style name="AppTheme.FirstPage"  >
@@ -18,6 +22,11 @@
 
     <style name="SettingsTheme" parent="SettingsThemeBase">
         <item name="android:statusBarColor">@color/primary_dark_color</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/primary_color</item>
+        <item name="android:colorAccent">@color/primary_accent</item>
     </style>
 
 </resources>
