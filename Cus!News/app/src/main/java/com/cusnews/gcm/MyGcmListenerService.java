@@ -132,8 +132,7 @@ public class MyGcmListenerService extends GcmListenerService {
 					R.raw.signal)));
 		}
 		mNotifyBuilder.setLights(getResources().getColor(R.color.primary_color), 1000, 1000);
-
-		mNotificationManager.notify((int) id, mNotifyBuilder.build());
+		mNotificationManager.notify(Utils.randInt(1, (int) id), mNotifyBuilder.build());
 	}
 
 	private void fallbackNotify(long id, String title, String desc, PendingIntent contentIntent, PendingIntent sharePi,PendingIntent facebookPi) {
@@ -143,6 +142,6 @@ public class MyGcmListenerService extends GcmListenerService {
 				.addAction(R.drawable.ic_action_social_share, getString(R.string.action_share), sharePi)
 				.addAction(R.drawable.ic_stat_f, getString(R.string.action_fb), facebookPi);
 		mNotifyBuilder.setContentIntent(contentIntent);
-		mNotificationManager.notify((int)id, mNotifyBuilder.build());
+		mNotificationManager.notify(Utils.randInt(1, (int) id), mNotifyBuilder.build());
 	}
 }
