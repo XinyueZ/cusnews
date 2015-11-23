@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.chopping.utils.Utils;
 import com.cusnews.R;
+import com.cusnews.app.App;
 import com.cusnews.databinding.DetailInfoNoImageBinding;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
@@ -60,7 +62,7 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 			Api.getTinyUrl(entry.getUrl(), new Callback<Response>() {
 				@Override
 				public void success(Response response, retrofit.client.Response response2) {
-					mSharedEntryUrl = response.getResult();
+					mSharedEntryUrl = TextUtils.isEmpty(response.getResult()) ? entry.getUrl() : response.getResult();
 					createShare(entry);
 				}
 
@@ -137,9 +139,10 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 		android.support.v7.widget.ShareActionProvider provider =
 				(android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(menuShare);
 
-		String subject = getString(R.string.lbl_share_entry_title, getString(R.string.application_name),
+		String subject =  App.Instance.getString(R.string.lbl_share_entry_title,  App.Instance.getString(
+				R.string.application_name),
 				entry.getTitle());
-		String text = getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
+		String text =  App.Instance.getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
 				Prefs.getInstance().getAppDownloadInfo());
 
 		provider.setShareIntent(Utils.getDefaultShareIntent(provider, subject, text));
