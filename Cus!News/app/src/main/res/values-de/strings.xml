@@ -85,4 +85,7 @@
     <string name="setting_push_google">Google Inc.</string>
     <string name="setting_push_apple">Apple Inc.</string>
     <string name="setting_diy">Push personalisieren</string>
+
+    <string name="msg_permission_prompt">Ohne Berechtigung von "Read Phone State" und "Write External Storage" kann die App nicht weiter gehen…</string>
+
 </resources>

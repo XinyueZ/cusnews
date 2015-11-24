@@ -127,4 +127,7 @@
         <item>@string/setting_push_selection</item>
         <item>@string/setting_diy</item>
     </string-array>
+
+
+    <string name="msg_permission_prompt">Without "Read Phone State" and "Write External Storage" the App can\'t work…</string>
 </resources>

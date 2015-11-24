@@ -2,6 +2,7 @@ package com.cusnews.app.activities;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -94,6 +95,9 @@ import com.squareup.picasso.Picasso;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 
 public class MainActivity extends CusNewsActivity implements SearchView.OnQueryTextListener, TabLabelManagerUIHelper {
@@ -657,7 +661,17 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		}
 	}
 	//------------------------------------------------
-
+	/**
+	 * Show single instance of {@link}
+	 *
+	 * @param cxt
+	 * 		{@link Activity}.
+	 */
+	public static void showInstance(Activity cxt) {
+		Intent intent = new Intent(cxt, MainActivity.class);
+		intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP | FLAG_ACTIVITY_CLEAR_TOP);
+		ActivityCompat.startActivity(cxt, intent, null);
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

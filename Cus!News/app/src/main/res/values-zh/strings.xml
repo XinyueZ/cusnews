@@ -95,4 +95,7 @@
     <string name="setting_push_google">谷歌</string>
     <string name="setting_push_apple">苹果公司</string>
     <string name="setting_diy">推送个性化主题</string>
+
+    <string name="msg_permission_prompt">没有－读取电话状态，写入存储－的权限，应用无法运行…</string>
+
 </resources>
