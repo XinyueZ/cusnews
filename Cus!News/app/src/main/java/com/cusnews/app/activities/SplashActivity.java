@@ -30,13 +30,14 @@ public class SplashActivity extends AppCompatActivity {
 
 
 	@NeedsPermissions({permission.READ_PHONE_STATE, permission.WRITE_EXTERNAL_STORAGE})
-	void getReadPhoneStatePermission() {
+	void getPermissions() {
 		MainActivity.showInstance(this);
+		ActivityCompat.finishAfterTransition(this);
 	}
 
 
 	@DeniedPermissions({permission.READ_PHONE_STATE, permission.WRITE_EXTERNAL_STORAGE})
-	void noReadPhoneStatePermission() {
+	void noPermissions() {
 		Snackbar.make(findViewById(R.id.splash_v), R.string.msg_permission_prompt, Snackbar.LENGTH_INDEFINITE).setAction(
 				R.string.btn_agree, new OnClickListener() {
 					@Override
@@ -53,6 +54,6 @@ public class SplashActivity extends AppCompatActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
-		SplashActivityPermissionsDispatcher.getReadPhoneStatePermissionWithCheck(this);
+		SplashActivityPermissionsDispatcher.getPermissionsWithCheck(this);
 	}
 }
