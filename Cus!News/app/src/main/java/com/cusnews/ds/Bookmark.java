@@ -6,17 +6,17 @@ import android.text.TextUtils;
 public final class Bookmark extends Entry {
 	private String mUID;
 
-	public Bookmark(String uid, Entry entry) {
-		super(entry.getTitle(), entry.getKwic(), entry.getContent(), entry.getUrl(), entry.getImageUrl(),
-				entry.getDomain(), entry.getAuthor(), entry.isNews(), entry.getVotes(), entry.getDate(),
-				entry.getRelated());
+	public Bookmark( String uid, Entry entry ) {
+		super( entry.getTitle(), entry.getKwic(), entry.getContent(), entry.getUrl(), entry.getImageUrl(), entry.getDomain(), entry.getAuthor(),
+			   entry.isNews(), entry.getVotes(), entry.getDate(), entry.getRelated()
+		);
 		mUID = uid;
 	}
 
-	public Bookmark( Entry entry) {
-		super(entry.getTitle(), entry.getKwic(), entry.getContent(), entry.getUrl(), entry.getImageUrl(),
-				entry.getDomain(), entry.getAuthor(), entry.isNews(), entry.getVotes(), entry.getDate(),
-				entry.getRelated());
+	public Bookmark( Entry entry ) {
+		super( entry.getTitle(), entry.getKwic(), entry.getContent(), entry.getUrl(), entry.getImageUrl(), entry.getDomain(), entry.getAuthor(),
+			   entry.isNews(), entry.getVotes(), entry.getDate(), entry.getRelated()
+		);
 	}
 
 	public String getUID() {
@@ -25,8 +25,8 @@ public final class Bookmark extends Entry {
 
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals( Object o ) {
 		Entry other = (Entry) o;
-		return TextUtils.equals(getUrl(), other.getUrl());
+		return TextUtils.equals( getUrl(), other.getUrl() );
 	}
 }

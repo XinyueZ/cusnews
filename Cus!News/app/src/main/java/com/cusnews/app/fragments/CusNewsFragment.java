@@ -9,7 +9,7 @@ import com.cusnews.utils.Prefs;
  *
  * @author Xinyue Zhao
  */
-public   class CusNewsFragment extends BaseFragment {
+public class CusNewsFragment extends BaseFragment {
 
 	@Override
 	protected BasicPrefs getPrefs() {

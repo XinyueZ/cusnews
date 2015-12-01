@@ -12,8 +12,8 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 /**
- * Three different methods to get unique identifier on Android, they are all not the perfect solutions however could be
- * used under project restriction limit.
+ * Three different methods to get unique identifier on Android, they are all not the perfect solutions however could be used under project restriction
+ * limit.
  *
  * @author Xinyue Zhao
  */
@@ -22,11 +22,11 @@ public class DeviceUniqueUtil {
 	 * Get device unique identifier.
 	 */
 	@Nullable
-	public static String getDeviceIdent(Context c) throws NoSuchAlgorithmException {
-		Prefs prefs = Prefs.getInstance( );
-		if (TextUtils.isEmpty(prefs.getDeviceIdent())) {
-			String code = DeviceId.getDeviceId(c);
-			prefs.setDeviceIdent(code);
+	public static String getDeviceIdent( Context c ) throws NoSuchAlgorithmException {
+		Prefs prefs = Prefs.getInstance();
+		if( TextUtils.isEmpty( prefs.getDeviceIdent() ) ) {
+			String code = DeviceId.getDeviceId( c );
+			prefs.setDeviceIdent( code );
 		}
 		return prefs.getDeviceIdent();
 	}
@@ -45,49 +45,49 @@ public class DeviceUniqueUtil {
 		 * 		when there is no unique ID
 		 */
 		@Nullable
-		private static String getDeviceId(Context _cxt) throws NoSuchAlgorithmException {
+		private static String getDeviceId( Context _cxt ) throws NoSuchAlgorithmException {
 			String readableId;
 			// Requires READ_PHONE_STATE
-			TelephonyManager tm = (TelephonyManager) _cxt.getSystemService(Context.TELEPHONY_SERVICE);
+			TelephonyManager tm = (TelephonyManager) _cxt.getSystemService( Context.TELEPHONY_SERVICE );
 			// gets the imei (GSM) or MEID/ESN (CDMA)
 			String imei = null;
 			try {
 				imei = tm.getDeviceId();
-			} catch (SecurityException e) {
+			} catch( SecurityException e ) {
 				//Ignore...
 			}
-			if (null != imei && imei.length() > 0 && Long.parseLong(imei) > 0) { // 000000000000000 for emulator
+			if( null != imei && imei.length() > 0 && Long.parseLong( imei ) > 0 ) { // 000000000000000 for emulator
 				readableId = imei;
 			} else {
 				// devices without SIM card (e.g. WiFi-only tablets)
 				// requires ACCESS_WIFI_STATE
-				WifiManager wm = (WifiManager) _cxt.getSystemService(Context.WIFI_SERVICE);
+				WifiManager wm = (WifiManager) _cxt.getSystemService( Context.WIFI_SERVICE );
 				// gets the MAC address
 				String mac = wm.getConnectionInfo().getMacAddress();
-				if (null != mac && mac.length() > 0) {
+				if( null != mac && mac.length() > 0 ) {
 					readableId = mac;
 				} else {
 					// gets the android-assigned id
 					// unfortunately, this is not unique on some devices:
 					// http://groups.google.com/group/android-developers/browse_thread/thread/53898e508fab44f6/84e54feb28272384?pli=1
 					// so it's only a fallback for emulators
-					String androidId = Secure.getString(_cxt.getContentResolver(), Secure.ANDROID_ID);
-					if (null != androidId && androidId.length() > 0) {
+					String androidId = Secure.getString( _cxt.getContentResolver(), Secure.ANDROID_ID );
+					if( null != androidId && androidId.length() > 0 ) {
 						readableId = androidId;
 					} else {
 						return null;
 					}
 				}
 			}
-			return md5(readableId);
+			return md5( readableId );
 		}
 
-		private static String md5(String _plaintext) throws NoSuchAlgorithmException {
-			MessageDigest digest = MessageDigest.getInstance("MD5");
-			digest.update(_plaintext.getBytes());
-			byte[] hash = digest.digest();
-			BigInteger bigInt = new BigInteger(1, hash);
-			return String.format("%1$032X", bigInt).toLowerCase();
+		private static String md5( String _plaintext ) throws NoSuchAlgorithmException {
+			MessageDigest digest = MessageDigest.getInstance( "MD5" );
+			digest.update( _plaintext.getBytes() );
+			byte[]     hash   = digest.digest();
+			BigInteger bigInt = new BigInteger( 1, hash );
+			return String.format( "%1$032X", bigInt ).toLowerCase();
 		}
 	}
 }

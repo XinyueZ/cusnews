@@ -10,7 +10,7 @@ import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
 public final class ChangeViewTypeEvent {
 	private ViewType mViewType;
 
-	public ChangeViewTypeEvent(ViewType viewType) {
+	public ChangeViewTypeEvent( ViewType viewType ) {
 		mViewType = viewType;
 	}
 

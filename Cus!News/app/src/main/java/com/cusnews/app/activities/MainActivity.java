@@ -108,11 +108,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * The menu to this view.
 	 */
-	private static final int MENU = R.menu.menu_main;
+	private static final int MENU   = R.menu.menu_main;
 	/**
 	 * Height of action-bar general.
 	 */
-	private int mActionBarHeight;
+	private int                        mActionBarHeight;
 	/**
 	 * The layout-mgr controls over {@link RecyclerView}.
 	 */
@@ -120,11 +120,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * Data-binding.
 	 */
-	private ActivityMainBinding mBinding;
+	private ActivityMainBinding        mBinding;
 	/**
 	 * Page-pointer.
 	 */
-	private int mStart = 1;
+	private int     mStart      = 1;
 	/**
 	 * {@code true} if user loading data.
 	 */
@@ -144,11 +144,11 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * The search.
 	 */
-	private SearchView mSearchView;
+	private   SearchView              mSearchView;
 	/**
 	 * Drawer
 	 */
-	private DrawerLayout mDrawerLayout;
+	private   DrawerLayout            mDrawerLayout;
 	/**
 	 * Different type: News: news, Search: web, Topics: topics.
 	 */
@@ -161,7 +161,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * Progress indicator.
 	 */
-	private ProgressDialog mPb;
+	private ProgressDialog    mPb;
 	/**
 	 * Listener while registering push-feature.
 	 */
@@ -174,19 +174,19 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * Display-name of user on Google.
 	 */
-	private TextView mAccountTv;
+	private TextView          mAccountTv;
 	/**
 	 * User-photo on Google.
 	 */
-	private ImageView mThumbIv;
+	private ImageView         mThumbIv;
 	/**
 	 * Exit clickable view.
 	 */
-	private View mExitV;
+	private View              mExitV;
 	/**
 	 * {@code true} if the app starts customize topics.
 	 */
-	private boolean mCustomizedTopicsSetting;
+	private boolean           mCustomizedTopicsSetting;
 	//Begin [Bookmark-list]
 	private SlidingPaneHelper mSlidingPaneHelper;
 	private SlidingPaneLayout mBookmarkSpl;
@@ -198,25 +198,25 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	private static class SlidingPaneHelper {
 		ActionBar mActionBar;
 
-		SlidingPaneHelper(ActionBar actionBar) {
+		SlidingPaneHelper( ActionBar actionBar ) {
 			mActionBar = actionBar;
 		}
 
 		public void init() {
-			mActionBar.setDisplayHomeAsUpEnabled(true);
-			mActionBar.setHomeButtonEnabled(true);
+			mActionBar.setDisplayHomeAsUpEnabled( true );
+			mActionBar.setHomeButtonEnabled( true );
 		}
 
 		public void onPanelClosed() {
-			mActionBar.setDisplayHomeAsUpEnabled(true);
-			mActionBar.setHomeButtonEnabled(true);
-			mActionBar.setTitle(R.string.application_name);
+			mActionBar.setDisplayHomeAsUpEnabled( true );
+			mActionBar.setHomeButtonEnabled( true );
+			mActionBar.setTitle( R.string.application_name );
 		}
 
 		public void onPanelOpened() {
-			mActionBar.setHomeButtonEnabled(true);
-			mActionBar.setDisplayHomeAsUpEnabled(true);
-			if (!mActionBar.isShowing()) {
+			mActionBar.setHomeButtonEnabled( true );
+			mActionBar.setDisplayHomeAsUpEnabled( true );
+			if( !mActionBar.isShowing() ) {
 				mActionBar.show();
 			}
 		}
@@ -229,56 +229,54 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	private static class SliderListener extends SlidingPaneLayout.SimplePanelSlideListener {
 		SlidingPaneHelper mSlidingPaneHelper;
 
-		SliderListener(SlidingPaneHelper slidingPaneHelper) {
+		SliderListener( SlidingPaneHelper slidingPaneHelper ) {
 			mSlidingPaneHelper = slidingPaneHelper;
 		}
 
 		@Override
-		public void onPanelOpened(View panel) {
+		public void onPanelOpened( View panel ) {
 			mSlidingPaneHelper.onPanelOpened();
 		}
 
 		@Override
-		public void onPanelClosed(View panel) {
+		public void onPanelClosed( View panel ) {
 			mSlidingPaneHelper.onPanelClosed();
 		}
 	}
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onCreate( Bundle savedInstanceState ) {
+		super.onCreate( savedInstanceState );
 		Prefs prefs = Prefs.getInstance();
 		calcActionBarHeight();
 		//Bookmark
-		getSupportFragmentManager().beginTransaction().replace(R.id.bookmark_list_container_fl,
-				BookmarksFragment.newInstance(this)).commit();
+		getSupportFragmentManager().beginTransaction().replace( R.id.bookmark_list_container_fl, BookmarksFragment.newInstance( this ) ).commit();
 
 		//Listener on registering push-feature.
 		mRegistrationBroadcastReceiver = new BroadcastReceiver() {
 			@Override
-			public void onReceive(Context context, Intent intent) {
-				if (!TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
+			public void onReceive( Context context, Intent intent ) {
+				if( !TextUtils.isEmpty( Prefs.getInstance().getPushToken() ) ) {
 					dismissPb();
-					if (mCustomizedTopicsSetting) {
-						CustomizedTopicsActivity.showInstance(MainActivity.this);
+					if( mCustomizedTopicsSetting ) {
+						CustomizedTopicsActivity.showInstance( MainActivity.this );
 					} else {
-						TopicListActivity.showInstance(MainActivity.this);
+						TopicListActivity.showInstance( MainActivity.this );
 					}
 				} else {
 					//Register push-token not success and try-again.
 					dismissPb();
-					Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_register_push_failed, Snackbar.LENGTH_LONG)
-							.setAction(R.string.lbl_retry, new OnClickListener() {
+					Snackbar.make( mBinding.coordinatorLayout, R.string.lbl_register_push_failed, Snackbar.LENGTH_LONG ).setAction(
+							R.string.lbl_retry, new OnClickListener() {
 								@Override
-								public void onClick(View v) {
-									mPb = ProgressDialog.show(MainActivity.this, null, getString(
-											R.string.lbl_registering));
-									mPb.setCancelable(true);
-									Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-									startService(intent);
+								public void onClick( View v ) {
+									mPb = ProgressDialog.show( MainActivity.this, null, getString( R.string.lbl_registering ) );
+									mPb.setCancelable( true );
+									Intent intent = new Intent( MainActivity.this, RegistrationIntentService.class );
+									startService( intent );
 								}
-							}).show();
+							} ).show();
 				}
 			}
 		};
@@ -286,56 +284,55 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		mKeyword = "";//App.Instance.getLastTimeSearched();
 
 		//For search and suggestions.
-		mSuggestions = new SearchRecentSuggestions(this, getString(R.string.suggestion_auth),
-				SearchSuggestionProvider.MODE);
+		mSuggestions = new SearchRecentSuggestions( this, getString( R.string.suggestion_auth ), SearchSuggestionProvider.MODE );
 
 
-		mBinding = DataBindingUtil.setContentView(this, LAYOUT);
-		setUpErrorHandling((ViewGroup) findViewById(R.id.error_content));
-		View header = getLayoutInflater().inflate(R.layout.nav_header, mBinding.navView, false);
-		mBinding.navView.addHeaderView(header);
-		mThumbIv = (ImageView)header.findViewById(R.id.thumb_iv);
-		ViewHelper.setAlpha(mThumbIv, 0f);
-		ViewHelper.setScaleX(mThumbIv, 0f);
-		ViewHelper.setScaleY(mThumbIv, 0f);
-		mAccountTv = (TextView) header.findViewById(R.id.account_tv);
-		mExitV = header.findViewById(R.id.exit_btn);
-		mExitV.setOnClickListener(new OnClickListener() {
+		mBinding = DataBindingUtil.setContentView( this, LAYOUT );
+		setUpErrorHandling( (ViewGroup) findViewById( R.id.error_content ) );
+		View header = getLayoutInflater().inflate( R.layout.nav_header, mBinding.navView, false );
+		mBinding.navView.addHeaderView( header );
+		mThumbIv = (ImageView) header.findViewById( R.id.thumb_iv );
+		ViewHelper.setAlpha( mThumbIv, 0f );
+		ViewHelper.setScaleX( mThumbIv, 0f );
+		ViewHelper.setScaleY( mThumbIv, 0f );
+		mAccountTv = (TextView) header.findViewById( R.id.account_tv );
+		mExitV = header.findViewById( R.id.exit_btn );
+		mExitV.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick( View v ) {
 				exitAccount();
 			}
-		});
-		ViewHelper.setAlpha(mExitV, 0f);
-		ViewHelper.setScaleX(mExitV, 0f);
-		ViewHelper.setScaleY(mExitV, 0f);
+		} );
+		ViewHelper.setAlpha( mExitV, 0f );
+		ViewHelper.setScaleX( mExitV, 0f );
+		ViewHelper.setScaleY( mExitV, 0f );
 
 		//Init adapter.
 		ViewType vt = Prefs.getInstance().getViewType();
-		mBinding.setEntriesAdapter(new EntriesAdapter(vt));
+		mBinding.setEntriesAdapter( new EntriesAdapter( vt ) );
 
 		//Init recycleview.
-		switch (vt) {
-		case GRID:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN));
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			break;
-		default:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
-			//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
+		switch( vt ) {
+			case GRID:
+				mBinding.entriesRv.setLayoutManager( mLayoutManager = new GridLayoutManager( this, GRID_SPAN ) );
+				setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE );
+				break;
+			default:
+				mBinding.entriesRv.setLayoutManager( mLayoutManager = new LinearLayoutManager( MainActivity.this ) );
+				//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
 		}
-		mBinding.entriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+		mBinding.entriesRv.addOnScrollListener( new RecyclerView.OnScrollListener() {
 			@Override
-			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-				float y = ViewCompat.getY(recyclerView);
-				if (y < dy) {
-					if (!mBinding.fab.isHidden()) {
+			public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
+				float y = ViewCompat.getY( recyclerView );
+				if( y < dy ) {
+					if( !mBinding.fab.isHidden() ) {
 						mBinding.fab.hide();
 					}
 				} else {
-					if (mBinding.fab.isHidden()) {
-						if (mBinding.del.isHidden()) {
+					if( mBinding.fab.isHidden() ) {
+						if( mBinding.del.isHidden() ) {
 							mBinding.fab.show();
 						}
 					}
@@ -344,13 +341,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 				mVisibleItemCount = mLayoutManager.getChildCount();
 				mTotalItemCount = mLayoutManager.getItemCount();
-				if (mLayoutManager instanceof LinearLayoutManager) {
-					mPastVisibleItems = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
+				if( mLayoutManager instanceof LinearLayoutManager ) {
+					mPastVisibleItems = ( (LinearLayoutManager) mLayoutManager ).findFirstVisibleItemPosition();
 				}
 
-				if (!mIsBottom) {
-					if (mLoading) {
-						if ((mVisibleItemCount + mPastVisibleItems) >= mTotalItemCount) {
+				if( !mIsBottom ) {
+					if( mLoading ) {
+						if( ( mVisibleItemCount + mPastVisibleItems ) >= mTotalItemCount ) {
 							mLoading = false;
 							mStart += 10;
 							getData();
@@ -360,167 +357,162 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 			}
 
-		});
+		} );
 
 		//Init pull2load.
-		mBinding.contentSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4);
-		mBinding.contentSrl.setProgressViewEndTarget(true, mActionBarHeight * 2);
-		mBinding.contentSrl.setProgressViewOffset(false, 0, mActionBarHeight * 2);
-		mBinding.contentSrl.setRefreshing(true);
-		mBinding.contentSrl.setOnRefreshListener(new OnRefreshListener() {
+		mBinding.contentSrl.setColorSchemeResources( R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4 );
+		mBinding.contentSrl.setProgressViewEndTarget( true, mActionBarHeight * 2 );
+		mBinding.contentSrl.setProgressViewOffset( false, 0, mActionBarHeight * 2 );
+		mBinding.contentSrl.setRefreshing( true );
+		mBinding.contentSrl.setOnRefreshListener( new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				//				TabLabelManager.getInstance().init(MainActivity.this, false);
 				getData();
 			}
-		});
+		} );
 
 		//Init actionbar & navi-bar(drawer), bookmark-list slid
-		setSupportActionBar(mBinding.toolbar);
-		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		mSlidingPaneHelper = new SlidingPaneHelper(getSupportActionBar());
-		mBookmarkSpl = (SlidingPaneLayout) findViewById(R.id.sliding_pane_layout);
-		mBookmarkSpl.setPanelSlideListener(new SliderListener(mSlidingPaneHelper));
+		setSupportActionBar( mBinding.toolbar );
+		getSupportActionBar().setHomeAsUpIndicator( R.drawable.ic_menu );
+		getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+		mSlidingPaneHelper = new SlidingPaneHelper( getSupportActionBar() );
+		mBookmarkSpl = (SlidingPaneLayout) findViewById( R.id.sliding_pane_layout );
+		mBookmarkSpl.setPanelSlideListener( new SliderListener( mSlidingPaneHelper ) );
 		mSlidingPaneHelper.init();
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		setupDrawerContent(mBinding.navView);
-		mDrawerLayout.setDrawerListener(new SimpleDrawerListener() {
+		mDrawerLayout = (DrawerLayout) findViewById( R.id.drawer_layout );
+		setupDrawerContent( mBinding.navView );
+		mDrawerLayout.setDrawerListener( new SimpleDrawerListener() {
 			@Override
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-				ViewPropertyAnimator.animate(mThumbIv).cancel();
-				ViewPropertyAnimator.animate(mThumbIv).alpha(1f).scaleX(1f).scaleY(1).setDuration(500).start();
-				ViewPropertyAnimator.animate(mExitV).cancel();
-				ViewPropertyAnimator.animate(mExitV).alpha(1f).scaleX(1f).scaleY(1).setDuration(800).start();
+			public void onDrawerOpened( View drawerView ) {
+				super.onDrawerOpened( drawerView );
+				ViewPropertyAnimator.animate( mThumbIv ).cancel();
+				ViewPropertyAnimator.animate( mThumbIv ).alpha( 1f ).scaleX( 1f ).scaleY( 1 ).setDuration( 500 ).start();
+				ViewPropertyAnimator.animate( mExitV ).cancel();
+				ViewPropertyAnimator.animate( mExitV ).alpha( 1f ).scaleX( 1f ).scaleY( 1 ).setDuration( 800 ).start();
 			}
-		});
+		} );
 
 
 		//Init "fab", "del" for all tabs, save-button for labels.
 		mBinding.addTabV.hide();
-		mBinding.saveAddedTabBtn.setOnClickListener(new OnClickListener() {
+		mBinding.saveAddedTabBtn.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				if (Utils.validateKeyword(mBinding.newTabLabelTv)) {
-					if (!TextUtils.isEmpty(mBinding.newTabLabelTv.getText())) {
-						TabLabel newTabLabel = new TabLabel(mBinding.newTabLabelTv.getText().toString().trim(),
-								Prefs.getInstance().getGoogleId());
-						TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
-								mBinding.coordinatorLayout);
+			public void onClick( View v ) {
+				if( Utils.validateKeyword( mBinding.newTabLabelTv ) ) {
+					if( !TextUtils.isEmpty( mBinding.newTabLabelTv.getText() ) ) {
+						TabLabel newTabLabel = new TabLabel( mBinding.newTabLabelTv.getText().toString().trim(), Prefs.getInstance().getGoogleId() );
+						TabLabelManager.getInstance().addNewRemoteTab( newTabLabel, MainActivity.this, mBinding.coordinatorLayout );
 						mBinding.addTabV.hide();
-						mBinding.newTabLabelTv.setText("");
-						mBinding.addTabOpLl.setVisibility(View.GONE);
-						mBinding.newTabLabelTv.setVisibility(View.GONE);
+						mBinding.newTabLabelTv.setText( "" );
+						mBinding.addTabOpLl.setVisibility( View.GONE );
+						mBinding.newTabLabelTv.setVisibility( View.GONE );
 					}
 
 					mBinding.fab.show();
-					Utils.closeKeyboard(mBinding.newTabLabelTv);
+					Utils.closeKeyboard( mBinding.newTabLabelTv );
 				}
 			}
-		});
-		mBinding.closeAddTabBtn.setOnClickListener(new OnClickListener() {
+		} );
+		mBinding.closeAddTabBtn.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick( View v ) {
 				mBinding.fab.show();
 				mBinding.addTabV.hide();
-				mBinding.newTabLabelTv.setText("");
-				mBinding.addTabOpLl.setVisibility(View.GONE);
-				mBinding.newTabLabelTv.setVisibility(View.GONE);
-				Utils.closeKeyboard(mBinding.newTabLabelTv);
+				mBinding.newTabLabelTv.setText( "" );
+				mBinding.addTabOpLl.setVisibility( View.GONE );
+				mBinding.newTabLabelTv.setVisibility( View.GONE );
+				Utils.closeKeyboard( mBinding.newTabLabelTv );
 			}
-		});
-		mBinding.fab.setOnClickListener(new OnClickListener() {
+		} );
+		mBinding.fab.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick( View v ) {
 				mBinding.fab.hide();
 				mBinding.addTabV.show();
-				mBinding.addTabOpLl.setVisibility(View.VISIBLE);
-				mBinding.newTabLabelTv.setVisibility(View.VISIBLE);
+				mBinding.addTabOpLl.setVisibility( View.VISIBLE );
+				mBinding.newTabLabelTv.setVisibility( View.VISIBLE );
 			}
-		});
+		} );
 		mBinding.del.hide();
-		if (Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
-			mBinding.del.setOnDragListener(new OnDragListener() {
+		if( Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB ) {
+			mBinding.del.setOnDragListener( new OnDragListener() {
 				@Override
-				public boolean onDrag(View v, DragEvent event) {
+				public boolean onDrag( View v, DragEvent event ) {
 					Tab tab = (Tab) mBinding.del.getTag();
-					switch (event.getAction()) {
-					case DragEvent.ACTION_DRAG_STARTED:
-						break;
-					case DragEvent.ACTION_DRAG_ENTERED:
-						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_900));
-						break;
-					case DragEvent.ACTION_DRAG_EXITED:
-						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
-						break;
-					case DragEvent.ACTION_DROP:
-						break;
-					case DragEvent.ACTION_DRAG_ENDED:
-						mBinding.del.setButtonColor(getResources().getColor(R.color.fab_material_blue_grey_500));
-						mBinding.del.hide();
-						TabLabel tabLabel = new TabLabel();
-						tabLabel.setObjectId(mLongPressedObjectId);
-						TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel, MainActivity.this,
-								mBinding.coordinatorLayout);
-					default:
-						break;
+					switch( event.getAction() ) {
+						case DragEvent.ACTION_DRAG_STARTED:
+							break;
+						case DragEvent.ACTION_DRAG_ENTERED:
+							mBinding.del.setButtonColor( getResources().getColor( R.color.fab_material_blue_grey_900 ) );
+							break;
+						case DragEvent.ACTION_DRAG_EXITED:
+							mBinding.del.setButtonColor( getResources().getColor( R.color.fab_material_blue_grey_500 ) );
+							break;
+						case DragEvent.ACTION_DROP:
+							break;
+						case DragEvent.ACTION_DRAG_ENDED:
+							mBinding.del.setButtonColor( getResources().getColor( R.color.fab_material_blue_grey_500 ) );
+							mBinding.del.hide();
+							TabLabel tabLabel = new TabLabel();
+							tabLabel.setObjectId( mLongPressedObjectId );
+							TabLabelManager.getInstance().removeRemoteTab( tab, tabLabel, MainActivity.this, mBinding.coordinatorLayout );
+						default:
+							break;
 					}
 					return true;
 				}
-			});
+			} );
 		}
 
 		//Top-Trends.
-		Api.getTopTrends("", Prefs.getInstance().getLanguage(), App.Instance.getApiKey(), new Callback<Trends>() {
+		Api.getTopTrends( "", Prefs.getInstance().getLanguage(), App.Instance.getApiKey(), new Callback<Trends>() {
 			@Override
-			public void success(Trends trends, Response response) {
-				List<String> list = trends.getList();
-				MenuItem trendsMenu = mBinding.navView.getMenu().findItem(R.id.action_trends);
-				SubMenu trendsMenuSub = trendsMenu.getSubMenu();
-				for (String trend : list) {
-					trendsMenuSub.add(trend).setIcon(R.drawable.ic_social_whatshot).setVisible(true)
-							.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			public void success( Trends trends, Response response ) {
+				List<String> list          = trends.getList();
+				MenuItem     trendsMenu    = mBinding.navView.getMenu().findItem( R.id.action_trends );
+				SubMenu      trendsMenuSub = trendsMenu.getSubMenu();
+				for( String trend : list ) {
+					trendsMenuSub.add( trend ).setIcon( R.drawable.ic_social_whatshot ).setVisible( true ).setOnMenuItemClickListener(
+							new OnMenuItemClickListener() {
 								@Override
-								public boolean onMenuItemClick(MenuItem item) {
+								public boolean onMenuItemClick( MenuItem item ) {
 									mDrawerLayout.closeDrawers();
 
-									if (!Prefs.getInstance().addTabTip()) {
-										showDialogFragment(new DialogFragment() {
+									if( !Prefs.getInstance().addTabTip() ) {
+										showDialogFragment( new DialogFragment() {
 											@Override
-											public Dialog onCreateDialog(Bundle savedInstanceState) {
+											public Dialog onCreateDialog( Bundle savedInstanceState ) {
 												// Use the Builder class for convenient dialog construction
-												AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-												builder.setTitle(R.string.application_name).setMessage(
-														R.string.lbl_tabs_tip).setPositiveButton(R.string.btn_ok, null);
+												AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+												builder.setTitle( R.string.application_name ).setMessage( R.string.lbl_tabs_tip ).setPositiveButton(
+														R.string.btn_ok, null );
 												return builder.create();
 											}
-										}, null);
-										Prefs.getInstance().setAddTabTip(true);
+										}, null );
+										Prefs.getInstance().setAddTabTip( true );
 									}
 
 
-									addTrendToTab(item);
+									addTrendToTab( item );
 									return true;
 								}
 
-								private void addTrendToTab(MenuItem item) {
+								private void addTrendToTab( MenuItem item ) {
 									TabLabel newTabLabel;
-									newTabLabel = new TabLabel(item.getTitle().toString().trim(),
-											Prefs.getInstance().getGoogleId());
+									newTabLabel = new TabLabel( item.getTitle().toString().trim(), Prefs.getInstance().getGoogleId() );
 
-									TabLabelManager.getInstance().addNewRemoteTab(newTabLabel, MainActivity.this,
-											mBinding.coordinatorLayout);
+									TabLabelManager.getInstance().addNewRemoteTab( newTabLabel, MainActivity.this, mBinding.coordinatorLayout );
 								}
-							});
+							} );
 				}
 
-				for (int i = 0, count = mBinding.navView.getChildCount(); i < count; i++) {
-					final View child = mBinding.navView.getChildAt(i);
-					if (child != null && child instanceof ListView) {
-						final ListView menuView = (ListView) child;
-						final HeaderViewListAdapter adapter = (HeaderViewListAdapter) menuView.getAdapter();
-						final BaseAdapter wrapped = (BaseAdapter) adapter.getWrappedAdapter();
+				for( int i = 0, count = mBinding.navView.getChildCount(); i < count; i++ ) {
+					final View child = mBinding.navView.getChildAt( i );
+					if( child != null && child instanceof ListView ) {
+						final ListView              menuView = (ListView) child;
+						final HeaderViewListAdapter adapter  = (HeaderViewListAdapter) menuView.getAdapter();
+						final BaseAdapter           wrapped  = (BaseAdapter) adapter.getWrappedAdapter();
 						wrapped.notifyDataSetChanged();
 						break;
 					}
@@ -528,15 +520,15 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			}
 
 			@Override
-			public void failure(RetrofitError error) {
+			public void failure( RetrofitError error ) {
 
 			}
-		});
+		} );
 
 
-		if (prefs.isEULAOnceConfirmed() && TextUtils.isEmpty(prefs.getGoogleId())) {
-			ConnectGoogleActivity.showInstance(this);
-		} else if (prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty(prefs.getGoogleId())) {
+		if( prefs.isEULAOnceConfirmed() && TextUtils.isEmpty( prefs.getGoogleId() ) ) {
+			ConnectGoogleActivity.showInstance( this );
+		} else if( prefs.isEULAOnceConfirmed() && !TextUtils.isEmpty( prefs.getGoogleId() ) ) {
 			loadAllData();
 		}
 	}
@@ -544,13 +536,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	@Override
 	protected void onResume() {
 		super.onResume();
-		LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(
-				RegistrationIntentService.REGISTRATION_COMPLETE));
+		LocalBroadcastManager.getInstance( this ).registerReceiver(
+				mRegistrationBroadcastReceiver, new IntentFilter( RegistrationIntentService.REGISTRATION_COMPLETE ) );
 	}
 
 	@Override
 	protected void onPause() {
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+		LocalBroadcastManager.getInstance( this ).unregisterReceiver( mRegistrationBroadcastReceiver );
 		super.onPause();
 	}
 
@@ -565,13 +557,13 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	protected void calcActionBarHeight() {
 		int[] abSzAttr;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
 			abSzAttr = new int[] { android.R.attr.actionBarSize };
 		} else {
 			abSzAttr = new int[] { R.attr.actionBarSize };
 		}
-		TypedArray a = obtainStyledAttributes(abSzAttr);
-		mActionBarHeight = a.getDimensionPixelSize(0, -1);
+		TypedArray a = obtainStyledAttributes( abSzAttr );
+		mActionBarHeight = a.getDimensionPixelSize( 0, -1 );
 	}
 
 
@@ -591,8 +583,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param e
 	 * 		Event {@link com.chopping.bus.CloseDrawerEvent}.
 	 */
-	public void onEvent(CloseDrawerEvent e) {
-		mDrawerLayout.closeDrawer(Gravity.RIGHT);
+	public void onEvent( CloseDrawerEvent e ) {
+		mDrawerLayout.closeDrawer( Gravity.RIGHT );
 	}
 
 	/**
@@ -601,19 +593,19 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param e
 	 * 		Event {@link com.cusnews.bus.ChangeViewTypeEvent}.
 	 */
-	public void onEvent(ChangeViewTypeEvent e) {
-		switch (e.getViewType()) {
-		case GRID:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new GridLayoutManager(this, GRID_SPAN));
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			break;
-		default:
-			mBinding.entriesRv.setLayoutManager(mLayoutManager = new LinearLayoutManager(MainActivity.this));
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
+	public void onEvent( ChangeViewTypeEvent e ) {
+		switch( e.getViewType() ) {
+			case GRID:
+				mBinding.entriesRv.setLayoutManager( mLayoutManager = new GridLayoutManager( this, GRID_SPAN ) );
+				setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE );
+				break;
+			default:
+				mBinding.entriesRv.setLayoutManager( mLayoutManager = new LinearLayoutManager( MainActivity.this ) );
+				setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT );
+				break;
 		}
-		EntriesAdapter newAdp = new EntriesAdapter(e.getViewType(), mBinding.getEntriesAdapter().getData());
-		mBinding.setEntriesAdapter(newAdp);
+		EntriesAdapter newAdp = new EntriesAdapter( e.getViewType(), mBinding.getEntriesAdapter().getData() );
+		mBinding.setEntriesAdapter( newAdp );
 	}
 
 
@@ -623,8 +615,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param e
 	 * 		Event {@link com.cusnews.bus.OpenEntryEvent}.
 	 */
-	public void onEvent(OpenEntryEvent e) {
-		DetailActivity.showInstance(this, e.getEntry(), mKeyword);
+	public void onEvent( OpenEntryEvent e ) {
+		DetailActivity.showInstance( this, e.getEntry(), mKeyword );
 	}
 
 
@@ -634,8 +626,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param e
 	 * 		Event {@link  EULARejectEvent}.
 	 */
-	public void onEvent(EULARejectEvent e) {
-		ActivityCompat.finishAfterTransition(this);
+	public void onEvent( EULARejectEvent e ) {
+		ActivityCompat.finishAfterTransition( this );
 	}
 
 	/**
@@ -644,8 +636,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param e
 	 * 		Event {@link  EULAConfirmedEvent}.
 	 */
-	public void onEvent(EULAConfirmedEvent e) {
-		ConnectGoogleActivity.showInstance(this);
+	public void onEvent( EULAConfirmedEvent e ) {
+		ConnectGoogleActivity.showInstance( this );
 	}
 
 
@@ -655,8 +647,8 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param e
 	 * 		Event {@link com.cusnews.bus.CloseBookmarksEvent}.
 	 */
-	public void onEvent(CloseBookmarksEvent e) {
-		if (mBookmarkSpl.isOpen()) {
+	public void onEvent( CloseBookmarksEvent e ) {
+		if( mBookmarkSpl.isOpen() ) {
 			mBookmarkSpl.closePane();
 		}
 	}
@@ -667,23 +659,23 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @param cxt
 	 * 		{@link Activity}.
 	 */
-	public static void showInstance(Activity cxt) {
-		Intent intent = new Intent(cxt, MainActivity.class);
-		intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP | FLAG_ACTIVITY_CLEAR_TOP);
-		ActivityCompat.startActivity(cxt, intent, null);
+	public static void showInstance( Activity cxt ) {
+		Intent intent = new Intent( cxt, MainActivity.class );
+		intent.setFlags( FLAG_ACTIVITY_SINGLE_TOP|FLAG_ACTIVITY_CLEAR_TOP );
+		ActivityCompat.startActivity( cxt, intent, null );
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case ConnectGoogleActivity.REQ:
-			if (resultCode == RESULT_OK) {
-				loadAllData();
-			} else {
-				ActivityCompat.finishAffinity(this);
-			}
+	protected void onActivityResult( int requestCode, int resultCode, Intent data ) {
+		switch( requestCode ) {
+			case ConnectGoogleActivity.REQ:
+				if( resultCode == RESULT_OK ) {
+					loadAllData();
+				} else {
+					ActivityCompat.finishAffinity( this );
+				}
 		}
-		super.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult( requestCode, resultCode, data );
 	}
 
 	/**
@@ -691,23 +683,23 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	private void loadAllData() {
 		Prefs prefs = Prefs.getInstance();
-		if (!Prefs.getInstance().askedPush()) {
+		if( !Prefs.getInstance().askedPush() ) {
 			askPush();
 		}
 		getData();
-		Picasso picasso = Picasso.with(App.Instance);
-		if (!TextUtils.isEmpty(prefs.getGoogleThumbUrl())) {
-			picasso.load(com.chopping.utils.Utils.uriStr2URI(prefs.getGoogleThumbUrl()).toASCIIString()).into(mThumbIv);
+		Picasso picasso = Picasso.with( App.Instance );
+		if( !TextUtils.isEmpty( prefs.getGoogleThumbUrl() ) ) {
+			picasso.load( com.chopping.utils.Utils.uriStr2URI( prefs.getGoogleThumbUrl() ).toASCIIString() ).into( mThumbIv );
 		}
-		mAccountTv.setText(prefs.getGoogleDisplyName());
+		mAccountTv.setText( prefs.getGoogleDisplyName() );
 
 		//Init tabs.
-		mBinding.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-		mBinding.tabs.setOnTabSelectedListener(mOnTabSelectedListener);
-		if (mBinding.tabs.getTabCount() <= 1) {
-			mBinding.tabs.setVisibility(View.GONE);
+		mBinding.tabs.setTabMode( TabLayout.MODE_SCROLLABLE );
+		mBinding.tabs.setOnTabSelectedListener( mOnTabSelectedListener );
+		if( mBinding.tabs.getTabCount() <= 1 ) {
+			mBinding.tabs.setVisibility( View.GONE );
 		}
-		TabLabelManager.getInstance().init(this, mBinding.tabs.getTabCount() <= 0);
+		TabLabelManager.getInstance().init( this, mBinding.tabs.getTabCount() <= 0 );
 		BookmarksManager.getInstance().init();
 	}
 
@@ -719,34 +711,34 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Handling {@link Tab} selections.
 	 */
 	private OnTabSelectedListener mOnTabSelectedListener = new OnTabSelectedListener() {
-		private void handleSelectionTab(Tab tab) {
-			if (tab.getPosition() == 0) {
-				mKeyword = tab.getTag() == null || (mSearchMenu != null && !MenuItemCompat.isActionViewExpanded(
-						mSearchMenu)) ? "" : tab.getTag().toString();
+		private void handleSelectionTab( Tab tab ) {
+			if( tab.getPosition() == 0 ) {
+				mKeyword = tab.getTag() == null || ( mSearchMenu != null && !MenuItemCompat.isActionViewExpanded( mSearchMenu ) ) ? "" :
+						   tab.getTag().toString();
 			} else {
 				mKeyword = tab.getText().toString();
 			}
 			clear();
 			getData();
-			if (!mBinding.del.isHidden()) {
+			if( !mBinding.del.isHidden() ) {
 				mBinding.del.hide();
 			}
 			mSelectedIndex = tab.getPosition();
 		}
 
 		@Override
-		public void onTabSelected(Tab tab) {
-			handleSelectionTab(tab);
+		public void onTabSelected( Tab tab ) {
+			handleSelectionTab( tab );
 		}
 
 
 		@Override
-		public void onTabReselected(Tab tab) {
-			handleSelectionTab(tab);
+		public void onTabReselected( Tab tab ) {
+			handleSelectionTab( tab );
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab) {
+		public void onTabUnselected( Tab tab ) {
 		}
 
 
@@ -757,7 +749,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 */
 	@Override
 	public void addDefaultTab() {
-		mBinding.tabs.addTab(mBinding.tabs.newTab().setIcon(R.drawable.ic_default));
+		mBinding.tabs.addTab( mBinding.tabs.newTab().setIcon( R.drawable.ic_default ) );
 	}
 
 	/**
@@ -774,71 +766,71 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * @return The added new {@link Tab}.
 	 */
 	@Override
-	public Tab addTab(TabLabel tabLabel) {
-		View tabV = getLayoutInflater().inflate(R.layout.tab, null, false);
-		TextView tabTv = (TextView) tabV.findViewById(R.id.text);
-		final Tab tab = mBinding.tabs.newTab();
-		tab.setText(tabLabel.getLabel());
-		tab.setCustomView(tabV);
-		tabTv.setText(tabLabel.getLabel());
-		tabV.setOnClickListener(new OnClickListener() {
+	public Tab addTab( TabLabel tabLabel ) {
+		View      tabV  = getLayoutInflater().inflate( R.layout.tab, null, false );
+		TextView  tabTv = (TextView) tabV.findViewById( R.id.text );
+		final Tab tab   = mBinding.tabs.newTab();
+		tab.setText( tabLabel.getLabel() );
+		tab.setCustomView( tabV );
+		tabTv.setText( tabLabel.getLabel() );
+		tabV.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick( View v ) {
 				tab.select();
 			}
-		});
-		tabV.setTag(tabLabel);
-		tabV.setOnLongClickListener(new OnLongClickListener() {
+		} );
+		tabV.setTag( tabLabel );
+		tabV.setOnLongClickListener( new OnLongClickListener() {
 			@Override
-			public boolean onLongClick(View v) {
+			public boolean onLongClick( View v ) {
 				final TabLabel tabLabel = (TabLabel) v.getTag();
 				mLongPressedObjectId = tabLabel.getObjectId();
-				if (android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+				if( android.os.Build.VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB ) {
 					//After API-11 we import drag-drop features to delete tabs.
 					mBinding.del.show();
-					mBinding.del.setTag(tab);
-					if (!mBinding.fab.isHidden()) {
+					mBinding.del.setTag( tab );
+					if( !mBinding.fab.isHidden() ) {
 						mBinding.fab.hide();
 					}
 
-					TextView tabTv = (TextView) v.findViewById(R.id.text);
-					String text = tabTv.getText().toString();
-					ClipData data = ClipData.newPlainText("bmob_id", text);
-					DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-					v.startDrag(data, shadowBuilder, v, 0);
+					TextView          tabTv         = (TextView) v.findViewById( R.id.text );
+					String            text          = tabTv.getText().toString();
+					ClipData          data          = ClipData.newPlainText( "bmob_id", text );
+					DragShadowBuilder shadowBuilder = new View.DragShadowBuilder( v );
+					v.startDrag( data, shadowBuilder, v, 0 );
 				} else {
 					//Pre API-11, do it with dialog.
-					showDialogFragment(new DialogFragment() {
+					showDialogFragment( new DialogFragment() {
 						@Override
-						public Dialog onCreateDialog(Bundle savedInstanceState) {
+						public Dialog onCreateDialog( Bundle savedInstanceState ) {
 							// Use the Builder class for convenient dialog construction
-							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-							builder.setTitle(R.string.application_name).setMessage(getString(R.string.lbl_remove_tab,
-									tabLabel.getLabel())).setPositiveButton(R.string.btn_yes,
-									new DialogInterface.OnClickListener() {
+							AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+							builder.setTitle( R.string.application_name ).setMessage( getString( R.string.lbl_remove_tab, tabLabel.getLabel() ) )
+									.setPositiveButton( R.string.btn_yes, new DialogInterface.OnClickListener() {
 										@Override
-										public void onClick(DialogInterface dialog, int which) {
+										public void onClick( DialogInterface dialog, int which ) {
 											TabLabel tabLabel = new TabLabel();
-											tabLabel.setObjectId(mLongPressedObjectId);
-											TabLabelManager.getInstance().removeRemoteTab(tab, tabLabel,
-													MainActivity.this, mBinding.coordinatorLayout);
+											tabLabel.setObjectId( mLongPressedObjectId );
+											TabLabelManager.getInstance().removeRemoteTab( tab, tabLabel, MainActivity.this,
+																						   mBinding.coordinatorLayout
+											);
 										}
-									});
+									} );
 							return builder.create();
 						}
-					}, null);
+					}, null );
 
 				}
 				return true;
 			}
-		});
-		if(mBinding.tabs.getTabCount() > 0) {
-			mBinding.tabs.addTab(tab, 1);
+		} );
+		if( mBinding.tabs.getTabCount() > 0 ) {
+			mBinding.tabs.addTab( tab, 1 );
 		} else {
-			mBinding.tabs.addTab(tab);
+			mBinding.tabs.addTab( tab );
 		}
-		if (mBinding.tabs.getTabCount() > 1) {
-			mBinding.tabs.setVisibility(View.VISIBLE);
+		if( mBinding.tabs.getTabCount() > 1 ) {
+			mBinding.tabs.setVisibility( View.VISIBLE );
 		}
 		return tab;
 	}
@@ -850,22 +842,22 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * 		{@link Tab}
 	 */
 	@Override
-	public void removeTab(Tab tab) {
-		mBinding.tabs.removeTab(tab);
+	public void removeTab( Tab tab ) {
+		mBinding.tabs.removeTab( tab );
 		mBinding.del.hide();
-		if (mBinding.tabs.getTabCount() < 2) {
-			mBinding.tabs.setVisibility(View.GONE);
+		if( mBinding.tabs.getTabCount() < 2 ) {
+			mBinding.tabs.setVisibility( View.GONE );
 		}
 	}
 
 	@Override
 	public void onBackPressed() {
-		if (mBookmarkSpl.isOpen()) {
+		if( mBookmarkSpl.isOpen() ) {
 			mBookmarkSpl.closePane();
-		} else if (!mBinding.del.isHidden()) {
+		} else if( !mBinding.del.isHidden() ) {
 			mBinding.del.hide();
 		} else {
-			if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT) || mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+			if( mDrawerLayout.isDrawerOpen( Gravity.RIGHT ) || mDrawerLayout.isDrawerOpen( Gravity.LEFT ) ) {
 				mDrawerLayout.closeDrawers();
 			} else {
 				super.onBackPressed();
@@ -878,125 +870,122 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Get data from server.
 	 */
 	private void getData() {
-		if (!TextUtils.isEmpty(Prefs.getInstance().getGoogleId())) {
-			if (!mInProgress) {
-				mBinding.contentSrl.setRefreshing(true);
+		if( !TextUtils.isEmpty( Prefs.getInstance().getGoogleId() ) ) {
+			if( !mInProgress ) {
+				mBinding.contentSrl.setRefreshing( true );
 				mInProgress = true;
-				Api.getEntries(mKeyword, mStart, Prefs.getInstance().getLanguage(), mSrc, App.Instance.getApiKey(),
-						new Callback<Entries>() {
-							@Override
-							public void success(Entries entries, Response response) {
+				Api.getEntries( mKeyword, mStart, Prefs.getInstance().getLanguage(), mSrc, App.Instance.getApiKey(), new Callback<Entries>() {
+					@Override
+					public void success( Entries entries, Response response ) {
 
-								mBinding.getEntriesAdapter().getData().addAll(entries.getList());
-								mBinding.getEntriesAdapter().notifyDataSetChanged();
-								//Finish loading
-								mBinding.contentSrl.setRefreshing(false);
-								mInProgress = false;
-								mLoading = true;
+						mBinding.getEntriesAdapter().getData().addAll( entries.getList() );
+						mBinding.getEntriesAdapter().notifyDataSetChanged();
+						//Finish loading
+						mBinding.contentSrl.setRefreshing( false );
+						mInProgress = false;
+						mLoading = true;
 
-								//Arrive bottom?
-								if (entries.getStart() > entries.getCount()) {
-									if (TextUtils.equals(mSrc, "web")) {
-										mIsBottom = true;
-										Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_no_data,
-												Snackbar.LENGTH_LONG).show();
-										//For next
-										mSrc = "news";
-									} else {
-										mIsBottom = false;
-										mSrc = "web";
-										Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_search_more,
-												Snackbar.LENGTH_LONG).show();
-										mStart = 1;
-										getData();
-									}
-								}
+						//Arrive bottom?
+						if( entries.getStart() > entries.getCount() ) {
+							if( TextUtils.equals( mSrc, "web" ) ) {
+								mIsBottom = true;
+								Snackbar.make( mBinding.coordinatorLayout, R.string.lbl_no_data, Snackbar.LENGTH_LONG ).show();
+								//For next
+								mSrc = "news";
+							} else {
+								mIsBottom = false;
+								mSrc = "web";
+								Snackbar.make( mBinding.coordinatorLayout, R.string.lbl_search_more, Snackbar.LENGTH_LONG ).show();
+								mStart = 1;
+								getData();
 							}
+						}
+					}
 
-							@Override
-							public void failure(RetrofitError error) {
-								if (mStart > 10) {
-									mStart -= 10;
-								}
-								Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_loading_error,
-										Snackbar.LENGTH_LONG).setAction(R.string.lbl_retry, new OnClickListener() {
+					@Override
+					public void failure( RetrofitError error ) {
+						if( mStart > 10 ) {
+							mStart -= 10;
+						}
+						Snackbar.make( mBinding.coordinatorLayout, R.string.lbl_loading_error, Snackbar.LENGTH_LONG ).setAction(
+								R.string.lbl_retry, new OnClickListener() {
 									@Override
-									public void onClick(View v) {
+									public void onClick( View v ) {
 										getData();
 									}
-								}).show();
+								} ).show();
 
-								//Finish loading
-								mBinding.contentSrl.setRefreshing(false);
-								mInProgress = false;
-								mLoading = true;
-							}
-						});
+						//Finish loading
+						mBinding.contentSrl.setRefreshing( false );
+						mInProgress = false;
+						mLoading = true;
+					}
+				} );
 			}
 		}
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu( Menu menu ) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(MENU, menu);
+		getMenuInflater().inflate( MENU, menu );
 
 		//Search
-		mSearchMenu = menu.findItem(R.id.action_search);
-		MenuItemCompat.setOnActionExpandListener(mSearchMenu, new MenuItemCompat.OnActionExpandListener() {
+		mSearchMenu = menu.findItem( R.id.action_search );
+		MenuItemCompat.setOnActionExpandListener( mSearchMenu, new MenuItemCompat.OnActionExpandListener() {
 			@Override
-			public boolean onMenuItemActionExpand(MenuItem item) {
+			public boolean onMenuItemActionExpand( MenuItem item ) {
 				return true;
 			}
 
 			@Override
-			public boolean onMenuItemActionCollapse(MenuItem item) {
-				if (mSelectedIndex == 0) {
+			public boolean onMenuItemActionCollapse( MenuItem item ) {
+				if( mSelectedIndex == 0 ) {
 					clear();
 					mKeyword = "";
 				}
 				return true;
 			}
-		});
-		mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenu);
-		mSearchView.setOnQueryTextListener(this);
-		mSearchView.setIconifiedByDefault(true);
-		SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-		if (searchManager != null) {
-			SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-			mSearchView.setSearchableInfo(info);
+		} );
+		mSearchView = (SearchView) MenuItemCompat.getActionView( mSearchMenu );
+		mSearchView.setOnQueryTextListener( this );
+		mSearchView.setIconifiedByDefault( true );
+		SearchManager searchManager = (SearchManager) getSystemService( SEARCH_SERVICE );
+		if( searchManager != null ) {
+			SearchableInfo info = searchManager.getSearchableInfo( getComponentName() );
+			mSearchView.setSearchableInfo( info );
 		}
 
-		if (!Prefs.getInstance().showAllImages()) {
-			menu.findItem(R.id.action_view_type).setVisible(false);
+		if( !Prefs.getInstance().showAllImages() ) {
+			menu.findItem( R.id.action_view_type ).setVisible( false );
 		}
 
 
-		return super.onCreateOptionsMenu(menu);
+		return super.onCreateOptionsMenu( menu );
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
+	public boolean onPrepareOptionsMenu( Menu menu ) {
 
-		MenuItem menuShare = menu.findItem(R.id.action_share);
-		android.support.v7.widget.ShareActionProvider provider =
-				(android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(menuShare);
+		MenuItem menuShare = menu.findItem( R.id.action_share );
+		android.support.v7.widget.ShareActionProvider provider = (android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(
+				menuShare );
 
-		String subject = getString(R.string.lbl_share_app_title);
-		String text = getString(R.string.lbl_share_app_content, getString(R.string.application_name),
-				Prefs.getInstance().getAppDownloadInfo());
+		String subject = getString( R.string.lbl_share_app_title );
+		String text    = getString(
+				R.string.lbl_share_app_content, getString( R.string.application_name ), Prefs.getInstance().getAppDownloadInfo() );
 
-		provider.setShareIntent(com.chopping.utils.Utils.getDefaultShareIntent(provider, subject, text));
+		provider.setShareIntent( com.chopping.utils.Utils.getDefaultShareIntent( provider, subject, text ) );
 
-		return super.onPrepareOptionsMenu(menu);
+		return super.onPrepareOptionsMenu( menu );
 	}
 
 	/**
 	 * Start searching.
 	 */
 	private void doSearch() {
-		Tab tab = mBinding.tabs.getTabAt(0);
-		tab.setTag(mKeyword);
+		Tab tab = mBinding.tabs.getTabAt( 0 );
+		tab.setTag( mKeyword );
 		tab.select();
 	}
 
@@ -1011,35 +1000,35 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home && mBookmarkSpl.isOpen()) {
+	public boolean onOptionsItemSelected( MenuItem item ) {
+		if( item.getItemId() == android.R.id.home && mBookmarkSpl.isOpen() ) {
 			mBookmarkSpl.closePane();
 			return true;
 		}
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			mDrawerLayout.openDrawer(GravityCompat.START);
-			return true;
-		case R.id.action_to_top:
-			if (mBinding.getEntriesAdapter() != null && mBinding.getEntriesAdapter().getItemCount() > 0) {
-				if (mLayoutManager instanceof LinearLayoutManager) {
-					((LinearLayoutManager) mLayoutManager).scrollToPositionWithOffset(0, 0);
+		switch( item.getItemId() ) {
+			case android.R.id.home:
+				mDrawerLayout.openDrawer( GravityCompat.START );
+				return true;
+			case R.id.action_to_top:
+				if( mBinding.getEntriesAdapter() != null && mBinding.getEntriesAdapter().getItemCount() > 0 ) {
+					if( mLayoutManager instanceof LinearLayoutManager ) {
+						( (LinearLayoutManager) mLayoutManager ).scrollToPositionWithOffset( 0, 0 );
+					}
 				}
-			}
-			break;
-		case R.id.action_about:
-			showDialogFragment(AboutDialogFragment.newInstance(this), null);
-			break;
+				break;
+			case R.id.action_about:
+				showDialogFragment( AboutDialogFragment.newInstance( this ), null );
+				break;
 		}
-		return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected( item );
 	}
 
 
 	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		setIntent(intent);
-		handleIntent(intent);
+	protected void onNewIntent( Intent intent ) {
+		super.onNewIntent( intent );
+		setIntent( intent );
+		handleIntent( intent );
 	}
 
 	/**
@@ -1047,17 +1036,17 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 *
 	 * @param intent
 	 */
-	protected void handleIntent(Intent intent) {
-		mKeyword = intent.getStringExtra(SearchManager.QUERY);
-		if (!TextUtils.isEmpty(mKeyword) && Utils.validateStr(App.Instance, mKeyword)) {
+	protected void handleIntent( Intent intent ) {
+		mKeyword = intent.getStringExtra( SearchManager.QUERY );
+		if( !TextUtils.isEmpty( mKeyword ) && Utils.validateStr( App.Instance, mKeyword ) ) {
 			mKeyword = mKeyword.trim();
-			mSearchView.setQueryHint(Html.fromHtml("<font color = #ffffff>" + mKeyword + "</font>"));
+			mSearchView.setQueryHint( Html.fromHtml( "<font color = #ffffff>" + mKeyword + "</font>" ) );
 
-			mKeyword = intent.getStringExtra(SearchManager.QUERY);
+			mKeyword = intent.getStringExtra( SearchManager.QUERY );
 			mKeyword = mKeyword.trim();
 			resetSearchView();
 
-			mSuggestions.saveRecentQuery(mKeyword, null);
+			mSuggestions.saveRecentQuery( mKeyword, null );
 
 			//Do search
 			doSearch();
@@ -1066,14 +1055,14 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 
 
 	@Override
-	public boolean onQueryTextChange(String newText) {
+	public boolean onQueryTextChange( String newText ) {
 		return false;
 	}
 
 	@Override
-	public boolean onQueryTextSubmit(String s) {
-		InputMethodManager mgr = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-		mgr.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+	public boolean onQueryTextSubmit( String s ) {
+		InputMethodManager mgr = (InputMethodManager) getSystemService( INPUT_METHOD_SERVICE );
+		mgr.hideSoftInputFromWindow( mSearchView.getWindowToken(), 0 );
 		resetSearchView();
 		return false;
 	}
@@ -1083,7 +1072,7 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Reset the UI status of searchview.
 	 */
 	protected void resetSearchView() {
-		if (mSearchView != null) {
+		if( mSearchView != null ) {
 			mSearchView.clearFocus();
 		}
 	}
@@ -1091,59 +1080,66 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	/**
 	 * Set-up of navi-bar left.
 	 */
-	private void setupDrawerContent(NavigationView navigationView) {
-		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+	private void setupDrawerContent( NavigationView navigationView ) {
+		navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
-			public boolean onNavigationItemSelected(MenuItem menuItem) {
-				mDrawerLayout.closeDrawer(Gravity.LEFT);
+			public boolean onNavigationItemSelected( MenuItem menuItem ) {
+				mDrawerLayout.closeDrawer( Gravity.LEFT );
 
-				switch (menuItem.getItemId()) {
-				case R.id.action_faroo_home:
-					WebViewActivity.showInstance(MainActivity.this, getString(R.string.action_visit_faroo),
-							Prefs.getInstance().getFarooBlog());
-					break;
-				case R.id.action_setting:
-					SettingActivity.showInstance(MainActivity.this);
-					break;
-				case R.id.action_more_apps:
-					mDrawerLayout.openDrawer(Gravity.RIGHT);
-					break;
-				case R.id.action_bookmarks:
-					mBookmarkSpl.openPane();
-					break;
-				case R.id.action_push:
-					if (TextUtils.isEmpty(Prefs.getInstance().getPushToken())) {
-						askPush();
-					} else {
-						showDialogFragment(new DialogFragment() {
-							@Override
-							public Dialog onCreateDialog(Bundle savedInstanceState) {
-								// Use the Builder class for convenient dialog construction
-								AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-								builder.setTitle(R.string.action_push).setSingleChoiceItems(R.array.setting_pushs, -1,
-										new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												switch (which) {
-												case 0:
-													TopicListActivity.showInstance(MainActivity.this);
-													break;
-												case 1:
-													CustomizedTopicsActivity.showInstance(MainActivity.this);
-													break;
-												}
-//												dialog.dismiss();
-											}
-										}).setNegativeButton(R.string.btn_ok, null);
-								return builder.create();
-							}
-						}, null);
-					}
-					break;
+				switch( menuItem.getItemId() ) {
+					case R.id.action_faroo_home:
+						WebViewActivity.showInstance( MainActivity.this, getString( R.string.action_visit_faroo ),
+													  Prefs.getInstance().getFarooBlog()
+						);
+						break;
+					case R.id.action_setting:
+						SettingActivity.showInstance( MainActivity.this );
+						break;
+					case R.id.action_more_apps:
+						mDrawerLayout.openDrawer( Gravity.RIGHT );
+						break;
+					case R.id.action_bookmarks:
+						mBookmarkSpl.openPane();
+						break;
+					case R.id.action_push:
+						if( TextUtils.isEmpty( Prefs.getInstance().getPushToken() ) ) {
+							askPush();
+						} else {
+							showDialogFragment( new DialogFragment() {
+								@Override
+								public Dialog onCreateDialog( Bundle savedInstanceState ) {
+									// Use the Builder class for convenient dialog construction
+									AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+									builder.setTitle( R.string.action_push ).setSingleChoiceItems( R.array.setting_pushs, -1,
+																								   new DialogInterface.OnClickListener() {
+																									   @Override
+																									   public void onClick( DialogInterface dialog,
+																															int which
+																									   ) {
+																										   switch( which ) {
+																											   case 0:
+																												   TopicListActivity.showInstance(
+																														   MainActivity.this );
+																												   break;
+																											   case 1:
+																												   CustomizedTopicsActivity
+																														   .showInstance(
+																																   MainActivity.this );
+																												   break;
+																										   }
+																										   //												dialog.dismiss();
+																									   }
+																								   }
+									).setNegativeButton( R.string.btn_ok, null );
+									return builder.create();
+								}
+							}, null );
+						}
+						break;
 				}
 				return true;
 			}
-		});
+		} );
 	}
 
 
@@ -1163,15 +1159,14 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	 * Show all external applications links.
 	 */
 	private void showAppList() {
-		getSupportFragmentManager().beginTransaction().replace(R.id.app_list_fl, AppListImpFragment.newInstance(this))
-				.commit();
+		getSupportFragmentManager().beginTransaction().replace( R.id.app_list_fl, AppListImpFragment.newInstance( this ) ).commit();
 	}
 
 	/**
 	 * To ask whether opening Push-feature.
 	 */
 	private void askPush() {
-		Prefs.getInstance().setAskedPush(true);
+		Prefs.getInstance().setAskedPush( true );
 		//TODO Need using fragment, but I do not know why it does not work.
 		//		showDialogFragment(new DialogFragment() {
 		//			@Override
@@ -1193,37 +1188,47 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 		//			}
 		//		}, null);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.application_name).setMessage(R.string.lbl_ask_push).setNeutralButton(R.string.btn_diy,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dismissPb();
-						mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
-						mPb.setCancelable(true);
-						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-						startService(intent);
-						mCustomizedTopicsSetting = true;
-					}
-				}).setNegativeButton(R.string.btn_no, null).setPositiveButton(R.string.btn_yes,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dismissPb();
-						mPb = ProgressDialog.show(MainActivity.this, null, getString(R.string.lbl_registering));
-						mPb.setCancelable(true);
-						Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-						startService(intent);
-						mCustomizedTopicsSetting = false;
-					}
-				}).create().show();
+		AlertDialog.Builder builder = new AlertDialog.Builder( this );
+		builder.setTitle( R.string.application_name ).setMessage( R.string.lbl_ask_push ).setNeutralButton( R.string.btn_diy,
+																											new DialogInterface.OnClickListener() {
+																												@Override
+																												public void onClick(
+																														DialogInterface dialog,
+																														int which
+																												) {
+																													dismissPb();
+																													mPb = ProgressDialog.show(
+																															MainActivity.this, null,
+																															getString(
+																																	R.string.lbl_registering )
+																													);
+																													mPb.setCancelable( true );
+																													Intent intent = new Intent(
+																															MainActivity.this,
+																															RegistrationIntentService.class
+																													);
+																													startService( intent );
+																													mCustomizedTopicsSetting = true;
+																												}
+																											}
+		).setNegativeButton( R.string.btn_no, null ).setPositiveButton( R.string.btn_yes, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick( DialogInterface dialog, int which ) {
+				dismissPb();
+				mPb = ProgressDialog.show( MainActivity.this, null, getString( R.string.lbl_registering ) );
+				mPb.setCancelable( true );
+				Intent intent = new Intent( MainActivity.this, RegistrationIntentService.class );
+				startService( intent );
+				mCustomizedTopicsSetting = false;
+			}
+		} ).create().show();
 	}
 
 	/**
 	 * Remove the progress indicator.
 	 */
 	private void dismissPb() {
-		if (mPb != null && mPb.isShowing()) {
+		if( mPb != null && mPb.isShowing() ) {
 			mPb.dismiss();
 		}
 	}
@@ -1234,15 +1239,15 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 	public void exitAccount() {
 		mDrawerLayout.closeDrawers();
 		Prefs prefs = Prefs.getInstance();
-		if (!TextUtils.isEmpty(prefs.getPushToken())) {
-			Intent intent = new Intent(this, UnregistrationIntentService.class);
-			startService(intent);
+		if( !TextUtils.isEmpty( prefs.getPushToken() ) ) {
+			Intent intent = new Intent( this, UnregistrationIntentService.class );
+			startService( intent );
 		}
-		prefs.setAskedPush(false);
-		prefs.setGoogleId(null);
-		prefs.setGoogleThumbUrl(null);
-		prefs.setGoogleDisplyName(null);
-		ConnectGoogleActivity.showInstance(this);
+		prefs.setAskedPush( false );
+		prefs.setGoogleId( null );
+		prefs.setGoogleThumbUrl( null );
+		prefs.setGoogleDisplyName( null );
+		ConnectGoogleActivity.showInstance( this );
 
 		mBinding.tabs.removeAllTabs();
 		TabLabelManager.getInstance().clean();

@@ -9,7 +9,7 @@ public final class Trends {
 	@SerializedName("trends")
 	private List<String> mList;
 	@SerializedName("count")
-	private int mCount;
+	private int          mCount;
 
 	public List<String> getList() {
 		return mList;

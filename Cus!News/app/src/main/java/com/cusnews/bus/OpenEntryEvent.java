@@ -10,7 +10,7 @@ import com.cusnews.ds.Entry;
 public final class OpenEntryEvent {
 	private Entry mEntry;
 
-	public OpenEntryEvent(Entry entry) {
+	public OpenEntryEvent( Entry entry ) {
 		mEntry = entry;
 	}
 

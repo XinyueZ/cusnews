@@ -17,41 +17,39 @@ import de.greenrobot.event.EventBus;
 public final class EntriesAdapterBinder {
 
 
-
-
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("entriesAdapter")
-	public static void setEntriesBinder(RecyclerView recyclerView, RecyclerView.Adapter adp) {
-		recyclerView.setAdapter(adp);
+	public static void setEntriesBinder( RecyclerView recyclerView, RecyclerView.Adapter adp ) {
+		recyclerView.setAdapter( adp );
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("entryClickListener")
-	public static void setEntryClickListener(View view, final Entry entry) {
-		view.setOnClickListener(new OnClickListener() {
+	public static void setEntryClickListener( View view, final Entry entry ) {
+		view.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				EventBus.getDefault().post(new OpenEntryEvent(entry));
+			public void onClick( View v ) {
+				EventBus.getDefault().post( new OpenEntryEvent( entry ) );
 			}
-		});
+		} );
 	}
 
 
 	//@BindingAdapter({ "bind:imageUrl", "bind:error" })
 	//public static void loadImage(ImageView view, String url, Drawable error) {
 	@BindingAdapter({ "imageUrl" })
-	public static void loadImage(ImageView view, String url) {
-		if (TextUtils.isEmpty(url)) {
+	public static void loadImage( ImageView view, String url ) {
+		if( TextUtils.isEmpty( url ) ) {
 			url = "http://www.faroo.com/hp/api/faroo_attribution.png";
 		}
-		Picasso.with(view.getContext()).load(url).into(view);
+		Picasso.with( view.getContext() ).load( url ).into( view );
 
 		try {
-			Picasso picasso = Picasso.with(view.getContext());
-			picasso.load(Utils.uriStr2URI(url).toASCIIString()).tag(view.getContext()).into(view);
-		} catch (NullPointerException e) {
-			loadImage(view, "http://www.faroo.com/hp/api/faroo_attribution.png");
+			Picasso picasso = Picasso.with( view.getContext() );
+			picasso.load( Utils.uriStr2URI( url ).toASCIIString() ).tag( view.getContext() ).into( view );
+		} catch( NullPointerException e ) {
+			loadImage( view, "http://www.faroo.com/hp/api/faroo_attribution.png" );
 		}
 	}
 }

@@ -42,7 +42,7 @@ public class TabLabelManager {
 		 *
 		 * @return The added new {@link Tab}.
 		 */
-		Tab addTab(TabLabel tabLabel);
+		Tab addTab( TabLabel tabLabel );
 
 		/**
 		 * Remove a {@link Tab} from {@link Tab}s.
@@ -50,17 +50,17 @@ public class TabLabelManager {
 		 * @param tab
 		 * 		{@link Tab}
 		 */
-		void removeTab(Tab tab);
+		void removeTab( Tab tab );
 	}
 
 	/**
 	 * Cached list of all {@link TabLabel}s from backend.
 	 */
-	private List<TabLabel> mCachedTabLabels = new LinkedList<>();
+	private        List<TabLabel>  mCachedTabLabels = new LinkedList<>();
 	/**
 	 * Singleton.
 	 */
-	private static TabLabelManager sInstance = new TabLabelManager();
+	private static TabLabelManager sInstance        = new TabLabelManager();
 
 	private Handler mHandler = new Handler();
 	/**
@@ -84,43 +84,43 @@ public class TabLabelManager {
 	 * @param loadDefault
 	 * 		{@code true} if the first default will also be loaded.
 	 */
-	public void init(final TabLabelManagerUIHelper helper, boolean loadDefault) {
+	public void init( final TabLabelManagerUIHelper helper, boolean loadDefault ) {
 		//Default page.
-		if (loadDefault) {
+		if( loadDefault ) {
 			helper.addDefaultTab();
 		}
 		//Load from cache.
-		for (TabLabel cached : mCachedTabLabels) {
-			helper.addTab(cached);
+		for( TabLabel cached : mCachedTabLabels ) {
+			helper.addTab( cached );
 		}
 		//Load from backend and refresh tabs.
 		BmobQuery<TabLabel> queryTabLabels = new BmobQuery<>();
-		queryTabLabels.addWhereEqualTo("mUID", Prefs.getInstance().getGoogleId());
-		queryTabLabels.findObjects(App.Instance, new FindListener<TabLabel>() {
+		queryTabLabels.addWhereEqualTo( "mUID", Prefs.getInstance().getGoogleId() );
+		queryTabLabels.findObjects( App.Instance, new FindListener<TabLabel>() {
 			@Override
-			public void onSuccess(List<TabLabel> list) {
-				for (TabLabel tabLabel : list) {
+			public void onSuccess( List<TabLabel> list ) {
+				for( TabLabel tabLabel : list ) {
 					boolean found = false;
-					for (TabLabel cached : mCachedTabLabels) {
-						if (cached.equals(tabLabel)) {
+					for( TabLabel cached : mCachedTabLabels ) {
+						if( cached.equals( tabLabel ) ) {
 							found = true;
 							break;
 						}
 					}
-					if (!found) {
-						mCachedTabLabels.add(tabLabel);
-						helper.addTab(tabLabel);
+					if( !found ) {
+						mCachedTabLabels.add( tabLabel );
+						helper.addTab( tabLabel );
 					}
 
 				}
 			}
 
 			@Override
-			public void onError(int i, String s) {
+			public void onError( int i, String s ) {
 
 
 			}
-		});
+		} );
 
 	}
 
@@ -134,29 +134,30 @@ public class TabLabelManager {
 	 * @param viewForSnack
 	 * 		The anchor for {@link Snackbar} for result-messages.
 	 *
-	 * @return A {@link Tab} that hosts the new {@link TabLabel}. It might be {@code null} if the {@code newTabLabel}
-	 * has same wording(label) equal to label of an existing {@link TabLabel} in  {@link #mCachedTabLabels}.
+	 * @return A {@link Tab} that hosts the new {@link TabLabel}. It might be {@code null} if the {@code newTabLabel} has same wording(label) equal to
+	 * label of an existing {@link TabLabel} in  {@link #mCachedTabLabels}.
 	 */
 	public
 	@Nullable
-	Tab addNewRemoteTab(TabLabel newTabLabel, TabLabelManagerUIHelper helper, View viewForSnack) {
+	Tab addNewRemoteTab( TabLabel newTabLabel, TabLabelManagerUIHelper helper, View viewForSnack ) {
 		//Same label should not be added again.
-		for (TabLabel cached : mCachedTabLabels) {
-			if (cached.equals(newTabLabel)) {
-				Snackbar.make(viewForSnack, viewForSnack.getContext().getString(R.string.lbl_sync_same_label,
-						newTabLabel.getLabel()), Snackbar.LENGTH_SHORT).show();
+		for( TabLabel cached : mCachedTabLabels ) {
+			if( cached.equals( newTabLabel ) ) {
+				Snackbar.make( viewForSnack, viewForSnack.getContext().getString( R.string.lbl_sync_same_label, newTabLabel.getLabel() ),
+							   Snackbar.LENGTH_SHORT
+				).show();
 				return null;
 			}
 		}
-		final Tab tab = helper.addTab(newTabLabel);
-		mHandler.postDelayed(new Runnable() {
+		final Tab tab = helper.addTab( newTabLabel );
+		mHandler.postDelayed( new Runnable() {
 			@Override
 			public void run() {
 				tab.select();
 			}
-		}, 300);
-		mCachedTabLabels.add(newTabLabel);
-		addNewRemoteTabInternal(newTabLabel, viewForSnack);
+		}, 300 );
+		mCachedTabLabels.add( newTabLabel );
+		addNewRemoteTabInternal( newTabLabel, viewForSnack );
 		return tab;
 	}
 
@@ -168,32 +169,32 @@ public class TabLabelManager {
 	 * @param viewForSnack
 	 * 		The anchor for {@link Snackbar} for result-messages.
 	 */
-	private void addNewRemoteTabInternal(final TabLabel newTabLabel, View viewForSnack) {
-		final WeakReference<View> anchor = new WeakReference<>(viewForSnack);
-		newTabLabel.save(App.Instance, new SaveListener() {
+	private void addNewRemoteTabInternal( final TabLabel newTabLabel, View viewForSnack ) {
+		final WeakReference<View> anchor = new WeakReference<>( viewForSnack );
+		newTabLabel.save( App.Instance, new SaveListener() {
 			@Override
 			public void onSuccess() {
 				View anchorV = anchor.get();
-				if (anchorV != null) {
-					Snackbar.make(anchorV, anchorV.getContext().getString(R.string.lbl_sync_label_added,
-							newTabLabel.getLabel()), Snackbar.LENGTH_SHORT).show();
+				if( anchorV != null ) {
+					Snackbar.make(
+							anchorV, anchorV.getContext().getString( R.string.lbl_sync_label_added, newTabLabel.getLabel() ), Snackbar.LENGTH_SHORT )
+							.show();
 				}
 			}
 
 			@Override
-			public void onFailure(int i, String s) {
+			public void onFailure( int i, String s ) {
 				View anchorV = anchor.get();
-				if (anchorV != null) {
-					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG).setAction(R.string.btn_retry,
-							new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									addNewRemoteTabInternal(newTabLabel, anchor.get());
-								}
-							}).show();
+				if( anchorV != null ) {
+					Snackbar.make( anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG ).setAction( R.string.btn_retry, new OnClickListener() {
+						@Override
+						public void onClick( View v ) {
+							addNewRemoteTabInternal( newTabLabel, anchor.get() );
+						}
+					} ).show();
 				}
 			}
-		});
+		} );
 	}
 
 	/**
@@ -208,12 +209,12 @@ public class TabLabelManager {
 	 * @param viewForSnack
 	 * 		The anchor for {@link Snackbar} for result-messages.
 	 */
-	public void removeRemoteTab(Tab tab, TabLabel tabLabel, TabLabelManagerUIHelper helper, View viewForSnack) {
-		helper.removeTab(tab);
-		for (TabLabel cached : mCachedTabLabels) {
-			if (TextUtils.equals(cached.getObjectId(), tabLabel.getObjectId())) {
-				mCachedTabLabels.remove(cached);
-				removeRemoteTabInternal(tabLabel, viewForSnack);
+	public void removeRemoteTab( Tab tab, TabLabel tabLabel, TabLabelManagerUIHelper helper, View viewForSnack ) {
+		helper.removeTab( tab );
+		for( TabLabel cached : mCachedTabLabels ) {
+			if( TextUtils.equals( cached.getObjectId(), tabLabel.getObjectId() ) ) {
+				mCachedTabLabels.remove( cached );
+				removeRemoteTabInternal( tabLabel, viewForSnack );
 				break;
 			}
 		}
@@ -227,31 +228,30 @@ public class TabLabelManager {
 	 * @param viewForSnack
 	 * 		The anchor for {@link Snackbar} for result-messages.
 	 */
-	private void removeRemoteTabInternal(final TabLabel tabLabel, View viewForSnack) {
-		final WeakReference<View> anchor = new WeakReference<>(viewForSnack);
-		tabLabel.delete(App.Instance, new DeleteListener() {
+	private void removeRemoteTabInternal( final TabLabel tabLabel, View viewForSnack ) {
+		final WeakReference<View> anchor = new WeakReference<>( viewForSnack );
+		tabLabel.delete( App.Instance, new DeleteListener() {
 			@Override
 			public void onSuccess() {
 				View anchorV = anchor.get();
-				if (anchorV != null) {
-					Snackbar.make(anchorV, R.string.lbl_sync_label_removed, Snackbar.LENGTH_SHORT).show();
+				if( anchorV != null ) {
+					Snackbar.make( anchorV, R.string.lbl_sync_label_removed, Snackbar.LENGTH_SHORT ).show();
 				}
 			}
 
 			@Override
-			public void onFailure(int i, String s) {
+			public void onFailure( int i, String s ) {
 				View anchorV = anchor.get();
-				if (anchorV != null) {
-					Snackbar.make(anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG).setAction(R.string.btn_retry,
-							new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									removeRemoteTabInternal(tabLabel, anchor.get());
-								}
-							}).show();
+				if( anchorV != null ) {
+					Snackbar.make( anchorV, R.string.lbl_sync_fail, Snackbar.LENGTH_LONG ).setAction( R.string.btn_retry, new OnClickListener() {
+						@Override
+						public void onClick( View v ) {
+							removeRemoteTabInternal( tabLabel, anchor.get() );
+						}
+					} ).show();
 				}
 			}
-		});
+		} );
 	}
 
 	/**

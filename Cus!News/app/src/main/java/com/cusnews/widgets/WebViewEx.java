@@ -15,32 +15,32 @@ public final class WebViewEx extends WebView {
 	 */
 	private OnWebViewExScrolledListener mOnWebViewExScrolledListener;
 
-	public WebViewEx(Context context) {
-		super(context);
+	public WebViewEx( Context context ) {
+		super( context );
 	}
 
-	public WebViewEx(Context context, AttributeSet attrs) {
-		super(context, attrs);
+	public WebViewEx( Context context, AttributeSet attrs ) {
+		super( context, attrs );
 	}
 
-	public WebViewEx(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+	public WebViewEx( Context context, AttributeSet attrs, int defStyle ) {
+		super( context, attrs, defStyle );
 	}
 
 	@Override
-	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-		if (t > 0) {
-			if (mOnWebViewExScrolledListener != null) {
-				mOnWebViewExScrolledListener.onScrollChanged(t > oldt);
+	protected void onScrollChanged( int l, int t, int oldl, int oldt ) {
+		if( t > 0 ) {
+			if( mOnWebViewExScrolledListener != null ) {
+				mOnWebViewExScrolledListener.onScrollChanged( t > oldt );
 			}
 		} else {
-			if (t == 0) {
-				if (mOnWebViewExScrolledListener != null) {
+			if( t == 0 ) {
+				if( mOnWebViewExScrolledListener != null ) {
 					mOnWebViewExScrolledListener.onScrolledTop();
 				}
 			}
 		}
-		super.onScrollChanged(l, t, oldl, oldt);
+		super.onScrollChanged( l, t, oldl, oldt );
 	}
 
 	/**
@@ -49,10 +49,9 @@ public final class WebViewEx extends WebView {
 	 * @param onWebViewExScrolledListener
 	 * 		The instance of listener.
 	 */
-	public void setOnWebViewExScrolledListener(OnWebViewExScrolledListener onWebViewExScrolledListener) {
+	public void setOnWebViewExScrolledListener( OnWebViewExScrolledListener onWebViewExScrolledListener ) {
 		mOnWebViewExScrolledListener = onWebViewExScrolledListener;
 	}
-
 
 
 	/**
@@ -67,7 +66,7 @@ public final class WebViewEx extends WebView {
 		 * @param isUp
 		 * 		True if user scrolled up, false then down.
 		 */
-		void onScrollChanged(boolean isUp);
+		void onScrollChanged( boolean isUp );
 		/**
 		 * Event fired when user scrolled the WebView onto TOP.
 		 */

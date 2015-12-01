@@ -5,24 +5,23 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Entries   {
+public final class Entries {
 	@SerializedName("query")
-	private final String mQuery;
+	private final String       mQuery;
 	@SerializedName("suggestions")
 	private final List<String> mSuggestions;
 	@SerializedName("count")
-	private final int mCount;
+	private final int          mCount;
 	@SerializedName("start")
-	private final int mStart;
+	private final int          mStart;
 	@SerializedName("length")
-	private final int mLength;
+	private final int          mLength;
 	@SerializedName("time")
-	private final String mTime;
+	private final String       mTime;
 	@SerializedName("results")
-	private final List<Entry> mList;
+	private final List<Entry>  mList;
 
-	public Entries(String query, List<String> suggestions, int count, int start, int length, String time,
-			List<Entry> list) {
+	public Entries( String query, List<String> suggestions, int count, int start, int length, String time, List<Entry> list ) {
 		mQuery = query;
 		mSuggestions = suggestions;
 		mCount = count;

@@ -29,27 +29,25 @@ public final class TopicListActivity extends FragmentActivity {
 	 * @param cxt
 	 * 		{@link Context}.
 	 */
-	public static void showInstance(Context cxt) {
-		Intent intent = new Intent(cxt, TopicListActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		cxt.startActivity(intent);
+	public static void showInstance( Context cxt ) {
+		Intent intent = new Intent( cxt, TopicListActivity.class );
+		intent.setFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP );
+		cxt.startActivity( intent );
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(LAYOUT);
+	protected void onCreate( Bundle savedInstanceState ) {
+		super.onCreate( savedInstanceState );
+		setContentView( LAYOUT );
 		ViewType vt = Prefs.getInstance().getViewType();
-		switch (vt) {
-		case GRID:
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			break;
-		default:
-			//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
+		switch( vt ) {
+			case GRID:
+				setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE );
+				break;
+			default:
+				//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
 		}
-		getSupportFragmentManager().beginTransaction().replace(R.id.topic_list_container, TopicListFragment.newInstance(
-				this))
-				.commit();
+		getSupportFragmentManager().beginTransaction().replace( R.id.topic_list_container, TopicListFragment.newInstance( this ) ).commit();
 	}
 }

@@ -8,10 +8,10 @@ import com.cusnews.ds.Entry;
  * @author Xinyue Zhao
  */
 public final class OpenRelatedEvent {
-	private Entry mEntry;
+	private Entry  mEntry;
 	private String mKeyword;
 
-	public OpenRelatedEvent(Entry entry, String keyword) {
+	public OpenRelatedEvent( Entry entry, String keyword ) {
 		mEntry = entry;
 		mKeyword = keyword;
 	}

@@ -25,7 +25,7 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	/**
 	 * The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 */
-	private int mLayoutResId;
+	private int         mLayoutResId;
 	/**
 	 * Data-source.
 	 */
@@ -34,58 +34,56 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	/**
 	 * Constructor of {@link EntriesAdapter}
 	 *
-	 * @param viewType The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
+	 * @param viewType
+	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 */
-	public EntriesAdapter(ViewType viewType) {
-		setData(new ArrayList<Entry>());
+	public EntriesAdapter( ViewType viewType ) {
+		setData( new ArrayList<Entry>() );
 		mLayoutResId = viewType.getLayoutResId();
 	}
 
 	/**
 	 * Constructor of {@link EntriesAdapter}
 	 *
-	 * @param  viewType  The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
+	 * @param viewType
+	 * 		The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 	 * @param entries
 	 * 		Data-source.
 	 */
-	public EntriesAdapter(ViewType viewType, List<Entry> entries) {
-		setData(entries);
+	public EntriesAdapter( ViewType viewType, List<Entry> entries ) {
+		setData( entries );
 		mLayoutResId = viewType.getLayoutResId();
 	}
-
-	/**
-	 * Set data-source.
-	 *
-	 * @param entries
-	 */
-	public void setData(List<Entry> entries) {
-		mEntries = entries;
-	}
-
 	/**
 	 * @return Data-source.
 	 */
 	public List<Entry> getData() {
 		return mEntries;
 	}
-
-
+	/**
+	 * Set data-source.
+	 *
+	 * @param entries
+	 */
+	public void setData( List<Entry> entries ) {
+		mEntries = entries;
+	}
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 		Context cxt = parent.getContext();
 		//		boolean landscape = cxt.getResources().getBoolean(R.bool.landscape);
-		LayoutInflater inflater = LayoutInflater.from(cxt);
-		if(!Prefs.getInstance().showAllImages()) {
+		LayoutInflater inflater = LayoutInflater.from( cxt );
+		if( !Prefs.getInstance().showAllImages() ) {
 			mLayoutResId = R.layout.item_vertical_no_image_entry;
 		}
-		ViewDataBinding binding = DataBindingUtil.inflate(inflater, mLayoutResId, parent, false);
-		return new EntriesAdapter.ViewHolder(binding);
+		ViewDataBinding binding = DataBindingUtil.inflate( inflater, mLayoutResId, parent, false );
+		return new EntriesAdapter.ViewHolder( binding );
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position) {
-		final Entry entry = getData().get(position);
-		holder.mBinding.setVariable(BR.entry, entry);
+	public void onBindViewHolder( final ViewHolder holder, final int position ) {
+		final Entry entry = getData().get( position );
+		holder.mBinding.setVariable( BR.entry, entry );
 		holder.mBinding.executePendingBindings();
 	}
 
@@ -98,8 +96,8 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private ViewDataBinding mBinding;
 
-		public ViewHolder(ViewDataBinding binding) {
-			super(binding.getRoot());
+		public ViewHolder( ViewDataBinding binding ) {
+			super( binding.getRoot() );
 			mBinding = binding;
 		}
 	}

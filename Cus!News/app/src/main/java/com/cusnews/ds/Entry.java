@@ -8,32 +8,33 @@ import com.google.gson.annotations.SerializedName;
 
 import cn.bmob.v3.BmobObject;
 
-public   class Entry  extends BmobObject implements Serializable {
+public class Entry extends BmobObject implements Serializable {
 	@SerializedName("title")
-	private   String mTitle;
+	private String      mTitle;
 	@SerializedName("kwic")
-	private   String mKwic;
+	private String      mKwic;
 	@SerializedName("content")
-	private   String mContent;
+	private String      mContent;
 	@SerializedName("url")
-	private   String mUrl;
+	private String      mUrl;
 	@SerializedName("iurl")
-	private   String mImageUrl;
+	private String      mImageUrl;
 	@SerializedName("domain")
-	private   String mDomain;
+	private String      mDomain;
 	@SerializedName("author")
-	private   String mAuthor;
+	private String      mAuthor;
 	@SerializedName("news")
-	private   boolean mNews;
+	private boolean     mNews;
 	@SerializedName("votes")
-	private   String mVotes;
+	private String      mVotes;
 	@SerializedName("date")
-	private   long mDate;
+	private long        mDate;
 	@SerializedName("related")
-	private   List<Entry> mRelated;
+	private List<Entry> mRelated;
 
-	public Entry(String title, String kwic, String content, String url, String imageUrl, String domain, String author,
-			boolean news, String votes, long date, List<Entry> related) {
+	public Entry( String title, String kwic, String content, String url, String imageUrl, String domain, String author, boolean news, String votes,
+				  long date, List<Entry> related
+	) {
 		mTitle = title;
 		mKwic = kwic;
 		mContent = content;
@@ -47,7 +48,8 @@ public   class Entry  extends BmobObject implements Serializable {
 		mRelated = related;
 	}
 
-	public Entry(){}
+	public Entry() {
+	}
 
 	public String getTitle() {
 		return mTitle;

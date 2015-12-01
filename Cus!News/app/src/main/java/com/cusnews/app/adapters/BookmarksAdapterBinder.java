@@ -11,24 +11,22 @@ import com.cusnews.ds.Bookmark;
 public final class BookmarksAdapterBinder {
 
 
-
-
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("bookmarksAdapter")
-	public static void setBookmarksBinder(RecyclerView recyclerView, RecyclerView.Adapter adp) {
-		recyclerView.setAdapter(adp);
+	public static void setBookmarksBinder( RecyclerView recyclerView, RecyclerView.Adapter adp ) {
+		recyclerView.setAdapter( adp );
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@BindingAdapter("bookmarkClickListener")
-	public static void setBookmarkClickListener(View view, final Bookmark bookmark) {
-		view.setOnClickListener(new OnClickListener() {
+	public static void setBookmarkClickListener( View view, final Bookmark bookmark ) {
+		view.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				Utils.showShortToast(v.getContext(), "click");
+			public void onClick( View v ) {
+				Utils.showShortToast( v.getContext(), "click" );
 			}
-		});
+		} );
 	}
 
 

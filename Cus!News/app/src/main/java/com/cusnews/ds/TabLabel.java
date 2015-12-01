@@ -5,17 +5,16 @@ import android.text.TextUtils;
 
 import cn.bmob.v3.BmobObject;
 
-public final class TabLabel extends BmobObject  {
+public final class TabLabel extends BmobObject {
 	private String mUID;
 	private String mLabel;
 
-	public TabLabel( String label, String UID) {
+	public TabLabel( String label, String UID ) {
 		mUID = UID;
 		mLabel = label;
 	}
 
-	public TabLabel(
-	) {
+	public TabLabel() {
 
 	}
 
@@ -28,8 +27,8 @@ public final class TabLabel extends BmobObject  {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals( Object o ) {
 		TabLabel other = (TabLabel) o;
-		return TextUtils.equals(mLabel, other.getLabel());
+		return TextUtils.equals( mLabel, other.getLabel() );
 	}
 }

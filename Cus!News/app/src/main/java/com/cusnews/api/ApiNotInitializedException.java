@@ -6,7 +6,7 @@ import android.content.Context;
  * Error when Api is not initialized.
  * <p/>
  * <p/>
- * The {@link Api} must call {@link Api#initialize(Context, String, String, long)} first before any using.
+ * The {@link Api} must call {@link Api#initialize(Context , String , String , long)} first before any using.
  *
  * @author Xinyue Zhao
  */

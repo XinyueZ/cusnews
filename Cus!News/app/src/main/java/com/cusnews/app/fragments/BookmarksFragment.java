@@ -53,15 +53,15 @@ public final class BookmarksFragment extends CusNewsFragment {
 	 * @param e
 	 * 		Event {@link com.cusnews.bus.BookmarksInitEvent}.
 	 */
-	public void onEvent(BookmarksInitEvent e) {
-		mBinding.setBookmarksAdapter(new BookmarksAdapter(Prefs.getInstance().getViewType(),
-				BookmarksManager.getInstance().getCachedBookmarks()));
-		mBinding.bookmarksSrl.setRefreshing(false);
-		mBinding.bookmarksTv.setVisibility(View.GONE);
+	public void onEvent( BookmarksInitEvent e ) {
+		mBinding.setBookmarksAdapter(
+				new BookmarksAdapter( Prefs.getInstance().getViewType(), BookmarksManager.getInstance().getCachedBookmarks() ) );
+		mBinding.bookmarksSrl.setRefreshing( false );
+		mBinding.bookmarksTv.setVisibility( View.GONE );
 
-		if(mBinding.getBookmarksAdapter().getItemCount() == 0) {
-			mBinding.bookmarksTv.setVisibility(View.VISIBLE);
-			mBinding.bookmarksTv.setText(R.string.lbl_empty_bookmarks);
+		if( mBinding.getBookmarksAdapter().getItemCount() == 0 ) {
+			mBinding.bookmarksTv.setVisibility( View.VISIBLE );
+			mBinding.bookmarksTv.setText( R.string.lbl_empty_bookmarks );
 		}
 	}
 
@@ -71,92 +71,91 @@ public final class BookmarksFragment extends CusNewsFragment {
 	 * @param e
 	 * 		Event {@link BookmarksLoadingErrorEvent}.
 	 */
-	public void onEvent(BookmarksLoadingErrorEvent e) {
-		mBinding.bookmarksSrl.setRefreshing(false);
-		mBinding.bookmarksTv.setVisibility(View.VISIBLE);
-		mBinding.bookmarksTv.setText(R.string.lbl_load_bookmarks_error);
+	public void onEvent( BookmarksLoadingErrorEvent e ) {
+		mBinding.bookmarksSrl.setRefreshing( false );
+		mBinding.bookmarksTv.setVisibility( View.VISIBLE );
+		mBinding.bookmarksTv.setText( R.string.lbl_load_bookmarks_error );
 
-		Snackbar.make(mBinding.coordinatorLayout, R.string.lbl_loading_error, Snackbar.LENGTH_LONG).setAction(
+		Snackbar.make( mBinding.coordinatorLayout, R.string.lbl_loading_error, Snackbar.LENGTH_LONG ).setAction(
 				R.string.lbl_retry, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mBinding.bookmarksSrl.setRefreshing(true);
-				mBinding.bookmarksTv.setVisibility(View.GONE);
-				BookmarksManager.getInstance().init();
-			}
-		}).show();
+					@Override
+					public void onClick( View v ) {
+						mBinding.bookmarksSrl.setRefreshing( true );
+						mBinding.bookmarksTv.setVisibility( View.GONE );
+						BookmarksManager.getInstance().init();
+					}
+				} ).show();
 	}
 
 	//------------------------------------------------
-	public static BookmarksFragment newInstance(Context context) {
-		return (BookmarksFragment) Fragment.instantiate(context, BookmarksFragment.class.getName());
+	public static BookmarksFragment newInstance( Context context ) {
+		return (BookmarksFragment) Fragment.instantiate( context, BookmarksFragment.class.getName() );
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(LAYOUT, container, false);
+	public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
+		return inflater.inflate( LAYOUT, container, false );
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		mBinding = DataBindingUtil.bind(view.findViewById(R.id.coordinator_layout));
+	public void onViewCreated( View view, Bundle savedInstanceState ) {
+		super.onViewCreated( view, savedInstanceState );
+		mBinding = DataBindingUtil.bind( view.findViewById( R.id.coordinator_layout ) );
 
 		//Init pull2load.
-		mBinding.bookmarksSrl.setColorSchemeResources(R.color.green_1, R.color.green_2, R.color.green_3,
-				R.color.green_4);
-		mBinding.bookmarksSrl.setProgressViewEndTarget(true, getActionBarHeight(getActivity()) * 2);
-		mBinding.bookmarksSrl.setProgressViewOffset(false, 0, getActionBarHeight(getActivity()) * 2);
-		mBinding.bookmarksSrl.setRefreshing(true);
-		mBinding.bookmarksSrl.setOnRefreshListener(new OnRefreshListener() {
+		mBinding.bookmarksSrl.setColorSchemeResources( R.color.green_1, R.color.green_2, R.color.green_3, R.color.green_4 );
+		mBinding.bookmarksSrl.setProgressViewEndTarget( true, getActionBarHeight( getActivity() ) * 2 );
+		mBinding.bookmarksSrl.setProgressViewOffset( false, 0, getActionBarHeight( getActivity() ) * 2 );
+		mBinding.bookmarksSrl.setRefreshing( true );
+		mBinding.bookmarksSrl.setOnRefreshListener( new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				BookmarksManager.getInstance().init();
-				mBinding.bookmarksTv.setVisibility(View.GONE);
+				mBinding.bookmarksTv.setVisibility( View.GONE );
 			}
-		});
+		} );
 
 		//Init actionbar.
-		mBinding.toolbar.setTitle(R.string.action_bookmarks);
-		mBinding.toolbar.setTitleTextColor(getResources().getColor(R.color.common_white));
-		mBinding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-		mBinding.toolbar.setNavigationOnClickListener(new OnClickListener() {
+		mBinding.toolbar.setTitle( R.string.action_bookmarks );
+		mBinding.toolbar.setTitleTextColor( getResources().getColor( R.color.common_white ) );
+		mBinding.toolbar.setNavigationIcon( R.drawable.ic_arrow_back_white_24dp );
+		mBinding.toolbar.setNavigationOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				EventBus.getDefault().post(new CloseBookmarksEvent());
+			public void onClick( View v ) {
+				EventBus.getDefault().post( new CloseBookmarksEvent() );
 			}
-		});
+		} );
 
 
 		ViewType vt = Prefs.getInstance().getViewType();
 		//Init recycleview.
-		switch (vt) {
-		case GRID:
-			mBinding.bookmarksRv.setLayoutManager(new GridLayoutManager(getActivity(), MainActivity.GRID_SPAN));
-			break;
-		default:
-			mBinding.bookmarksRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-			//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			break;
+		switch( vt ) {
+			case GRID:
+				mBinding.bookmarksRv.setLayoutManager( new GridLayoutManager( getActivity(), MainActivity.GRID_SPAN ) );
+				break;
+			default:
+				mBinding.bookmarksRv.setLayoutManager( new LinearLayoutManager( getActivity() ) );
+				//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
 		}
 		boolean inited = BookmarksManager.getInstance().isInit();
-		if (inited) {
-			mBinding.bookmarksSrl.setRefreshing(false);
-			mBinding.bookmarksTv.setVisibility(View.GONE);
-			mBinding.setBookmarksAdapter(new BookmarksAdapter(vt, BookmarksManager.getInstance().getCachedBookmarks()));
+		if( inited ) {
+			mBinding.bookmarksSrl.setRefreshing( false );
+			mBinding.bookmarksTv.setVisibility( View.GONE );
+			mBinding.setBookmarksAdapter( new BookmarksAdapter( vt, BookmarksManager.getInstance().getCachedBookmarks() ) );
 		}
 	}
 
 	@Override
 	public void onResume() {
-		if(!BookmarksManager.getInstance().isInit() ) {
+		if( !BookmarksManager.getInstance().isInit() ) {
 			BookmarksManager.getInstance().init();
 		} else {
-			if (mBinding.getBookmarksAdapter() != null) {
+			if( mBinding.getBookmarksAdapter() != null ) {
 				mBinding.getBookmarksAdapter().notifyDataSetChanged();
-				if (mBinding.getBookmarksAdapter().getItemCount() == 0) {
-					mBinding.bookmarksTv.setVisibility(View.VISIBLE);
-					mBinding.bookmarksTv.setText(R.string.lbl_empty_bookmarks);
+				if( mBinding.getBookmarksAdapter().getItemCount() == 0 ) {
+					mBinding.bookmarksTv.setVisibility( View.VISIBLE );
+					mBinding.bookmarksTv.setText( R.string.lbl_empty_bookmarks );
 				}
 			}
 		}
@@ -172,14 +171,14 @@ public final class BookmarksFragment extends CusNewsFragment {
 	 *
 	 * @return Height of bar.
 	 */
-	public static int getActionBarHeight(Activity activity) {
+	public static int getActionBarHeight( Activity activity ) {
 		int[] abSzAttr;
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
 			abSzAttr = new int[] { android.R.attr.actionBarSize };
 		} else {
 			abSzAttr = new int[] { R.attr.actionBarSize };
 		}
-		TypedArray a = activity.obtainStyledAttributes(abSzAttr);
-		return a.getDimensionPixelSize(0, -1);
+		TypedArray a = activity.obtainStyledAttributes( abSzAttr );
+		return a.getDimensionPixelSize( 0, -1 );
 	}
 }

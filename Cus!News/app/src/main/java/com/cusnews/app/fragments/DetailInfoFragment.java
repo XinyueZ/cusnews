@@ -43,7 +43,7 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	/**
 	 * Main layout for this component.
 	 */
-	private static final int LAYOUT = R.layout.fragment_detail_info;
+	private static final int    LAYOUT       = R.layout.fragment_detail_info;
 	/**
 	 * A tinyurl to the {@link Entry}.
 	 */
@@ -52,70 +52,70 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	private DetailInfoBinding mBinding;
 
 	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreate( @Nullable Bundle savedInstanceState ) {
+		super.onCreate( savedInstanceState );
 
 
-		if (savedInstanceState != null) {
-			mSharedEntryUrl = savedInstanceState.getString("tinyurl");
+		if( savedInstanceState != null ) {
+			mSharedEntryUrl = savedInstanceState.getString( "tinyurl" );
 		} else {
-			final Entry entry = (Entry) getArguments().getSerializable(EXTRAS_ENTRY);
-			Api.getTinyUrl(entry.getUrl(), new Callback<Response>() {
+			final Entry entry = (Entry) getArguments().getSerializable( EXTRAS_ENTRY );
+			Api.getTinyUrl( entry.getUrl(), new Callback<Response>() {
 				@Override
-				public void success(Response response, retrofit.client.Response response2) {
-					mSharedEntryUrl = TextUtils.isEmpty(response.getResult()) ? entry.getUrl() : response.getResult();
-					createShare(entry);
+				public void success( Response response, retrofit.client.Response response2 ) {
+					mSharedEntryUrl = TextUtils.isEmpty( response.getResult() ) ? entry.getUrl() : response.getResult();
+					createShare( entry );
 				}
 
 				@Override
-				public void failure(RetrofitError error) {
+				public void failure( RetrofitError error ) {
 					mSharedEntryUrl = entry.getUrl();
-					createShare(entry);
+					createShare( entry );
 				}
-			});
+			} );
 		}
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(LAYOUT, container, false);
+	public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
+		return inflater.inflate( LAYOUT, container, false );
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		final Entry entry = (Entry) getArguments().getSerializable(EXTRAS_ENTRY);
-		if (entry != null) {
-			mBinding = DataBindingUtil.bind(view.findViewById(R.id.coordinator_layout));
-			mBinding.setEntry(entry);
-			mBinding.setQuery(getArguments().getString(EXTRAS_QUERY));
+	public void onViewCreated( View view, Bundle savedInstanceState ) {
+		super.onViewCreated( view, savedInstanceState );
+		final Entry entry = (Entry) getArguments().getSerializable( EXTRAS_ENTRY );
+		if( entry != null ) {
+			mBinding = DataBindingUtil.bind( view.findViewById( R.id.coordinator_layout ) );
+			mBinding.setEntry( entry );
+			mBinding.setQuery( getArguments().getString( EXTRAS_QUERY ) );
 
 
 			//Init actionbar
-			mBinding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-			mBinding.toolbar.setNavigationOnClickListener(new OnClickListener() {
+			mBinding.toolbar.setNavigationIcon( R.drawable.ic_arrow_back_white_24dp );
+			mBinding.toolbar.setNavigationOnClickListener( new OnClickListener() {
 				@Override
-				public void onClick(View v) {
-					ActivityCompat.finishAfterTransition(getActivity());
+				public void onClick( View v ) {
+					ActivityCompat.finishAfterTransition( getActivity() );
 				}
-			});
+			} );
 
 
-			mBinding.collapsingToolbar.setTitle(entry.getDomain());
+			mBinding.collapsingToolbar.setTitle( entry.getDomain() );
 
 			//Init ImageView
 			DisplayMetrics metrics = new DisplayMetrics();
-			DisplayManagerCompat.getInstance(App.Instance).getDisplay(0).getMetrics(metrics);
+			DisplayManagerCompat.getInstance( App.Instance ).getDisplay( 0 ).getMetrics( metrics );
 			mBinding.thumbIv.getLayoutParams().height = metrics.heightPixels / 2;
 
 
 			mBinding.thumbRl.hide();
-			mBinding.thumbRl.post(new Runnable() {
+			mBinding.thumbRl.post( new Runnable() {
 				@Override
 				public void run() {
-					mBinding.thumbRl.show(1500);
+					mBinding.thumbRl.show( 1500 );
 				}
-			});
+			} );
 		}
 	}
 
@@ -131,56 +131,56 @@ public final class DetailInfoFragment extends CusNewsFragment {
 	 *
 	 * @return An instance of {@link DetailInfoFragment}.
 	 */
-	public static DetailInfoFragment newInstance(Context context, Entry entry, @Nullable String query) {
+	public static DetailInfoFragment newInstance( Context context, Entry entry, @Nullable String query ) {
 		Bundle args = new Bundle();
-		args.putSerializable(EXTRAS_ENTRY, entry);
-		args.putSerializable(EXTRAS_QUERY, query);
-		return (DetailInfoFragment) Fragment.instantiate(context, DetailInfoFragment.class.getName(), args);
+		args.putSerializable( EXTRAS_ENTRY, entry );
+		args.putSerializable( EXTRAS_QUERY, query );
+		return (DetailInfoFragment) Fragment.instantiate( context, DetailInfoFragment.class.getName(), args );
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString("tinyurl", mSharedEntryUrl);
+	public void onSaveInstanceState( Bundle outState ) {
+		super.onSaveInstanceState( outState );
+		outState.putString( "tinyurl", mSharedEntryUrl );
 	}
 
-	private void createShare(Entry entry) {
-		mBinding.toolbar.inflateMenu(R.menu.menu_detail);
-		MenuItem menuShare = mBinding.toolbar.getMenu().findItem(R.id.action_share);
-		android.support.v7.widget.ShareActionProvider provider =
-				(android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(menuShare);
+	private void createShare( Entry entry ) {
+		mBinding.toolbar.inflateMenu( R.menu.menu_detail );
+		MenuItem menuShare = mBinding.toolbar.getMenu().findItem( R.id.action_share );
+		android.support.v7.widget.ShareActionProvider provider = (android.support.v7.widget.ShareActionProvider) MenuItemCompat.getActionProvider(
+				menuShare );
 
-		String subject =  App.Instance.getString(R.string.lbl_share_entry_title, App.Instance.getString(
-				R.string.application_name), entry.getTitle());
-		String text =  App.Instance.getString(R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
-				Prefs.getInstance().getAppDownloadInfo());
+		String subject = App.Instance.getString(
+				R.string.lbl_share_entry_title, App.Instance.getString( R.string.application_name ), entry.getTitle() );
+		String text = App.Instance.getString( R.string.lbl_share_entry_content, entry.getKwic(), mSharedEntryUrl,
+											  Prefs.getInstance().getAppDownloadInfo()
+		);
 
-		provider.setShareIntent(Utils.getDefaultShareIntent(provider, subject, text));
+		provider.setShareIntent( Utils.getDefaultShareIntent( provider, subject, text ) );
 
 
-		createFBShare(entry);
+		createFBShare( entry );
 	}
 
 
-	private void createFBShare(final Entry entry) {
-		MenuItem menuItem = mBinding.toolbar.getMenu().findItem(R.id.action_fb);
-		menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+	private void createFBShare( final Entry entry ) {
+		MenuItem menuItem = mBinding.toolbar.getMenu().findItem( R.id.action_fb );
+		menuItem.setOnMenuItemClickListener( new OnMenuItemClickListener() {
 			@Override
-			public boolean onMenuItemClick(MenuItem item) {
+			public boolean onMenuItemClick( MenuItem item ) {
 				Bundle postParams = new Bundle();
-				final WebDialog fbDlg = new WebDialog.FeedDialogBuilder(getActivity(), getString(
-						R.string.applicationId), postParams).setCaption(entry.getTitle()).setDescription( entry.getKwic()).setLink(
-						mSharedEntryUrl).build();
-				fbDlg.setOnCompleteListener(new OnCompleteListener() {
+				final WebDialog fbDlg = new WebDialog.FeedDialogBuilder( getActivity(), getString( R.string.applicationId ), postParams ).setCaption(
+						entry.getTitle() ).setDescription( entry.getKwic() ).setLink( mSharedEntryUrl ).build();
+				fbDlg.setOnCompleteListener( new OnCompleteListener() {
 					@Override
-					public void onComplete(Bundle bundle, FacebookException e) {
+					public void onComplete( Bundle bundle, FacebookException e ) {
 						fbDlg.dismiss();
 					}
-				});
+				} );
 				fbDlg.show();
 				return true;
 			}
-		});
+		} );
 	}
 
 }

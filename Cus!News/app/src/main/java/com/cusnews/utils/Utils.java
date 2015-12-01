@@ -26,20 +26,18 @@ public final class Utils {
 	 *
 	 * @return {@link URI}.
 	 */
-	public static URI uriStr2URI(String uriStr) {
-		Uri uri = Uri.parse(uriStr);
+	public static URI uriStr2URI( String uriStr ) {
+		Uri    uri  = Uri.parse( uriStr );
 		String host = uri.getHost();
 		String body = uri.getEncodedPath();
-		URI ui = null;
+		URI    ui   = null;
 		try {
-			ui = new URI("http", host, body, null);
-		} catch (URISyntaxException e) {
+			ui = new URI( "http", host, body, null );
+		} catch( URISyntaxException e ) {
 			e.printStackTrace();
 		}
 		return ui;
 	}
-
-
 
 
 	/**
@@ -48,10 +46,9 @@ public final class Utils {
 	 * @param editText
 	 * 		{@link EditText} the host of keyboard.
 	 */
-	public static void closeKeyboard(EditText editText) {
-		InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService(
-				Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+	public static void closeKeyboard( EditText editText ) {
+		InputMethodManager imm = (InputMethodManager) editText.getContext().getSystemService( Context.INPUT_METHOD_SERVICE );
+		imm.hideSoftInputFromWindow( editText.getWindowToken(), 0 );
 	}
 
 	/**
@@ -62,20 +59,20 @@ public final class Utils {
 	 *
 	 * @return {@code true} if {@link EditText} has a valid value.
 	 */
-	public static boolean validateKeyword(EditText editText) {
+	public static boolean validateKeyword( EditText editText ) {
 		boolean val;
-		Context cxt = editText.getContext();
-		String text = editText.getText().toString();
-		if (text.matches(".*[/=():;].*")) {
+		Context cxt  = editText.getContext();
+		String  text = editText.getText().toString();
+		if( text.matches( ".*[/=():;].*" ) ) {
 			val = false;
-			com.chopping.utils.Utils.showLongToast(cxt, R.string.lbl_exclude_chars);
+			com.chopping.utils.Utils.showLongToast( cxt, R.string.lbl_exclude_chars );
 		} else {
 			val = true;
 		}
 
-		if (!val) {
-			Animation shake = AnimationUtils.loadAnimation(cxt, R.anim.shake);
-			editText.startAnimation(shake);
+		if( !val ) {
+			Animation shake = AnimationUtils.loadAnimation( cxt, R.anim.shake );
+			editText.startAnimation( shake );
 		}
 		return val;
 	}
@@ -83,13 +80,12 @@ public final class Utils {
 
 	/**
 	 * Test whether the {@link String} is  valid value or not, if invalidate, shakes it.
-	 *
 	 */
-	public static boolean validateStr(Context cxt, String s) {
+	public static boolean validateStr( Context cxt, String s ) {
 		boolean val;
-		if (s.matches(".*[/=():;].*")) {
+		if( s.matches( ".*[/=():;].*" ) ) {
 			val = false;
-			com.chopping.utils.Utils.showLongToast(cxt, R.string.lbl_exclude_chars);
+			com.chopping.utils.Utils.showLongToast( cxt, R.string.lbl_exclude_chars );
 		} else {
 			val = true;
 		}

@@ -59,15 +59,15 @@ public final class App extends MultiDexApplication {
 	/**
 	 * Singleton.
 	 */
-	public static App Instance;
+	public static App    Instance;
 	/**
 	 * Api-key.
 	 */
-	private String mApiKey;
+	private       String mApiKey;
 	/**
 	 * The id of push-sender.
 	 */
-	private String mSenderId;
+	private       String mSenderId;
 
 
 	/**
@@ -78,59 +78,60 @@ public final class App extends MultiDexApplication {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
+		Fabric.with( this, new Crashlytics(), new CrashlyticsNdk() );
 		Instance = this;
 
-//		Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(
-//				Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(
-//				this)).build());
+		//		Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(
+		//				Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(
+		//				this)).build());
 
 
-		TaskHelper.init(getApplicationContext());
-		Prefs.createInstance(this);
+		TaskHelper.init( getApplicationContext() );
+		Prefs.createInstance( this );
 
-		Properties prop = new Properties();
+		Properties  prop  = new Properties();
 		InputStream input = null;
 		try {
 			/*From "resources".*/
-			input = getClassLoader().getResourceAsStream("key.properties");
-			if (input != null) {
+			input = getClassLoader().getResourceAsStream( "key.properties" );
+			if( input != null ) {
 				// load a properties file
-				prop.load(input);
-				mApiKey = prop.getProperty("appkey");
-				mSenderId = prop.getProperty("senderId");
-				Bmob.initialize(this, prop.getProperty("bmobkey"));
+				prop.load( input );
+				mApiKey = prop.getProperty( "appkey" );
+				mSenderId = prop.getProperty( "senderId" );
+				Bmob.initialize( this, prop.getProperty( "bmobkey" ) );
 			}
-		} catch (IOException ex) {
+		} catch( IOException ex ) {
 			mApiKey = null;
 		} finally {
-			if (input != null) {
+			if( input != null ) {
 				try {
 					input.close();
-				} catch (IOException e) {
+				} catch( IOException e ) {
 					e.printStackTrace();
 				}
 			}
 		}
 
-		Api.initialize(this, "http://www.faroo.com/");
+		Api.initialize( this, "http://www.faroo.com/" );
 
 
 		String url = Prefs.getInstance().getAppDownloadInfo();
-		if (TextUtils.isEmpty(url) || !url.contains("tinyurl")) {
-			com.tinyurl4j.Api.getTinyUrl(getString(R.string.lbl_store_url, getPackageName()), new Callback<Response>() {
+		if( TextUtils.isEmpty( url ) || !url.contains( "tinyurl" ) ) {
+			com.tinyurl4j.Api.getTinyUrl( getString( R.string.lbl_store_url, getPackageName() ), new Callback<Response>() {
 				@Override
-				public void success(Response response, retrofit.client.Response response2) {
-					Prefs.getInstance().setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(
-							R.string.application_name), response.getResult()));
+				public void success( Response response, retrofit.client.Response response2 ) {
+					Prefs.getInstance().setAppDownloadInfo(
+							getString( R.string.lbl_share_download_app, getString( R.string.application_name ), response.getResult() ) );
 				}
 
 				@Override
-				public void failure(RetrofitError error) {
-					Prefs.getInstance().setAppDownloadInfo(getString(R.string.lbl_share_download_app, getString(
-							R.string.application_name), getString(R.string.lbl_store_url, getPackageName())));
+				public void failure( RetrofitError error ) {
+					Prefs.getInstance().setAppDownloadInfo( getString( R.string.lbl_share_download_app, getString( R.string.application_name ),
+																	   getString( R.string.lbl_store_url, getPackageName() )
+					) );
 				}
-			});
+			} );
 		}
 	}
 
@@ -144,8 +145,7 @@ public final class App extends MultiDexApplication {
 	}
 
 	/**
-	 * @return How much times that the AdMob has shown before, it under App-process domain. When process killed, it
-	 * recounts.
+	 * @return How much times that the AdMob has shown before, it under App-process domain. When process killed, it recounts.
 	 */
 	public int getAdsShownTimes() {
 		return mAdsShownTimes;
@@ -157,12 +157,11 @@ public final class App extends MultiDexApplication {
 	 * @param adsShownTimes
 	 * 		Times that AdMob has shown.
 	 */
-	public void setAdsShownTimes(int adsShownTimes) {
+	public void setAdsShownTimes( int adsShownTimes ) {
 		mAdsShownTimes = adsShownTimes;
 	}
 
 	/**
-	 *
 	 * @return The id of push-sender.
 	 */
 	public String getSenderId() {

@@ -30,47 +30,42 @@ public final class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapte
 	private static final int ITEM_LAYOUT = R.layout.item_topic_list;
 
 
-
 	/**
 	 * Constructor of {@link TopicListAdapter}
 	 *
-	 * @param topics  Data-source.
-	 */
-	public TopicListAdapter(List<Topic> topics) {
-		setData(topics);
-	}
-
-
-	/**
-	 * Set data-source.
-	 *
 	 * @param topics
+	 * 		Data-source.
 	 */
-	public void setData(List<Topic> topics) {
-		mTopics = topics;
+	public TopicListAdapter( List<Topic> topics ) {
+		setData( topics );
 	}
-
 	/**
 	 * @return Data-source.
 	 */
 	public List<Topic> getData() {
 		return mTopics;
 	}
-
-
+	/**
+	 * Set data-source.
+	 *
+	 * @param topics
+	 */
+	public void setData( List<Topic> topics ) {
+		mTopics = topics;
+	}
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 		Context cxt = parent.getContext();
 		//		boolean landscape = cxt.getResources().getBoolean(R.bool.landscape);
-		LayoutInflater inflater = LayoutInflater.from(cxt);
-		ViewDataBinding binding = DataBindingUtil.inflate(inflater, ITEM_LAYOUT, parent, false);
-		return new TopicListAdapter.ViewHolder(binding);
+		LayoutInflater  inflater = LayoutInflater.from( cxt );
+		ViewDataBinding binding  = DataBindingUtil.inflate( inflater, ITEM_LAYOUT, parent, false );
+		return new TopicListAdapter.ViewHolder( binding );
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position) {
-		final Topic topic = getData().get(position);
-		holder.mBinding.setVariable(BR.topic, topic);
+	public void onBindViewHolder( final ViewHolder holder, final int position ) {
+		final Topic topic = getData().get( position );
+		holder.mBinding.setVariable( BR.topic, topic );
 		holder.mBinding.executePendingBindings();
 	}
 
@@ -83,8 +78,8 @@ public final class TopicListAdapter extends RecyclerView.Adapter<TopicListAdapte
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private ViewDataBinding mBinding;
 
-		public ViewHolder(ViewDataBinding binding) {
-			super(binding.getRoot());
+		public ViewHolder( ViewDataBinding binding ) {
+			super( binding.getRoot() );
 			mBinding = binding;
 		}
 	}

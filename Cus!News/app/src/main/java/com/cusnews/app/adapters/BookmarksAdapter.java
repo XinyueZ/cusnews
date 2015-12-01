@@ -26,7 +26,7 @@ public final class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapte
 	/**
 	 * The view-type,  {@link ViewType}.
 	 */
-	private int mLayoutResId;
+	private int            mLayoutResId;
 	/**
 	 * Data-source.
 	 */
@@ -35,58 +35,56 @@ public final class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapte
 	/**
 	 * Constructor of {@link BookmarksAdapter}
 	 *
-	 * @param viewType The view-type,  {@link ViewType}.
+	 * @param viewType
+	 * 		The view-type,  {@link ViewType}.
 	 */
-	public BookmarksAdapter(ViewType viewType) {
-		setData(new ArrayList<Bookmark>());
+	public BookmarksAdapter( ViewType viewType ) {
+		setData( new ArrayList<Bookmark>() );
 		mLayoutResId = viewType.getLayoutResId();
 	}
 
 	/**
 	 * Constructor of {@link BookmarksAdapter}
 	 *
-	 * @param  viewType  The view-type,  {@link ViewType}.
+	 * @param viewType
+	 * 		The view-type,  {@link ViewType}.
 	 * @param bookmarks
 	 * 		Data-source.
 	 */
-	public BookmarksAdapter(ViewType viewType, List<Bookmark> bookmarks) {
-		setData(bookmarks);
+	public BookmarksAdapter( ViewType viewType, List<Bookmark> bookmarks ) {
+		setData( bookmarks );
 		mLayoutResId = viewType.getLayoutResId();
 	}
-
-	/**
-	 * Set data-source.
-	 *
-	 * @param bookmarks
-	 */
-	public void setData(List<Bookmark> bookmarks) {
-		mBookmarks = bookmarks;
-	}
-
 	/**
 	 * @return Data-source.
 	 */
 	public List<Bookmark> getData() {
 		return mBookmarks;
 	}
-
-
+	/**
+	 * Set data-source.
+	 *
+	 * @param bookmarks
+	 */
+	public void setData( List<Bookmark> bookmarks ) {
+		mBookmarks = bookmarks;
+	}
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 		Context cxt = parent.getContext();
 		//		boolean landscape = cxt.getResources().getBoolean(R.bool.landscape);
-		LayoutInflater inflater = LayoutInflater.from(cxt);
-		if(!Prefs.getInstance().showAllImages()) {
+		LayoutInflater inflater = LayoutInflater.from( cxt );
+		if( !Prefs.getInstance().showAllImages() ) {
 			mLayoutResId = R.layout.item_vertical_no_image_entry;
 		}
-		ViewDataBinding binding = DataBindingUtil.inflate(inflater, mLayoutResId, parent, false);
-		return new BookmarksAdapter.ViewHolder(binding);
+		ViewDataBinding binding = DataBindingUtil.inflate( inflater, mLayoutResId, parent, false );
+		return new BookmarksAdapter.ViewHolder( binding );
 	}
 
 	@Override
-	public void onBindViewHolder(final ViewHolder holder, final int position) {
-		final Entry entry = getData().get(position);
-		holder.mBinding.setVariable(BR.entry, entry);
+	public void onBindViewHolder( final ViewHolder holder, final int position ) {
+		final Entry entry = getData().get( position );
+		holder.mBinding.setVariable( BR.entry, entry );
 		holder.mBinding.executePendingBindings();
 	}
 
@@ -99,8 +97,8 @@ public final class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapte
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private ViewDataBinding mBinding;
 
-		public ViewHolder(ViewDataBinding binding) {
-			super(binding.getRoot());
+		public ViewHolder( ViewDataBinding binding ) {
+			super( binding.getRoot() );
 			mBinding = binding;
 		}
 	}

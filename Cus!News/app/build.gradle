@@ -10,13 +10,13 @@ buildscript {
 def buildNumber = 'bld' + (System.env.BUILD_NUMBER ?: 'SNAPSHOT')
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'com.android.databinding'
 apply plugin: 'android-apt'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-apply plugin: 'com.android.databinding'
 
 android {
     compileOptions {

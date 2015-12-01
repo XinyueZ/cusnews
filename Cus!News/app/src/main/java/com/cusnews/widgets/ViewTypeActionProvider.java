@@ -26,7 +26,7 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	/**
 	 * Layout Id for the provider.
 	 */
-	private static final int LAYOUT = R.layout.action_provider_view_type;
+	private static final int LAYOUT   = R.layout.action_provider_view_type;
 	/**
 	 * Menu-resource of the popup.
 	 */
@@ -34,7 +34,7 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	/**
 	 * A {@link android.view.View} for this provider.
 	 */
-	private View mProviderV;
+	private View      mProviderV;
 	/**
 	 * A popup with list of all different types.
 	 */
@@ -42,7 +42,7 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	/**
 	 * Show/Hidden status of menu.
 	 */
-	private boolean mShow;
+	private boolean   mShow;
 
 	/**
 	 * Constructor of {@link ViewTypeActionProvider}
@@ -50,26 +50,26 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	 * @param context
 	 * 		{@link Context}.
 	 */
-	public ViewTypeActionProvider(Context context) {
-		super(context);
-		mProviderV = LayoutInflater.from(context).inflate(LAYOUT, null, false);
-		mProviderV.setOnClickListener(new OnClickListener() {
+	public ViewTypeActionProvider( Context context ) {
+		super( context );
+		mProviderV = LayoutInflater.from( context ).inflate( LAYOUT, null, false );
+		mProviderV.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				if (!mShow) {
+			public void onClick( View v ) {
+				if( !mShow ) {
 					mShow = true;
 					mPopupMenu.show();
-					updateMenuItems(mPopupMenu.getMenu());
+					updateMenuItems( mPopupMenu.getMenu() );
 				} else {
 					mPopupMenu.dismiss();
 				}
 			}
-		});
-		mPopupMenu = new PopupMenu(context, mProviderV);
-		mPopupMenu.inflate(MENU_RES);
-		mPopupMenu.setOnDismissListener(this);
-		mPopupMenu.setOnMenuItemClickListener(this);
-		updateMenuItems(mPopupMenu.getMenu());
+		} );
+		mPopupMenu = new PopupMenu( context, mProviderV );
+		mPopupMenu.inflate( MENU_RES );
+		mPopupMenu.setOnDismissListener( this );
+		mPopupMenu.setOnMenuItemClickListener( this );
+		updateMenuItems( mPopupMenu.getMenu() );
 	}
 
 
@@ -80,25 +80,25 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 
 
 	@Override
-	public void onDismiss(PopupMenu popupMenu) {
+	public void onDismiss( PopupMenu popupMenu ) {
 		mShow = false;
 	}
 
 	@Override
-	public boolean onMenuItemClick(MenuItem menuItem) {
-		switch (menuItem.getItemId()) {
-		case R.id.action_view_type_horizontal:
-			Prefs.getInstance().setViewType(ViewType.HORIZONTAL);
-			break;
-		case R.id.action_view_type_vertical:
-			Prefs.getInstance().setViewType(ViewType.VERTICAL);
-			break;
-		case R.id.action_view_type_grid:
-			Prefs.getInstance().setViewType(ViewType.GRID);
-			break;
+	public boolean onMenuItemClick( MenuItem menuItem ) {
+		switch( menuItem.getItemId() ) {
+			case R.id.action_view_type_horizontal:
+				Prefs.getInstance().setViewType( ViewType.HORIZONTAL );
+				break;
+			case R.id.action_view_type_vertical:
+				Prefs.getInstance().setViewType( ViewType.VERTICAL );
+				break;
+			case R.id.action_view_type_grid:
+				Prefs.getInstance().setViewType( ViewType.GRID );
+				break;
 		}
-		updateMenuItems(mPopupMenu.getMenu());
-		EventBus.getDefault().post(new ChangeViewTypeEvent(Prefs.getInstance().getViewType()));
+		updateMenuItems( mPopupMenu.getMenu() );
+		EventBus.getDefault().post( new ChangeViewTypeEvent( Prefs.getInstance().getViewType() ) );
 		return true;
 	}
 
@@ -108,15 +108,15 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 	 * @param menu
 	 * 		The host of all menu-items.
 	 */
-	private void updateMenuItems(Menu menu) {
-		menu.findItem(R.id.action_view_type_horizontal).setChecked(ViewType.HORIZONTAL == Prefs.getInstance().getViewType());
-		menu.findItem(R.id.action_view_type_vertical).setChecked(ViewType.VERTICAL == Prefs.getInstance().getViewType());
-		menu.findItem(R.id.action_view_type_grid).setChecked(ViewType.GRID == Prefs.getInstance().getViewType());
+	private void updateMenuItems( Menu menu ) {
+		menu.findItem( R.id.action_view_type_horizontal ).setChecked( ViewType.HORIZONTAL == Prefs.getInstance().getViewType() );
+		menu.findItem( R.id.action_view_type_vertical ).setChecked( ViewType.VERTICAL == Prefs.getInstance().getViewType() );
+		menu.findItem( R.id.action_view_type_grid ).setChecked( ViewType.GRID == Prefs.getInstance().getViewType() );
 	}
 
 
 	public enum ViewType {
-		HORIZONTAL(0, R.layout.item_horizontal_entry), VERTICAL(1, R.layout.item_vertical_entry), GRID(2, R.layout.item_grid_entry);
+		HORIZONTAL( 0, R.layout.item_horizontal_entry ), VERTICAL( 1, R.layout.item_vertical_entry ), GRID( 2, R.layout.item_grid_entry );
 		/**
 		 * The view-type,  {@link com.cusnews.widgets.ViewTypeActionProvider.ViewType}.
 		 */
@@ -124,7 +124,7 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 
 		private int mValue;
 
-		ViewType(int value, int layoutResId) {
+		ViewType( int value, int layoutResId ) {
 			mLayoutResId = layoutResId;
 			mValue = value;
 		}
@@ -133,16 +133,16 @@ public final class ViewTypeActionProvider extends ActionProvider implements OnDi
 			return mLayoutResId;
 		}
 
-		public static ViewType fromValue(int value) {
-			switch (value) {
-			case 0:
-				return HORIZONTAL;
-			case 1:
-				return VERTICAL;
-			case 2:
-				return GRID;
-			default:
-				return null;
+		public static ViewType fromValue( int value ) {
+			switch( value ) {
+				case 0:
+					return HORIZONTAL;
+				case 1:
+					return VERTICAL;
+				case 2:
+					return GRID;
+				default:
+					return null;
 			}
 		}
 

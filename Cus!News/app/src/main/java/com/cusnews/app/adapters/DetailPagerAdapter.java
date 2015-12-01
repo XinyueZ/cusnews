@@ -24,11 +24,11 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 	/**
 	 * News {@link Entry}.
 	 */
-	private Entry mEntry;
+	private Entry   mEntry;
 	/**
 	 * The query to the {@link #mEntry}.
 	 */
-	private String mQuery;
+	private String  mQuery;
 
 	/**
 	 * Constructor of {@link DetailPagerAdapter}
@@ -42,8 +42,8 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 	 * @param query
 	 * 		The query to the {@code entry}.
 	 */
-	public DetailPagerAdapter(Context cxt, FragmentManager fm, Entry entry, String query) {
-		super(fm);
+	public DetailPagerAdapter( Context cxt, FragmentManager fm, Entry entry, String query ) {
+		super( fm );
 		mContext = cxt;
 		mEntry = entry;
 		mQuery = query;
@@ -51,16 +51,16 @@ public final class DetailPagerAdapter extends FragmentStatePagerAdapter {
 
 
 	@Override
-	public Fragment getItem(int position) {
-		switch (position) {
-		case 0:
-			if (!Prefs.getInstance().showAllImages()) {
-				return DetailInfoNoImageFragment.newInstance(mContext, mEntry, mQuery);
-			} else {
-				return DetailInfoFragment.newInstance(mContext, mEntry, mQuery);
-			}
-		case 1:
-			return DetailSiteFragment.newInstance(mContext, mEntry);
+	public Fragment getItem( int position ) {
+		switch( position ) {
+			case 0:
+				if( !Prefs.getInstance().showAllImages() ) {
+					return DetailInfoNoImageFragment.newInstance( mContext, mEntry, mQuery );
+				} else {
+					return DetailInfoFragment.newInstance( mContext, mEntry, mQuery );
+				}
+			case 1:
+				return DetailSiteFragment.newInstance( mContext, mEntry );
 		}
 		return null;
 	}

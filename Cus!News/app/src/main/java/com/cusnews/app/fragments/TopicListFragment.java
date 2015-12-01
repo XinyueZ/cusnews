@@ -46,11 +46,11 @@ public final class TopicListFragment extends DialogFragment {
 	/**
 	 * Pre-defined list of push-topics.
 	 */
-	private List<Topic> mTopicList;
+	private List<Topic>       mTopicList;
 	/**
 	 * Data-binding.
 	 */
-	private TopicListBinding mBinding;
+	private TopicListBinding  mBinding;
 	/**
 	 * Listener while subscribe push-topic.
 	 */
@@ -60,37 +60,37 @@ public final class TopicListFragment extends DialogFragment {
 	 */
 	private BroadcastReceiver mUnsubscribeReceiver;
 
-	public static TopicListFragment newInstance(Context context) {
-		return (TopicListFragment) Fragment.instantiate(context, TopicListFragment.class.getName());
+	public static TopicListFragment newInstance( Context context ) {
+		return (TopicListFragment) Fragment.instantiate( context, TopicListFragment.class.getName() );
 	}
 
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onCreate( Bundle savedInstanceState ) {
+		super.onCreate( savedInstanceState );
 		mTopicList = TopicsFactory.create();
 
 		mSubscribeReceiver = new BroadcastReceiver() {
 			@Override
-			public void onReceive(Context context,   Intent intent) {
-				String name = intent.getStringExtra(SubscribeIntentService.SUBSCRIBE_NAME);
-				boolean result = intent.getBooleanExtra(SubscribeIntentService.SUBSCRIBE_RESULT, false);
+			public void onReceive( Context context, Intent intent ) {
+				String  name   = intent.getStringExtra( SubscribeIntentService.SUBSCRIBE_NAME );
+				boolean result = intent.getBooleanExtra( SubscribeIntentService.SUBSCRIBE_RESULT, false );
 
 				mBinding.getTopicsAdapter().notifyDataSetChanged();
-				if(!result) {
-					Utils.showLongToast(App.Instance, getString(R.string.lbl_subscribe_fail, name));
+				if( !result ) {
+					Utils.showLongToast( App.Instance, getString( R.string.lbl_subscribe_fail, name ) );
 				}
 			}
 		};
 		mUnsubscribeReceiver = new BroadcastReceiver() {
 			@Override
-			public void onReceive(Context context,   Intent intent) {
-				String name = intent.getStringExtra(UnsubscribeIntentService.UNSUBSCRIBE_NAME);
-				boolean result = intent.getBooleanExtra(UnsubscribeIntentService.UNSUBSCRIBE_RESULT, false);
+			public void onReceive( Context context, Intent intent ) {
+				String  name   = intent.getStringExtra( UnsubscribeIntentService.UNSUBSCRIBE_NAME );
+				boolean result = intent.getBooleanExtra( UnsubscribeIntentService.UNSUBSCRIBE_RESULT, false );
 
 				mBinding.getTopicsAdapter().notifyDataSetChanged();
-				if(!result) {
-					Utils.showLongToast(App.Instance, getString(R.string.lbl_unsubscribe_fail, name));
+				if( !result ) {
+					Utils.showLongToast( App.Instance, getString( R.string.lbl_unsubscribe_fail, name ) );
 				}
 			}
 		};
@@ -98,60 +98,60 @@ public final class TopicListFragment extends DialogFragment {
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(LAYOUT, container, false);
+	public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
+		return inflater.inflate( LAYOUT, container, false );
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mSubscribeReceiver, new IntentFilter(
-				SubscribeIntentService.SUBSCRIBE_COMPLETE));
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mUnsubscribeReceiver, new IntentFilter(
-				UnsubscribeIntentService.UNSUBSCRIBE_COMPLETE));
+		LocalBroadcastManager.getInstance( getActivity() ).registerReceiver(
+				mSubscribeReceiver, new IntentFilter( SubscribeIntentService.SUBSCRIBE_COMPLETE ) );
+		LocalBroadcastManager.getInstance( getActivity() ).registerReceiver(
+				mUnsubscribeReceiver, new IntentFilter( UnsubscribeIntentService.UNSUBSCRIBE_COMPLETE ) );
 	}
 
 	@Override
 	public void onPause() {
-		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mSubscribeReceiver);
-		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mUnsubscribeReceiver);
+		LocalBroadcastManager.getInstance( getActivity() ).unregisterReceiver( mSubscribeReceiver );
+		LocalBroadcastManager.getInstance( getActivity() ).unregisterReceiver( mUnsubscribeReceiver );
 		super.onPause();
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		mBinding = DataBindingUtil.bind(view.findViewById(R.id.topic_list_ll));
-		mBinding.topicListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-		mBinding.setTopicsAdapter(new TopicListAdapter(mTopicList));
-		mBinding.closeBtn.setOnClickListener(new OnClickListener() {
+	public void onViewCreated( View view, Bundle savedInstanceState ) {
+		super.onViewCreated( view, savedInstanceState );
+		mBinding = DataBindingUtil.bind( view.findViewById( R.id.topic_list_ll ) );
+		mBinding.topicListRv.setLayoutManager( new LinearLayoutManager( getActivity() ) );
+		mBinding.setTopicsAdapter( new TopicListAdapter( mTopicList ) );
+		mBinding.closeBtn.setOnClickListener( new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick( View v ) {
 				Activity activity = getActivity();
-				if (activity != null) {
-					ActivityCompat.finishAfterTransition(activity);
+				if( activity != null ) {
+					ActivityCompat.finishAfterTransition( activity );
 				}
 			}
-		});
+		} );
 	}
 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		Prefs prefs = Prefs.getInstance();
-		prefs.setPushSelections(null);
-		StringBuilder list = new StringBuilder();
-		List<Topic> topics = mBinding.getTopicsAdapter().getData();
-		for (Topic topic : topics) {
-			if (topic.getSubscribed()) {
-				list.append(topic.getApiName());
-				list.append(",");
+		prefs.setPushSelections( null );
+		StringBuilder list   = new StringBuilder();
+		List<Topic>   topics = mBinding.getTopicsAdapter().getData();
+		for( Topic topic : topics ) {
+			if( topic.getSubscribed() ) {
+				list.append( topic.getApiName() );
+				list.append( "," );
 			}
 		}
-		if (list.length() > 0) {
-			list.delete(list.length() - 1, list.length());//Remove last ","
+		if( list.length() > 0 ) {
+			list.delete( list.length() - 1, list.length() );//Remove last ","
 		}
-		prefs.setPushSelections(list.toString());
-		EventBus.getDefault().post(new SelectedTopicsEvent());
+		prefs.setPushSelections( list.toString() );
+		EventBus.getDefault().post( new SelectedTopicsEvent() );
 	}
 }
