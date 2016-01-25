@@ -195,6 +195,37 @@ public class BookmarksManager {
 		} );
 	}
 
+
+
+
+
+	/**
+	 * Add new {@link Bookmark} to remote backend.
+	 *
+	 * @param newBookmark
+	 * 		A new {@link Bookmark}.
+	 */
+	public void addNewRemoteBookmark( Bookmark newBookmark ) {
+		//Same bookmark should not be added again.
+		for( Bookmark cached : mCachedBookmarks ) {
+			if( cached.equals( newBookmark ) ) {
+				return;
+			}
+		}
+		mCachedBookmarks.add( newBookmark );
+		addNewBookmarkInternal( newBookmark );
+	}
+
+	/**
+	 * Add new {@link Bookmark} to backend.
+	 *
+	 * @param newBookmark
+	 * 		A new {@link Bookmark}.
+	 */
+	private void addNewBookmarkInternal( final Bookmark newBookmark  ) {
+		newBookmark.save( App.Instance );
+	}
+
 	/**
 	 * Remove  a {@link Bookmark} from remote backend.
 	 *
@@ -260,6 +291,35 @@ public class BookmarksManager {
 				}
 			}
 		} );
+	}
+
+
+
+
+	/**
+	 * Remove  a {@link Bookmark} from remote backend.
+	 *
+	 * @param bookmark
+	 * 		An old {@link Bookmark}.
+	 */
+	public void removeRemoteBookmark( Bookmark bookmark  ) {
+		for( Bookmark cached : mCachedBookmarks ) {
+			if( cached.equals( bookmark ) ) {
+				mCachedBookmarks.remove( cached );
+				removeBookmarkInternal( bookmark  );
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Remove a {@link Bookmark} from backend.
+	 *
+	 * @param bookmark
+	 * 		An old {@link Bookmark}.
+	 */
+	private void removeBookmarkInternal( final Bookmark bookmark ) {
+		bookmark.delete( App.Instance );
 	}
 
 	/**

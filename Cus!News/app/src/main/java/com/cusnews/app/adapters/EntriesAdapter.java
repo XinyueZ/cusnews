@@ -8,14 +8,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.cusnews.BR;
@@ -23,7 +21,9 @@ import com.cusnews.R;
 import com.cusnews.app.App;
 import com.cusnews.bus.ShareEvent;
 import com.cusnews.bus.ShareFBEvent;
+import com.cusnews.ds.Bookmark;
 import com.cusnews.ds.Entry;
+import com.cusnews.utils.BookmarksManager;
 import com.cusnews.utils.Prefs;
 import com.cusnews.widgets.DynamicShareActionProvider;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
@@ -48,7 +48,6 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	 * Data-source.
 	 */
 	private List<Entry> mEntries;
-
 	/**
 	 * Constructor of {@link EntriesAdapter}
 	 *
@@ -59,6 +58,7 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 		setData( new ArrayList<Entry>() );
 		mLayoutResId = viewType.getLayoutResId();
 	}
+
 
 	/**
 	 * Constructor of {@link EntriesAdapter}
@@ -154,12 +154,34 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 			mViewHolder = viewHolder;
 			mAdapter = adapter;
 
+
 			if(mViewHolder.mToolbar != null) {
-				MenuItem shareMi = mViewHolder.mToolbar.getMenu()
-													   .findItem( R.id.action_share_item );
 				int pos = mViewHolder.getAdapterPosition();
 				final Entry entry = mAdapter.getData()
 											.get( pos );
+				boolean bookmarked = BookmarksManager.getInstance().isBookmarked( entry );
+				MenuItem bookmarkMi = mViewHolder.mToolbar.getMenu()
+														.findItem( R.id.action_bookmark_item )
+														.setIcon( bookmarked ? R.drawable.ic_item_bookmarked : R.drawable.ic_item_not_bookmarked );
+				bookmarkMi.setOnMenuItemClickListener( new OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick( MenuItem item ) {
+						Bookmark      bookmark = BookmarksManager.getInstance().findBookmarked( entry );
+						if( bookmark != null ) {
+							Bookmark delBookmark = new Bookmark( entry );
+							delBookmark.setObjectId( bookmark.getObjectId() );
+							BookmarksManager.getInstance().removeRemoteBookmark( delBookmark  );
+							item.setIcon( R.drawable.ic_item_not_bookmarked   );
+						} else {
+							BookmarksManager.getInstance().addNewRemoteBookmark(
+									new Bookmark( Prefs.getInstance().getGoogleId(), entry )  );
+							item.setIcon( R.drawable.ic_item_bookmarked   );
+						}
+						return true;
+					}
+				} );
+				MenuItem shareMi = mViewHolder.mToolbar.getMenu()
+													   .findItem( R.id.action_share_item );
 				DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat.getActionProvider( shareMi );
 				shareLaterProvider.setShareDataType( "text/plain" );
 				shareLaterProvider.setOnShareLaterListener( new DynamicShareActionProvider.OnShareLaterListener() {
@@ -259,14 +281,6 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 						return true;
 					}
 				} );
-			}
-		}
-
-		public void onShareItemHandler( View view ) {
-			int pos = mViewHolder.getAdapterPosition();
-			if( pos != RecyclerView.NO_POSITION ) {
-				final PopupMenu popupMenu = (PopupMenu) view.getTag();
-				popupMenu.show();
 			}
 		}
 	}
