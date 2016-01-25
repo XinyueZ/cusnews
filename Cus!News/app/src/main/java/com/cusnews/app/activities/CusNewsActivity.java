@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,11 @@ import com.chopping.activities.BaseActivity;
 import com.chopping.application.BasicPrefs;
 import com.cusnews.R;
 import com.cusnews.app.fragments.AboutDialogFragment.EulaConfirmationDialog;
+import com.cusnews.bus.ShareFBEvent;
 import com.cusnews.utils.Prefs;
+import com.facebook.FacebookException;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -27,8 +32,28 @@ public class CusNewsActivity extends BaseActivity {
 	//------------------------------------------------
 	//Subscribes, event-handlers
 	//------------------------------------------------
-	public void onEvent( final Object e ) {
+
+
+	/**
+	 * Handler for {@link ShareFBEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link ShareFBEvent}.
+	 */
+	public void onEvent( final ShareFBEvent e ) {
+		Bundle postParams = new Bundle();
+		final WebDialog fbDlg = new WebDialog.FeedDialogBuilder( CusNewsActivity.this, getString( R.string.applicationId ), postParams )
+				.setCaption(
+						e.getEntry().getTitle() ).setDescription( e.getEntry().getKwic() ).setLink( e.getShareLink() ).build();
+		fbDlg.setOnCompleteListener( new OnCompleteListener() {
+			@Override
+			public void onComplete( Bundle bundle, FacebookException e ) {
+				fbDlg.dismiss();
+			}
+		} );
+		fbDlg.show();
 	}
+
 	//------------------------------------------------
 
 

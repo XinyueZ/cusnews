@@ -88,4 +88,7 @@
 
     <string name="msg_permission_prompt">Ohne Berechtigung von "Read Phone State" und "Write External Storage" kann die App nicht weiter gehen…</string>
 
+    <string name="no_app_to_share">Keine App %s gefunden!</string>
+    <string name="no_share_type">Tye nicht gefunden!</string>
+    <string name="error_occurred">Fehler!</string>
 </resources>

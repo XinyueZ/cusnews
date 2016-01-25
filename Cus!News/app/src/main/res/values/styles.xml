@@ -18,6 +18,16 @@
     </style>
 
 
+    <style name="ActionBar_ToolBar_On_Item">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:theme">@style/ToolbarTheme</item>
+        <item name="theme">@style/ToolbarTheme</item>
+        <item name="android:popupTheme">@style/ToolbarTheme</item>
+        <item name="popupTheme">@style/ToolbarTheme</item>
+        <item name="android:background">@color/common_transparent</item>
+        <item name="background">@color/common_transparent</item>
+    </style>
+
 
     <style name="ActionBar_ToolBar_Standalone" parent="ActionBar_ToolBar">
         <item name="android:background">@color/primary_color</item>

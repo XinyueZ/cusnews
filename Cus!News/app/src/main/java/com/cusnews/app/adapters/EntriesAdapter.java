@@ -4,17 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.cusnews.BR;
 import com.cusnews.R;
+import com.cusnews.app.App;
+import com.cusnews.bus.ShareEvent;
+import com.cusnews.bus.ShareFBEvent;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
+import com.cusnews.widgets.DynamicShareActionProvider;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
+import com.tinyurl4j.Api;
+import com.tinyurl4j.data.Response;
+
+import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 /**
  * The adapter for the list of {@link com.cusnews.ds.Entry}s.
@@ -54,12 +72,14 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 		setData( entries );
 		mLayoutResId = viewType.getLayoutResId();
 	}
+
 	/**
 	 * @return Data-source.
 	 */
 	public List<Entry> getData() {
 		return mEntries;
 	}
+
 	/**
 	 * Set data-source.
 	 *
@@ -68,22 +88,39 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 	public void setData( List<Entry> entries ) {
 		mEntries = entries;
 	}
+
 	@Override
 	public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType ) {
 		Context cxt = parent.getContext();
 		//		boolean landscape = cxt.getResources().getBoolean(R.bool.landscape);
 		LayoutInflater inflater = LayoutInflater.from( cxt );
-		if( !Prefs.getInstance().showAllImages() ) {
+		if( !Prefs.getInstance()
+				  .showAllImages() ) {
 			mLayoutResId = R.layout.item_vertical_no_image_entry;
 		}
-		ViewDataBinding binding = DataBindingUtil.inflate( inflater, mLayoutResId, parent, false );
+		ViewDataBinding binding = DataBindingUtil.inflate(
+				inflater,
+				mLayoutResId,
+				parent,
+				false
+		);
 		return new EntriesAdapter.ViewHolder( binding );
 	}
 
 	@Override
 	public void onBindViewHolder( final ViewHolder holder, final int position ) {
 		final Entry entry = getData().get( position );
-		holder.mBinding.setVariable( BR.entry, entry );
+		holder.mBinding.setVariable(
+				BR.entry,
+				entry
+		);
+		holder.mBinding.setVariable(
+				BR.handler,
+				new ItemHandler(
+						holder,
+						this
+				)
+		);
 		holder.mBinding.executePendingBindings();
 	}
 
@@ -95,10 +132,142 @@ public final class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.Vi
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private ViewDataBinding mBinding;
+		private Toolbar         mToolbar;
 
 		public ViewHolder( ViewDataBinding binding ) {
 			super( binding.getRoot() );
 			mBinding = binding;
+			mToolbar = (Toolbar) binding.getRoot()
+										.findViewById( R.id.entry_toolbar );
+			if( mToolbar != null ) {
+				mToolbar.inflateMenu( R.menu.menu_item );
+			}
+		}
+	}
+
+
+	public static final class ItemHandler {
+		private ViewHolder     mViewHolder;
+		private EntriesAdapter mAdapter;
+
+		public ItemHandler( ViewHolder viewHolder, EntriesAdapter adapter ) {
+			mViewHolder = viewHolder;
+			mAdapter = adapter;
+
+			if(mViewHolder.mToolbar != null) {
+				MenuItem shareMi = mViewHolder.mToolbar.getMenu()
+													   .findItem( R.id.action_share_item );
+				int pos = mViewHolder.getAdapterPosition();
+				final Entry entry = mAdapter.getData()
+											.get( pos );
+				DynamicShareActionProvider shareLaterProvider = (DynamicShareActionProvider) MenuItemCompat.getActionProvider( shareMi );
+				shareLaterProvider.setShareDataType( "text/plain" );
+				shareLaterProvider.setOnShareLaterListener( new DynamicShareActionProvider.OnShareLaterListener() {
+					@Override
+					public void onShareClick( final Intent shareIntent ) {
+						Api.getTinyUrl(
+								entry.getUrl(),
+								new Callback<Response>() {
+									@Override
+									public void success( Response response, retrofit.client.Response response2 ) {
+										String shortUrl = TextUtils.isEmpty( response.getResult() ) ? entry.getUrl() : response.getResult();
+										String subject = App.Instance.getString(
+												R.string.lbl_share_entry_title,
+												App.Instance.getString( R.string.application_name ),
+												entry.getTitle()
+										);
+										String text = App.Instance.getString(
+												R.string.lbl_share_entry_content,
+												entry.getKwic(),
+												shortUrl,
+												Prefs.getInstance()
+													 .getAppDownloadInfo()
+										);
+
+										shareIntent.putExtra(
+												Intent.EXTRA_SUBJECT,
+												subject
+										);
+										shareIntent.putExtra(
+												Intent.EXTRA_TEXT,
+												text
+										);
+										EventBus.getDefault()
+												.post( new ShareEvent( shareIntent ) );
+									}
+
+									@Override
+									public void failure( RetrofitError error ) {
+										String subject = App.Instance.getString(
+												R.string.lbl_share_entry_title,
+												App.Instance.getString( R.string.application_name ),
+												entry.getTitle()
+										);
+										String text = App.Instance.getString(
+												R.string.lbl_share_entry_content,
+												entry.getKwic(),
+												entry.getUrl(),
+												Prefs.getInstance()
+													 .getAppDownloadInfo()
+										);
+
+										shareIntent.putExtra(
+												Intent.EXTRA_SUBJECT,
+												subject
+										);
+										shareIntent.putExtra(
+												Intent.EXTRA_TEXT,
+												text
+										);
+										EventBus.getDefault()
+												.post( new ShareEvent( shareIntent ) );
+									}
+								}
+						);
+					}
+				} );
+
+
+				MenuItem shareFBItem = mViewHolder.mToolbar.getMenu()
+														   .findItem( R.id.action_fb_item );
+				shareFBItem.setOnMenuItemClickListener( new OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick( MenuItem item ) {
+						Api.getTinyUrl(
+								entry.getUrl(),
+								new Callback<Response>() {
+									@Override
+									public void success( Response response, retrofit.client.Response response2 ) {
+										String shortUrl = TextUtils.isEmpty( response.getResult() ) ? entry.getUrl() : response.getResult();
+										EventBus.getDefault()
+												.post( new ShareFBEvent(
+														entry,
+														shortUrl
+												) );
+									}
+
+									@Override
+									public void failure( RetrofitError error ) {
+										EventBus.getDefault()
+												.post( new ShareFBEvent(
+														entry,
+														entry.getUrl()
+												) );
+									}
+								}
+						);
+						return true;
+					}
+				} );
+			}
+		}
+
+		public void onShareItemHandler( View view ) {
+			int pos = mViewHolder.getAdapterPosition();
+			if( pos != RecyclerView.NO_POSITION ) {
+				final PopupMenu popupMenu = (PopupMenu) view.getTag();
+				popupMenu.show();
+			}
 		}
 	}
 }

@@ -76,8 +76,11 @@ import com.cusnews.bus.CloseBookmarksEvent;
 import com.cusnews.bus.EULAConfirmedEvent;
 import com.cusnews.bus.EULARejectEvent;
 import com.cusnews.bus.OpenEntryEvent;
+import com.cusnews.bus.ShareEvent;
+import com.cusnews.bus.ShareFBEvent;
 import com.cusnews.databinding.ActivityMainBinding;
 import com.cusnews.ds.Entries;
+import com.cusnews.ds.Entry;
 import com.cusnews.ds.TabLabel;
 import com.cusnews.ds.Trends;
 import com.cusnews.gcm.RegistrationIntentService;
@@ -88,10 +91,14 @@ import com.cusnews.utils.TabLabelManager;
 import com.cusnews.utils.TabLabelManager.TabLabelManagerUIHelper;
 import com.cusnews.utils.Utils;
 import com.cusnews.widgets.ViewTypeActionProvider.ViewType;
+import com.facebook.FacebookException;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.squareup.picasso.Picasso;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -652,6 +659,19 @@ public class MainActivity extends CusNewsActivity implements SearchView.OnQueryT
 			mBookmarkSpl.closePane();
 		}
 	}
+
+
+	/**
+	 * Handler for {@link ShareEvent}.
+	 *
+	 * @param e
+	 * 		Event {@link ShareEvent}.
+	 */
+	public void onEvent( final ShareEvent e ) {
+		startActivity( e.getIntent() );
+	}
+
+
 	//------------------------------------------------
 	/**
 	 * Show single instance of {@link}

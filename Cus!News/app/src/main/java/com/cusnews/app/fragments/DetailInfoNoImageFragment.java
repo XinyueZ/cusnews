@@ -18,15 +18,14 @@ import android.view.ViewGroup;
 import com.chopping.utils.Utils;
 import com.cusnews.R;
 import com.cusnews.app.App;
+import com.cusnews.bus.ShareFBEvent;
 import com.cusnews.databinding.DetailInfoNoImageBinding;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Prefs;
-import com.facebook.FacebookException;
-import com.facebook.widget.WebDialog;
-import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.tinyurl4j.Api;
 import com.tinyurl4j.data.Response;
 
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 
@@ -156,16 +155,7 @@ public final class DetailInfoNoImageFragment extends CusNewsFragment {
 		menuItem.setOnMenuItemClickListener( new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick( MenuItem item ) {
-				Bundle postParams = new Bundle();
-				final WebDialog fbDlg = new WebDialog.FeedDialogBuilder( getActivity(), getString( R.string.applicationId ), postParams ).setCaption(
-						entry.getTitle() ).setDescription( entry.getKwic() ).setLink( mSharedEntryUrl ).build();
-				fbDlg.setOnCompleteListener( new OnCompleteListener() {
-					@Override
-					public void onComplete( Bundle bundle, FacebookException e ) {
-						fbDlg.dismiss();
-					}
-				} );
-				fbDlg.show();
+				EventBus.getDefault().post( new ShareFBEvent( entry, mSharedEntryUrl ) );
 				return true;
 			}
 		} );

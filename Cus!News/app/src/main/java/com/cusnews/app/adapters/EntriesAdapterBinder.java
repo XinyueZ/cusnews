@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.cusnews.R;
 import com.cusnews.bus.OpenEntryEvent;
 import com.cusnews.ds.Entry;
 import com.cusnews.utils.Utils;
@@ -30,7 +31,8 @@ public final class EntriesAdapterBinder {
 		view.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick( View v ) {
-				EventBus.getDefault().post( new OpenEntryEvent( entry ) );
+				EventBus.getDefault()
+						.post( new OpenEntryEvent( entry ) );
 			}
 		} );
 	}
@@ -43,13 +45,19 @@ public final class EntriesAdapterBinder {
 		if( TextUtils.isEmpty( url ) ) {
 			url = "http://www.faroo.com/hp/api/faroo_attribution.png";
 		}
-		Picasso.with( view.getContext() ).load( url ).into( view );
 
 		try {
 			Picasso picasso = Picasso.with( view.getContext() );
-			picasso.load( Utils.uriStr2URI( url ).toASCIIString() ).tag( view.getContext() ).into( view );
+			picasso.load( Utils.uriStr2URI( url )
+							   .toASCIIString() )
+				   .placeholder( R.drawable.placeholder )
+				   .tag( view.getContext() )
+				   .into( view );
 		} catch( NullPointerException e ) {
-			loadImage( view, "http://www.faroo.com/hp/api/faroo_attribution.png" );
+			loadImage(
+					view,
+					"http://www.faroo.com/hp/api/faroo_attribution.png"
+			);
 		}
 	}
 }

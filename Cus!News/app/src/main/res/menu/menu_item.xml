@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/action_fb_item"
+        android:icon="@drawable/ic_fb_item"
+        android:title="@string/action_fb"
+        app:showAsAction="always" />
+
+
+    <item
+        android:id="@+id/action_share_item"
+        android:title="@string/action_share"
+        android:icon="@drawable/ic_item_share"
+        app:showAsAction="always"
+        app:actionProviderClass="com.cusnews.widgets.DynamicShareActionProvider" />
+
+
+    <item
+        android:id="@+id/action_bookmark_item"
+        android:icon="@drawable/ic_item_not_bookmarked"
+        android:title="@string/action_bookmarks"
+        app:showAsAction="always" />
+
+</menu>

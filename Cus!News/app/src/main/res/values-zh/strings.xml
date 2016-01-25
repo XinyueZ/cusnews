@@ -98,4 +98,8 @@
 
     <string name="msg_permission_prompt">没有－读取电话状态，写入存储－的权限，应用无法运行…</string>
 
+
+    <string name="no_app_to_share">没找到分享 %s 的应用!</string>
+    <string name="no_share_type">没有确定分享类别！</string>
+    <string name="error_occurred">报错！</string>
 </resources>
